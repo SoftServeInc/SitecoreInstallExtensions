@@ -1,4 +1,4 @@
-# SitecoreInstallExtensions
+# Sitecore Install Extensions
 A Powershell module with extensions for Sitecore Install Framework. The introduction to Sitecore Install Framework is available on [Youtube](https://youtu.be/syslVshavOw)
 
 # How to start?
