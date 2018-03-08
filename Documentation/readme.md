@@ -1,1 +1,0 @@
-# Sitecore Install Extensions Tasks
