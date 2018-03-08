@@ -8,3 +8,6 @@ To start work with Sitecore Install Extensions you have to install or update the
 * Sitecore Install Extensions
 
 You can do this manually or just run script (install-modules.ps1). This script will perform all necessary task automatically.
+
+# Tasks & Config Functions
+[List] (https://github.com/SoftServeInc/SitecoreInstallExtensions/blob/master/Documentation/readme.md)
