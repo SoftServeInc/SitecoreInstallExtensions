@@ -2,7 +2,7 @@
 A Powershell module with extensions for Sitecore Install Framework. The introduction to Sitecore Install Framework is available on [Youtube](https://youtu.be/syslVshavOw)
 
 ## With SIX module we are able to install:
-* Sitecore prerequisites like JRE, MongoDb, Solr [example-json](Configuration/sitecore-prerequisites.json)
+* Sitecore prerequisites like JRE, MongoDb, Solr. [see-example-json](Configuration/sitecore-prerequisites.json)
 * Configure Solr as a Windows service without any dependence 
 * Install Sitecore 8+ in a SIF manner,
 * Install Sitecore modules,
