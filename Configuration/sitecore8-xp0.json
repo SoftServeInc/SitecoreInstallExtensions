@@ -1,0 +1,371 @@
+{
+  "Parameters": {
+    "SqlServerName": {
+      "Type": "string"
+    },
+    "SitecoreZip": {
+      "Type": "string",
+      "Description": "Path to ZIP archive of the Sitecore site root folder. (Not archive with EXE)tr"
+    },
+	"SitecoreZipFileName": {
+      "Type": "string",
+      "Description": "File name of ZIP archive of the Sitecore site root folder."
+    },
+	"LicenseFile": {
+      "Type": "string",
+      "Description": "The path to the Sitecore license file."
+    },
+    "SqlDbPrefix": {
+      "Type": "string",
+      "DefaultValue": "sitecore",
+      "Description": "The prefix used for all Sql databases."
+    },
+    "SqlUser": {
+      "Type": "string",
+      "DefaultValue": "masteruser",
+      "Description": "The user to create and use in Master connection string."
+    },
+    "SqlPassword": {
+      "Type": "string",
+      "DefaultValue": "Test12345",
+      "Description": "The Sql password for the Master connection string in Sitecore."
+    },
+    "SiteName": {
+      "Type": "string",
+      "DefaultValue": "sitecore",
+      "Description": "The name of the site to be deployed."
+    }
+  },
+  "Modules": [
+    "SitecoreInstallExtensions"
+  ],
+  "Variables": {
+    // Variables are values calculated in a configuration.
+    // They can reference Parameters, other Variables, and config functions.
+    // Database names.
+    "Sql.Database.Core":                "[concat(parameter('SqlDbPrefix'), '_Core')]",
+    "Sql.Database.Master":              "[concat(parameter('SqlDbPrefix'), '_Master')]",
+    "Sql.Database.Web":                 "[concat(parameter('SqlDbPrefix'), '_Web')]",
+    "Sql.Database.Sessions":            "[concat(parameter('SqlDbPrefix'), '_Sessions')]",
+    "Sql.Database.Analytics":           "[concat(parameter('SqlDbPrefix'), '_Analytics')]",
+
+    // The sites full path on disk
+    "Site.PhysicalPath": "[joinpath(environment('SystemDrive'), 'inetpub', 'wwwroot', parameter('SiteName'))]",
+	  "SitecoreUnzipped": "[joinpath(variable('Site.PhysicalPath'), parameter('SitecoreZipFileName'))]",
+	
+	// The sites data folder
+    "Site.DataFolder": "[joinpath(variable('Site.PhysicalPath'), 'Data')]",
+    "Site.WebsiteFolder": "[joinpath(variable('Site.PhysicalPath'), 'Website')]",
+    "Site.DatabasesFolder": "[joinpath(variable('Site.PhysicalPath'), 'Databases')]",
+	
+    "Sql.MDF.Core": "[joinpath(variable('Site.DatabasesFolder'), 'sitecore.core.mdf')]",
+    "Sql.LDF.Core": "[joinpath(variable('Site.DatabasesFolder'), 'sitecore.core.ldf')]",
+    "Sql.MDF.Web": "[joinpath(variable('Site.DatabasesFolder'), 'sitecore.Web.mdf')]",
+    "Sql.LDF.Web": "[joinpath(variable('Site.DatabasesFolder'), 'sitecore.Web.ldf')]",
+    "Sql.MDF.Master": "[joinpath(variable('Site.DatabasesFolder'), 'sitecore.Master.mdf')]",
+    "Sql.LDF.Master": "[joinpath(variable('Site.DatabasesFolder'), 'sitecore.Master.ldf')]",
+    "Sql.MDF.Sessions": "[joinpath(variable('Site.DatabasesFolder'), 'sitecore.Sessions.mdf')]",
+    "Sql.LDF.Sessions": "[joinpath(variable('Site.DatabasesFolder'), 'sitecore.Sessions.ldf')]",
+    "Sql.MDF.Analytics": "[joinpath(variable('Site.DatabasesFolder'), 'sitecore.Analytics.mdf')]",
+    "Sql.LDF.Analytics": "[joinpath(variable('Site.DatabasesFolder'), 'sitecore.Analytics.ldf')]",
+    "Sql.ConnectionString.Web": "[sqlconnectionstring(parameter('SqlServerName'),variable('Sql.Database.Web'),parameter('SqlUser'),parameter('SqlPassword'))]",
+    "Sql.ConnectionString.Master": "[sqlconnectionstring(parameter('SqlServerName'),variable('Sql.Database.Master'),parameter('SqlUser'),parameter('SqlPassword'))]",
+    "Sql.ConnectionString.Core": "[sqlconnectionstring(parameter('SqlServerName'),variable('Sql.Database.Core'),parameter('SqlUser'),parameter('SqlPassword'))]",
+    "Sql.ConnectionString.Reporting": "[sqlconnectionstring(parameter('SqlServerName'),variable('Sql.Database.Analytics'),parameter('SqlUser'),parameter('SqlPassword'))]"
+  },
+  "Tasks": {
+    // Tasks are separate units of work in a configuration.
+    // Each task is an action that will be completed when Install-SitecoreConfiguration is called.
+    // By default, tasks are applied in the order they are declared.
+    // Tasks may reference Parameters, Variables, and config functions.
+    "CreatePaths": {
+      // Ensure the destination path for the site exists.
+      "Type": "EnsurePath",
+      "Params": {
+        "Exists": [
+          "[variable('Site.PhysicalPath')]"
+        ]
+      }
+    },
+    "UnpackSitecoreZip": {
+      "Type": "Unpack",
+      "Params": {
+        "Source": [ "[parameter('SitecoreZip')]" ],
+        "Destination": [ "[variable('Site.PhysicalPath')]" ]
+      }
+    },
+    "MoveData": {
+      "Type": "Move",
+      "Params": {
+        "Source": [ "[joinpath(variable('SitecoreUnzipped'),'Data')]" ],
+        "Destination": [ "[variable('Site.DataFolder')]" ]
+      }
+    },
+    "MoveWebsite": {
+      "Type": "Move",
+      "Params": {
+        "Source": [ "[joinpath(variable('SitecoreUnzipped'),'Website')]" ],
+        "Destination": [ "[variable('Site.WebsiteFolder')]" ]
+      }
+    },
+    "MoveDatabase": {
+      "Type": "Move",
+      "Params": {
+        "Source": [ "[joinpath(variable('SitecoreUnzipped'),'Databases')]" ],
+        "Destination": [ "[variable('Site.DatabasesFolder')]" ]
+      }
+    },
+    "SetDbMixedMode": {
+      "Type": "SetSqlMixedMode",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServerName')]"
+      }
+    },
+    "CreateDatabaseUser": {
+      "Type": "CreateDbUser",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServerName')]",
+        "UserName": "[parameter('SqlUser')]",
+        "Password": "[parameter('SqlPassword')]"
+      }
+    },
+    "AttachCoreDatabase": {
+      "Type": "AttachDB",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServerName')]",
+        "DBName": "[variable('Sql.Database.Core')]",
+        "DBDataFilePath": "[variable('Sql.MDF.Core')]",
+        "DBLogFilePath": "[variable('Sql.LDF.Core')]"
+      }
+    },
+    "AttachWebDatabase": {
+      "Type": "AttachDB",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServerName')]",
+        "DBName": "[variable('Sql.Database.Web')]",
+        "DBDataFilePath": "[variable('Sql.MDF.Web')]",
+        "DBLogFilePath": "[variable('Sql.LDF.Web')]"
+      }
+    },
+    "AttachMasterDatabase": {
+      "Type": "AttachDB",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServerName')]",
+        "DBName": "[variable('Sql.Database.Master')]",
+        "DBDataFilePath": "[variable('Sql.MDF.Master')]",
+        "DBLogFilePath": "[variable('Sql.LDF.Master')]"
+      }
+    },
+    "AttachAnalyticsDatabase": {
+      "Type": "AttachDB",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServerName')]",
+        "DBName": "[variable('Sql.Database.Analytics')]",
+        "DBDataFilePath": "[variable('Sql.MDF.Analytics')]",
+        "DBLogFilePath": "[variable('Sql.LDF.Analytics')]"
+      }
+    },
+    "AttachSessionsDatabase": {
+      "Type": "AttachDB",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServerName')]",
+        "DBName": "[variable('Sql.Database.Sessions')]",
+        "DBDataFilePath": "[variable('Sql.MDF.Sessions')]",
+        "DBLogFilePath": "[variable('Sql.LDF.Sessions')]"
+      }
+    },
+    "UpdateWebConnectionString": {
+      "Type": "SetXml",
+      "Params": {
+        "FilePath": "[joinpath(variable('Site.WebsiteFolder'), 'App_Config', 'ConnectionStrings.config')]",
+        "XPath": "//connectionStrings/add[@name='web']",
+        "Attributes": [
+          { "connectionString": "[variable('Sql.ConnectionString.Web')]" }
+        ]
+      }
+    },
+    "UpdateMasterConnectionString": {
+      "Type": "SetXml",
+      "Params": {
+        "FilePath": "[joinpath(variable('Site.WebsiteFolder'), 'App_Config', 'ConnectionStrings.config')]",
+        "XPath": "//connectionStrings/add[@name='master']",
+        "Attributes": [
+          { "connectionString": "[variable('Sql.ConnectionString.Master')]" }
+        ]
+      }
+    },
+    "UpdateCoreConnectionString": {
+      "Type": "SetXml",
+      "Params": {
+        "FilePath": "[joinpath(variable('Site.WebsiteFolder'), 'App_Config', 'ConnectionStrings.config')]",
+        "XPath": "//connectionStrings/add[@name='core']",
+        "Attributes": [
+          { "connectionString": "[variable('Sql.ConnectionString.Core')]" }
+        ]
+      }
+    },
+    "UpdateReportingConnectionString": {
+      "Type": "SetXml",
+      "Params": {
+        "FilePath": "[joinpath(variable('Site.WebsiteFolder'), 'App_Config', 'ConnectionStrings.config')]",
+        "XPath": "//connectionStrings/add[@name='reporting']",
+        "Attributes": [
+          { "connectionString": "[variable('Sql.ConnectionString.Reporting')]" }
+        ]
+      }
+    },
+    "AddRolesForDatabases": {
+      "Type": "SetDatabaseRoles",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServerName')]",
+        "Databases": [
+          "[variable('Sql.Database.Analytics')]",
+          "[variable('Sql.Database.Master')]",
+          "[variable('Sql.Database.Web')]"
+        ],
+        "Login": "[parameter('SqlUser')]",
+        "Roles": [ "db_datareader", "db_datawriter", "public" ]
+      }
+    },
+    "AddRolesForCoreDatabase": {
+      "Type": "SetDatabaseRoles",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServerName')]",
+        "Databases": [ "[variable('Sql.Database.Core')]" ],
+        "Login": "[parameter('SqlUser')]",
+        "Roles": [
+          "db_datareader",
+          "db_datawriter",
+          "public",
+          "aspnet_Membership_BasicAccess",
+          "aspnet_Membership_FullAccess",
+          "aspnet_Membership_ReportingAccess",
+          "aspnet_Profile_BasicAccess",
+          "aspnet_Profile_FullAccess",
+          "aspnet_Profile_ReportingAccess",
+          "aspnet_Roles_BasicAccess",
+          "aspnet_Roles_FullAccess",
+          "aspnet_Roles_ReportingAccess"
+        ]
+      }
+    },
+    "GrantPermissionsForDatabases": {
+      "Type": "GrantPermissions",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServerName')]",
+        "Databases": [
+          "[variable('Sql.Database.Analytics')]",
+          "[variable('Sql.Database.Core')]",
+          "[variable('Sql.Database.Master')]",
+          "[variable('Sql.Database.Web')]"
+        ],
+        "UserName": "[parameter('SqlUser')]"
+      }
+    },
+    "CreateAppPool": {
+      // Creates or updates the app pool.
+      "Type": "AppPool",
+      "Params": {
+        "Name": "[parameter('SiteName')]",
+        "Properties": {
+          "ProcessModel": {
+            "identityType": "ApplicationPoolIdentity"
+          }
+        }
+      }
+    },
+    "CreateWebsite": {
+      // Creates or updates the IIS website instance.
+      "Type": "Website",
+      "Params": {
+        "Name": "[parameter('SiteName')]",
+        "ApplicationPool": "[parameter('SiteName')]",
+        "PhysicalPath": "[variable('Site.WebsiteFolder')]"
+      }
+    },
+    "StopWebsite": {
+      // Stops the website if it is running.
+      "Type": "ManageWebsite",
+      "Params": {
+        "Name": "[parameter('SiteName')]",
+        "Action": "Stop"
+      }
+    },
+    "StopAppPool": {
+      // Stops the app pool if it is running.
+      "Type": "ManageAppPool",
+      "Params": {
+        "Name": "[parameter('SiteName')]",
+        "Action": "Stop"
+      }
+    },
+    "CreateBindings": {
+      // Configures the site bindings for the website.
+      "Type": "WebBinding",
+      "Params": {
+        "SiteName": "[parameter('SiteName')]",
+        "Add": [ { "HostHeader": "[parameter('SiteName')]" } ],
+        "Remove": [
+          {
+            "Port": "80",
+            "IPAddress": "*"
+          }
+        ]
+      }
+    },
+    "CreateHostHeader": {
+      // Sets a hostheader for the website.
+      "Type": "HostHeader",
+      "Params": {
+        "HostName": "[parameter('SiteName')]"
+      }
+    },
+    "SetPermissions": {
+      // Sets permissions for the app pool user.
+      "Type": "FilePermissions",
+      "Params": {
+        "Path": "[variable('Site.PhysicalPath')]",
+        "Rights": [
+          {
+            "User": "[concat('IIS AppPool\\', parameter('SiteName'))]",
+            "FileSystemRights": "FullControl",
+            "InheritanceFlags": [ "ContainerInherit", "ObjectInherit" ]
+          }
+        ]
+      }
+    },
+    "CreateDataFolder": {
+      // Ensure the destination path for the site exists.
+      "Type": "EnsurePath",
+      "Params": {
+        "Exists": [
+          "[joinpath(variable('Site.WebsiteFolder'),'data')]"
+        ]
+      }
+    },
+    "SetLicense": {
+      // Copies the license file to the instance data folder.
+      "Type": "Copy",
+      "Params": {
+        "Source": "[resolvepath(parameter('LicenseFile'))]",
+        "Destination": "[joinpath(variable('Site.WebsiteFolder'),'data')]"
+      }
+    },
+    "StartAppPool": {
+      // Starts the app pool.
+      "Type": "ManageAppPool",
+      "Params": {
+        "Name": "[parameter('SiteName')]",
+        "Action": "Start"
+      }
+    },
+    "StartWebsite": {
+      // Starts the website.
+      "Type": "ManageWebsite",
+      "Params": {
+        "Name": "[parameter('SiteName')]",
+        "Action": "Start"
+      }
+    }
+  }
+}

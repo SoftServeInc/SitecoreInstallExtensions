@@ -1,0 +1,112 @@
+{
+  "Parameters": {
+    "LocalStorage": {
+      "Type": "string",
+      "Description": "The root folder for packages"
+    },
+    "SiteName": {
+      "Type": "string",
+      "DefaultValue": "sitecore",
+      "Description": "The name of the site to be deployed."
+    }
+  },
+  "Modules": [
+    "SitecoreInstallExtensions"
+  ],
+  "Variables": {
+    "Site.PhysicalPath": "[joinpath(environment('SystemDrive'), 'inetpub', 'wwwroot', parameter('SiteName'))]",
+    "Site.PackagesPath": "[joinpath(variable('Site.PhysicalPath'),'Data','Packages')]",
+    "Site.WebsiteFolder": "[joinpath(variable('Site.PhysicalPath'), 'Website')]"
+  },
+  "Tasks": {
+    "CopyPackageInstaller": {
+      "Type": "Copy",
+      "Params": {
+        "Source": [ "[joinpath(parameter('LocalStorage'),'PackageInstaller.asmx')]" ],
+        "Destination": [ "[variable('Site.WebsiteFolder')]" ]
+      }
+    },
+    "CopyPackage1": {
+      "Type": "Copy",
+      "Params": {
+        "Source": [ "[joinpath(parameter('LocalStorage'),'Sitecore PowerShell Extensions-4.7 for Sitecore 8.zip')]" ],
+        "Destination": [ "[variable('Site.PackagesPath')]" ]
+      }
+    },
+    "CopyPackage2": {
+      "Type": "Copy",
+	  "Skip": "True",
+      "Params": {
+        "Source": [ "[joinpath(parameter('LocalStorage'),'Sitecore Experience Accelerator 1.6 rev. 180103 for 8.2.zip')]" ],
+        "Destination": [ "[variable('Site.PackagesPath')]" ]
+      }
+    },
+    "CopyPackage3": {
+      "Type": "Copy",
+      "Params": {
+        "Source": [ "[joinpath(parameter('LocalStorage'),'Web Forms for Marketers 8.2 rev. 171103.zip')]" ],
+        "Destination": [ "[variable('Site.PackagesPath')]" ]
+      }
+    },
+    "InstallPackage1": {
+      "Type": "InstallPackage",
+      "Params": {
+        "HostName": "[parameter('SiteName')]",
+        "PackagePath": "[joinpath(variable('Site.PackagesPath'),'Sitecore PowerShell Extensions-4.7 for Sitecore 8.zip')]"
+      }
+    },
+    "InstallPackage2": {
+      "Type": "InstallPackage",
+	  "Skip": "True",
+      "Params": {
+        "HostName": "[parameter('SiteName')]",
+        "PackagePath": "[joinpath(variable('Site.PackagesPath'),'Sitecore Experience Accelerator 1.6 rev. 180103 for 8.2.zip')]"
+      }
+    },
+    "InstallPackage3": {
+      "Type": "InstallPackage",
+      "Params": {
+        "HostName": "[parameter('SiteName')]",
+        "PackagePath": "[joinpath(variable('Site.PackagesPath'),'Web Forms for Marketers 8.2 rev. 171103.zip')]"
+      }
+    },
+    "AddImageCaptcha": {
+      "Type": "SetXml",
+      "Params": {
+        "FilePath": "[joinpath(variable('Site.WebsiteFolder'), 'Web.config')]",
+        "XPath": "//configuration/system.webServer/handlers",
+        "Element": "add",
+        "Attributes": [
+          {
+            "name": "CaptchaImage",
+            "verb": "*",
+            "path": "CaptchaImage.axd",
+            "type": "Sitecore.Form.Core.Pipeline.RequestProcessor.CaptchaResolver, Sitecore.Forms.Core"
+          }
+        ]
+      }
+    },
+    "AddAudioCaptcha": {
+      "Type": "SetXml",
+      "Params": {
+        "FilePath": "[joinpath(variable('Site.WebsiteFolder'), 'Web.config')]",
+        "XPath": "//configuration/system.webServer/handlers",
+        "Element": "add",
+        "Attributes": [
+          {
+            "name": "CaptchaAudio",
+            "verb": "*",
+            "path": "CaptchaAudio.axd",
+            "type": "Sitecore.Form.Core.Pipeline.RequestProcessor.CaptchaResolver, Sitecore.Forms.Core"
+          }
+        ]
+      }
+    }
+  },
+  "RemovePackageInstaller": {
+    "Type": "Remove",
+    "Params": {
+      "Source": [ "[joinpath(variable('Site.WebsiteFolder'),'PackageInstaller.asmx')]" ]
+    }
+  }
+}

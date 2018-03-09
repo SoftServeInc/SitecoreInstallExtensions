@@ -1,0 +1,117 @@
+{
+  "Parameters": {
+    "LocalStorage": {
+      "Type": "string",
+      "Description": "The root folder for packages"
+    },
+    "JREInstaller": {
+      "Type": "string",
+      "Description": "The path to the Java SE Runtime Environment installer.",
+      "DefaultValue": "jre-8u151-windows-x64.exe"
+    },
+    "RoboMongo": {
+      "Type": "string",
+      "DefaultValue": "robo3t-1.1.1-windows-x86_64-c93c6b0.exe"
+    },
+    "VC2015Redist": {
+      "Type": "string",
+      "DefaultValue": "vc_redist.x64.exe",
+      "Desription": "Package required by RoboT i MongoDB"
+    },
+    "MongoDbInstaller": {
+      "Type": "string",
+      "Description": "The path to the MongoDB installer.",
+      "DefaultValue": "mongodb-win32-x86_64-2008plus-ssl-3.4.10-signed.msi"
+    },
+    "SolrPackage": {
+      "Type": "string",
+      "Description": "The path to the SOLR zip package.",
+      "DefaultValue": "solr-6.6.2.zip"
+    },
+    "SolrVersionedFolder": {
+      "Type": "string",
+      "Description": "The path to the SOLR zip package.",
+      "DefaultValue": "solr-6.6.2"
+    },
+    "SolrUrl": {
+      "Type": "string",
+      "DefaultValue": "http://localhost:8983/solr",
+      "Description": "The Solr instance to use."
+    },
+    "SolrUseSSL": {
+      "Type": "boolean",
+      "DefaultValue": true,
+      "Description": "Should Solr require HTTPS for access?"
+    },
+    "SolrName": {
+      "Type": "string",
+      "DefaultValue": "PSSolrService",
+      "Description": "The Solr service name to use"
+    }
+  },
+  "Modules": [
+    "SitecoreInstallExtensions"
+  ],
+  "Variables": {
+    // Variables are values calculated in a configuration.
+    // They can reference Parameters, other Variables, and config functions.
+
+    "Source.JRE": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]",
+    "Source.MongoDB": "[joinpath(parameter('LocalStorage'), parameter('MongoDbInstaller'))]",
+    "Source.Solr": "[joinpath(parameter('LocalStorage'), parameter('SolrPackage'))]",
+    "Source.RoboT": "[joinpath(parameter('LocalStorage'), parameter('RoboMongo'))]",
+    "Source.VC2015Redist": "[joinpath(parameter('LocalStorage'), parameter('VC2015Redist'))]",
+    "Destination.Solr": "[joinpath(environment('ProgramFiles'), 'Solr')]",
+    "Destination.MongoDB": "[joinpath(environment('ProgramFiles'), 'Mongo')]",
+
+    // The sites full path on disk
+    "Site.PhysicalPath": "[joinpath(environment('SystemDrive'), 'inetpub', 'wwwroot', parameter('SiteName'))]",
+    // The sites data folder
+    "Site.DataFolder": "[joinpath(variable('Site.PhysicalPath'), 'App_Data')]",
+    "CertStoreFile": "[joinpath(variable('Destination.Solr'), parameter('SolrVersionedFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]"
+  },
+  "Tasks": {
+    "InstallJRE": {
+      "Type": "EnsureJRE",
+      "Params": {
+        "JavaPackagePath": "[variable('Source.JRE')]"
+      }
+    },
+    "InstallVC2015Redistribuable": {
+      "Type": "Exe",
+      "Params": {
+        "ExePath": "[variable('Source.VC2015Redist')]",
+        "Arguments": "/q"
+      }
+    },
+    "InstallRoboMongo": {
+      "Type": "Exe",
+      "Params": {
+        "ExePath": "[variable('Source.RoboT')]",
+        "Arguments": "/S"
+      }
+    },
+    "InstallMongoDB": {
+      "Type": "EnsureMongoDb",
+      "Params": {
+        "MongoPackage": "[variable('Source.MongoDB')]",
+        "InstallLocation": "[variable('Destination.MongoDB')]",
+        "DataPath": "[joinpath(variable('Destination.MongoDB'), 'data')]"
+      }
+    },
+    "InstallSolr": {
+      "Type": "EnsureSolr",
+      "Params": {
+        "SolrPackage": "[variable('Source.Solr')]",
+        "InstallLocation": "[variable('Destination.Solr')]"
+      }
+    },
+    "RunSolrAsService": {
+      "Type": "SolrAsService",
+        "Params": {
+          "Port": "",
+          "Memory": ""
+          }
+      }
+  }
+}
