@@ -3,7 +3,7 @@ A Powershell module with extensions for Sitecore Install Framework. The introduc
 
 ## With SIX module we are able to install:
 * Sitecore prerequisites like JRE, MongoDb, Solr [An example configuration to install prerequisites](Configuration/sitecore-prerequisites.json)
-* Configure Solr as a Windows service without any dependence 
+* Configure Solr as a Windows service without any dependence [Details on blog](http://lets-share.senktas.net/2017/11/solr-as-a-service.html)
 * Install Sitecore 8+ in a SIF manner [An example configuration to install Sitecore 8 Update 6](Configuration/sitecore8-xp0.json)
 * Install Sitecore modules [An example configuration to install WFFM, SPE and SXA](Configuration/sitecore-packages.json)
 * Uninstall Sitecore [An example configuration to uninstall Sitecore](Configuration/remove-sitecore8-xp0.json)
@@ -29,6 +29,12 @@ Config functions allow elements of the configuration to be dynamic, letting you 
 functions, and pass these values to tasks so that a configuration can be flexible.
 
 [List of tasks and config functions implemented by Sitecore Install Extensions](https://github.com/SoftServeInc/SitecoreInstallExtensions/blob/master/Documentation/readme.md)
+
+# Examples
+
+
+# Roadmap
+
 
 # SoftServe
 Thanks to [SoftServe](https://www.softserveinc.com/en-US/) sponsorship Sitecore Install Experience modul will be open for public access for Sitecore Community attendees.
