@@ -2,20 +2,22 @@
 A Powershell module with extensions for Sitecore Install Framework. The introduction to Sitecore Install Framework is available on [Youtube](https://youtu.be/syslVshavOw)
 
 ## With SIX module we are able to install:
-* Sitecore prerequisites like JRE, MongoDb, Solr. [see-example-json](Configuration/sitecore-prerequisites.json)
+* Sitecore prerequisites like JRE, MongoDb, Solr [An example configuration to install prerequisites](Configuration/sitecore-prerequisites.json)
 * Configure Solr as a Windows service without any dependence 
-* Install Sitecore 8+ in a SIF manner,
-* Install Sitecore modules,
-* Uninstall Sitecore
+* Install Sitecore 8+ in a SIF manner [An example configuration to install Sitecore 8 Update 6](Configuration/sitecore8-xp0.json)
+* Install Sitecore modules [An example configuration to install WFFM, SPE and SXA](Configuration/sitecore-packages.json)
+* Uninstall Sitecore [An example configuration to uninstall Sitecore](Configuration/remove-sitecore8-xp0.json)
 
+> Remember to configure installation process regarding to your requirements.
 
 # How to start?
 To start work with Sitecore Install Extensions you have to install or update the following modules:
 * Sitecore Install Framework
 * Sitecore Fundamentals
 * Sitecore Install Extensions
+* Sitecore Install Azure
 
-You can do this manually or just run script [install-modules.ps1](install-modules.ps1). This script will perform all necessary task automatically.
+You can do this manually or just run script [install-modules.ps1](install-modules.ps1). This script will install or update required modules automatically.
 
 # Tasks & Config Functions
 
