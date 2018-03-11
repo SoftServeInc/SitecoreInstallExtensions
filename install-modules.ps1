@@ -46,4 +46,17 @@ else
     Write-Verbose "SitecoreInstallExtensions module already installed, update then"
 	Update-Module SitecoreInstallExtensions -Force
 }
-#region
+#endregion
+
+#region "SitecoreInstallAzure"
+if( (Get-Module -Name SitecoreInstallAzure -ListAvailable) -eq $null )
+{
+    #If install-module is not available check https://www.microsoft.com/en-us/download/details.aspx?id=49186
+    Install-Module SitecoreInstallAzure -Scope AllUsers -Repository PSGallery
+}
+else
+{
+    Write-Verbose "SitecoreInstallAzure module already installed, update then"
+	Update-Module SitecoreInstallAzure -Force
+}
+#endregion
