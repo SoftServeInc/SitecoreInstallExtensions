@@ -33,6 +33,10 @@
       "Type": "string",
       "Description": "Sql Database name"
     },
+	"Sql.Database.Sessions": {
+      "Type": "string",
+      "Description": "Sql Database name"
+    },
     "Sitecore.Root": {
       "Type": "string",
       "Description": "The sites full path on disk"
@@ -78,19 +82,20 @@
       }
     },
     "DeleteDatabases": {
-      "Type": "SqlDeleteDatabase",
+      "Type": "DeleteSqlDatabase",
       "Params": {
         "SQLServerName": "[parameter('SqlServerName')]",
         "Databases": [
           "[parameter('Sql.Database.Analytics')]",
           "[parameter('Sql.Database.Master')]",
           "[parameter('Sql.Database.Web')]",
-          "[parameter('Sql.Database.Core')]"
+          "[parameter('Sql.Database.Core')]",
+		  "[parameter('Sql.Database.Sessions')]"
         ]
       }
     },
     "DeleteDatabaseUser": {
-      "Type": "DeleteDbUser",
+      "Type": "DeleteSqlUser",
       "Params": {
         "SQLServerName": "[parameter('SqlServerName')]",
         "UserName": "[parameter('SqlUser')]"

@@ -122,7 +122,7 @@
       }
     },
     "CreateDatabaseUser": {
-      "Type": "CreateDbUser",
+      "Type": "CreateSqlUser",
       "Params": {
         "SQLServerName": "[parameter('SqlServerName')]",
         "UserName": "[parameter('SqlUser')]",
@@ -130,7 +130,7 @@
       }
     },
     "AttachCoreDatabase": {
-      "Type": "AttachDB",
+      "Type": "AttachSqlDatabase",
       "Params": {
         "SQLServerName": "[parameter('SqlServerName')]",
         "DBName": "[variable('Sql.Database.Core')]",
@@ -139,7 +139,7 @@
       }
     },
     "AttachWebDatabase": {
-      "Type": "AttachDB",
+      "Type": "AttachSqlDatabase",
       "Params": {
         "SQLServerName": "[parameter('SqlServerName')]",
         "DBName": "[variable('Sql.Database.Web')]",
@@ -148,7 +148,7 @@
       }
     },
     "AttachMasterDatabase": {
-      "Type": "AttachDB",
+      "Type": "AttachSqlDatabase",
       "Params": {
         "SQLServerName": "[parameter('SqlServerName')]",
         "DBName": "[variable('Sql.Database.Master')]",
@@ -157,7 +157,7 @@
       }
     },
     "AttachAnalyticsDatabase": {
-      "Type": "AttachDB",
+      "Type": "AttachSqlDatabase",
       "Params": {
         "SQLServerName": "[parameter('SqlServerName')]",
         "DBName": "[variable('Sql.Database.Analytics')]",
@@ -166,7 +166,7 @@
       }
     },
     "AttachSessionsDatabase": {
-      "Type": "AttachDB",
+      "Type": "AttachSqlDatabase",
       "Params": {
         "SQLServerName": "[parameter('SqlServerName')]",
         "DBName": "[variable('Sql.Database.Sessions')]",
@@ -215,7 +215,7 @@
       }
     },
     "AddRolesForDatabases": {
-      "Type": "SetDatabaseRoles",
+      "Type": "SetSqlDatabaseRoles",
       "Params": {
         "SQLServerName": "[parameter('SqlServerName')]",
         "Databases": [
@@ -228,7 +228,7 @@
       }
     },
     "AddRolesForCoreDatabase": {
-      "Type": "SetDatabaseRoles",
+      "Type": "SetSqlDatabaseRoles",
       "Params": {
         "SQLServerName": "[parameter('SqlServerName')]",
         "Databases": [ "[variable('Sql.Database.Core')]" ],
@@ -249,8 +249,8 @@
         ]
       }
     },
-    "GrantPermissionsForDatabases": {
-      "Type": "GrantPermissions",
+    "GrantSqlPermissionsForDatabases": {
+      "Type": "GrantSqlPermissions",
       "Params": {
         "SQLServerName": "[parameter('SqlServerName')]",
         "Databases": [

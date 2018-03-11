@@ -101,12 +101,12 @@
           }
         ]
       }
-    }
-  },
-  "RemovePackageInstaller": {
+    },
+    "RemovePackageInstaller": {
     "Type": "Remove",
     "Params": {
       "Source": [ "[joinpath(variable('Site.WebsiteFolder'),'PackageInstaller.asmx')]" ]
     }
+  }
   }
 }

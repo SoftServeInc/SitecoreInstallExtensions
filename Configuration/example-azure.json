@@ -1,0 +1,91 @@
+{
+  "Parameters": {
+    "SubscriptionName": {
+      "Type": "string",
+      "DefaultValue": "Microsoft Azure Enterprise"
+    },
+    "ResourceGroupName": {
+      "Type": "string",
+      "Description": "The name of Azure resource group"
+    },
+    "StorageName": {
+      "Type": "string",
+      "Description": "The name of Azure blob storage "
+    },
+    "ToolsContainer": {
+      "Type": "string",
+      "DefaultValue": "tools"
+    },
+    "Sitecore8Container": {
+      "Type": "string",
+      "DefaultValue": "sitecore8"
+    },
+    "Sitecore9Container": {
+      "Type": "string",
+      "DefaultValue": "sitecore9"
+    },
+    "Destination": {
+      "Type": "string"
+    }
+  },
+  "Modules": [
+    "SitecoreInstallAzure"
+  ],
+  "Variables": {
+
+  },
+  "Tasks": {
+    "CreatePaths": {
+      // Ensure the destination path for the site exists.
+      "Type": "EnsurePath",
+      "Params": {
+        "Exists": [
+          "[parameter('Destination')]"
+        ]
+      }
+    },
+    "Login": {
+      // Login to Azure account
+      "Type": "AzureLogin",
+      "Params": {
+        "AzureSubscription": "[parameter('SubscriptionName')]"
+      }
+    },
+    "DownloadPrerequisiteFiles": {
+      "Type": "GetBlobContent",
+      "Params": {
+        "ResourceGroupName": "[parameter('ResourceGroupName')]",
+        "StorageName": "[parameter('StorageName')]",
+        "Container": "[parameter('ToolsContainer')]",
+        "Destination": "[parameter('Destination')]",
+		// Blobs names are case sensitive
+        "Blobs": [
+          "jre-8u151-windows-x64.exe",
+          "mongodb-win32-x86_64-2008plus-ssl-3.4.10-signed.msi",
+          "solr-6.6.2.zip",
+          "vc_redist.x64.exe",
+          "robo3t-1.1.1-windows-x86_64-c93c6b0.exe",
+          "license.xml",
+          "packageinstaller.asmx"
+        ]
+      }
+    },
+    "DownloadSitecoreFiles": {
+      "Type": "GetBlobContent",
+      "Params": {
+        "ResourceGroupName": "[parameter('ResourceGroupName')]",
+        "StorageName": "[parameter('StorageName')]",
+        "Container": "[parameter('Sitecore8Container')]",
+        "Destination": "[parameter('Destination')]",
+        // Blobs names are case sensitive
+        "Blobs": [
+          "Sitecore PowerShell Extensions-4.7 for Sitecore 8.zip",
+          "Web Forms for Marketers 8.2 rev. 171103.zip",
+          "Sitecore 8.2 rev. 171121.zip",
+          "Sitecore Experience Accelerator 1.6 rev. 180103 for 8.2.zip"
+        ]
+      }
+    }
+  }
+}
+
