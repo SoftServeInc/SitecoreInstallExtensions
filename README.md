@@ -14,8 +14,8 @@ A Powershell module with extensions for Sitecore Install Framework. The introduc
 To start work with Sitecore Install Extensions you have to install or update the following modules:
 * Sitecore Install Framework
 * Sitecore Fundamentals
-* Sitecore Install Extensions
-* Sitecore Install Azure
+* [Sitecore Install Extensions](https://www.powershellgallery.com/packages/sitecoreinstallextensions)
+* [Sitecore Install Azure](https://www.powershellgallery.com/packages/SitecoreInstallAzure)
 
 You can do this manually or just run script [install-modules.ps1](install-modules.ps1). This script will install or update required modules automatically.
 
@@ -32,12 +32,26 @@ functions, and pass these values to tasks so that a configuration can be flexibl
 
 # Examples
 
+> Remember to configure installation process regarding to your requirements and needs.
+
+SIX module comes with examples how to use tasks, and config functions are part of SIX.
+The script *install-all-example.ps1* contains the four steps:
+* Download all required files from Azure Storage **(of course you have to build your storage)**
+* Install Sitecore 8 prerequisites like MongoDB, Solr, RoboMongo
+* Install Sitecore 8 update 6
+* Install Sitecore modules Sitecore Powershell Extension, Sitecore Experience Accelerator, Web Forms For Marketers
+
+> Remember to configure installation process regarding your requirements and needs.
+
+Time to time, we want to uninstall Sitecore and here *uninstall-sitecore.ps1* the script will come with help.
 
 # Roadmap
-
+* Merge with other Sitecore community Powershell scripts to provide valuable module in one place
+* Connect solution to [Pester](https://github.com/pester/Pester)
+* Connect solution to [PSScriptAnalyzer](https://github.com/PowerShell/PSScriptAnalyzer)
 
 # SoftServe
-Thanks to [SoftServe](https://www.softserveinc.com/en-US/) sponsorship Sitecore Install Experience modul will be open for public access for Sitecore Community attendees.
+Thanks to [SoftServe](https://www.softserveinc.com/en-US/) sponsorship initial version of Sitecore Install Extensions modul will be open for public access for Sitecore Community attendees.
 Softserve is a global leader in IT services and has offices around the world delivering tailored tech solutions for various branches and business sectors.
 
 
