@@ -36,7 +36,7 @@ functions, and pass these values to tasks so that a configuration can be flexibl
 
 SIX module comes with examples how to use tasks, and config functions are part of SIX.
 The script *install-all-example.ps1* contains the four steps:
-* Download all required files from Azure Storage **(of course you have to build your storage)**
+* Download all required files from Azure Storage **([of course you have to build your storage](http://lets-share.senktas.net/2017/09/sitecore-on-azure-storagepreparation.html))**
 * Install Sitecore 8 prerequisites like MongoDB, Solr, RoboMongo
 * Install Sitecore 8 update 6
 * Install Sitecore modules Sitecore Powershell Extension, Sitecore Experience Accelerator, Web Forms For Marketers
@@ -47,6 +47,7 @@ Time to time, we want to uninstall Sitecore and here *uninstall-sitecore.ps1* th
 
 # Roadmap
 * Merge with other Sitecore community Powershell scripts to provide valuable module in one place
+* Add documentation and examples to every function
 * Connect solution to [Pester](https://github.com/pester/Pester)
 * Connect solution to [PSScriptAnalyzer](https://github.com/PowerShell/PSScriptAnalyzer)
 
