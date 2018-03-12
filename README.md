@@ -1,5 +1,6 @@
-# Sitecore Install Extensions (SIX)
+# Sitecore Install Extensions (SIX) 
 A Powershell module with extensions for Sitecore Install Framework. The introduction to Sitecore Install Framework is available on [Youtube](https://youtu.be/syslVshavOw)
+You can follow @SIExtensions to be updated
 
 ## With SIX module we are able to install:
 * Sitecore prerequisites like JRE, MongoDb, Solr [An example configuration to install prerequisites](Configuration/sitecore-prerequisites.json)
