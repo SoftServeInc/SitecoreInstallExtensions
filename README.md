@@ -1,5 +1,6 @@
-# Sitecore Install Extensions (SIX)
+# Sitecore Install Extensions (SIX) 
 A Powershell module with extensions for Sitecore Install Framework. The introduction to Sitecore Install Framework is available on [Youtube](https://youtu.be/syslVshavOw)
+You can follow @SIExtensions to be updated
 
 ## With SIX module we are able to install:
 * Sitecore prerequisites like JRE, MongoDb, Solr [An example configuration to install prerequisites](Configuration/sitecore-prerequisites.json)
@@ -35,7 +36,7 @@ functions, and pass these values to tasks so that a configuration can be flexibl
 > Remember to configure installation process regarding to your requirements and needs.
 
 SIX module comes with examples how to use tasks, and config functions are part of SIX.
-The script *install-all-example.ps1* contains the four steps:
+The script *[install-all-example.ps1](install-all-example.ps1)* contains the four steps:
 * Download all required files from Azure Storage **([of course you have to build your storage](http://lets-share.senktas.net/2017/09/sitecore-on-azure-storagepreparation.html))**
 * Install Sitecore 8 prerequisites like MongoDB, Solr, RoboMongo
 * Install Sitecore 8 update 6
@@ -43,7 +44,7 @@ The script *install-all-example.ps1* contains the four steps:
 
 > Remember to configure installation process regarding your requirements and needs.
 
-Time to time, we want to uninstall Sitecore and here *uninstall-sitecore.ps1* the script will come with help.
+Time to time, we want to uninstall Sitecore and here *[uninstall-sitecore.ps1](uninstall-sitecore.ps1)* the script will come with help.
 
 # Roadmap
 * Merge with other Sitecore community Powershell scripts to provide valuable module in one place
