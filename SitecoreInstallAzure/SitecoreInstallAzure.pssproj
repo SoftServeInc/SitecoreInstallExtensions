@@ -1,0 +1,50 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ad4f4621-ccfe-4da2-b52a-28e816e42e60}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MyApplication</RootNamespace>
+    <AssemblyName>MyApplication</AssemblyName>
+    <Name>SitecoreInstallAzure</Name>
+    <Author>Robert Senktas</Author>
+    <CompanyName>SoftServe</CompanyName>
+    <Copyright>SoftServe</Copyright>
+    <Guid>12792bbb-6946-4eb7-9047-4ee6fea85760</Guid>
+    <PowerShellVersion>v4</PowerShellVersion>
+    <ProcessorArchitecture />
+    <StartupFile>install.ps1</StartupFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Tasks\" />
+    <Folder Include="Private\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Install.ps1" />
+    <Compile Include="SitecoreInstallAzure.psd1" />
+    <Compile Include="SitecoreInstallAzure.psm1" />
+    <Compile Include="SitecoreInstallAzure.tests.ps1" />
+    <Compile Include="Tasks\Invoke-AzureLoginTask.ps1" />
+    <Compile Include="Tasks\Invoke-GetAzureBlobContentTask.ps1" />
+    <Compile Include="Tasks\Invoke-ListAzureContainerTask.ps1" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Target Name="Build" />
+</Project>
