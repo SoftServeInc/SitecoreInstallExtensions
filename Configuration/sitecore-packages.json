@@ -26,14 +26,14 @@
         "Destination": [ "[variable('Site.WebsiteFolder')]" ]
       }
     },
-    "CopyPackage1": {
+    "CopySPEPackage": {
       "Type": "Copy",
       "Params": {
         "Source": [ "[joinpath(parameter('LocalStorage'),'Sitecore PowerShell Extensions-4.7 for Sitecore 8.zip')]" ],
         "Destination": [ "[variable('Site.PackagesPath')]" ]
       }
     },
-    "CopyPackage2": {
+    "CopySXAPackage": {
       "Type": "Copy",
 	  "Skip": "True",
       "Params": {
@@ -41,21 +41,21 @@
         "Destination": [ "[variable('Site.PackagesPath')]" ]
       }
     },
-    "CopyPackage3": {
+    "CopyWFFMPackage": {
       "Type": "Copy",
       "Params": {
         "Source": [ "[joinpath(parameter('LocalStorage'),'Web Forms for Marketers 8.2 rev. 171103.zip')]" ],
         "Destination": [ "[variable('Site.PackagesPath')]" ]
       }
     },
-    "InstallPackage1": {
+    "InstallSPEPackage": {
       "Type": "InstallPackage",
       "Params": {
         "HostName": "[parameter('SiteName')]",
         "PackagePath": "[joinpath(variable('Site.PackagesPath'),'Sitecore PowerShell Extensions-4.7 for Sitecore 8.zip')]"
       }
     },
-    "InstallPackage2": {
+    "InstallSXAPackage": {
       "Type": "InstallPackage",
 	  "Skip": "True",
       "Params": {
@@ -63,7 +63,7 @@
         "PackagePath": "[joinpath(variable('Site.PackagesPath'),'Sitecore Experience Accelerator 1.6 rev. 180103 for 8.2.zip')]"
       }
     },
-    "InstallPackage3": {
+    "InstallWFFMPackage": {
       "Type": "InstallPackage",
       "Params": {
         "HostName": "[parameter('SiteName')]",
