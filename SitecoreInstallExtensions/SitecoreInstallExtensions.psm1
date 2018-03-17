@@ -1,8 +1,7 @@
-
 #Requires -RunAsAdministrator
 
 # Get Functions
-Write-Host $PSScriptRoot
+#Write-Host $PSScriptRoot
 
 $private = Get-ChildItem -Path (Join-Path $PSScriptRoot Private) -Include *.ps1 -File -Recurse
 #$public = Get-ChildItem -Path (Join-Path $PSScriptRoot Public) -Include *.ps1 -File -Recurse

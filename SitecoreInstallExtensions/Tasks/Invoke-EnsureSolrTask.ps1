@@ -31,44 +31,40 @@ function Invoke-EnsureSolrTask
 {
 	[CmdletBinding(SupportsShouldProcess=$true)]
 	param(
-		# MongoMsi path to MongoDB installer
+		# SolrPackage path to Solr zip archive
         [Parameter(Mandatory=$true)]
         $SolrPackage,
 
         # Path where you want to install Solr
         [Parameter(Mandatory=$true)]
-        $InstallLocation,
-
-		#
-        [Parameter(Mandatory=$false)]
-        $CertificatePath
+        $InstallLocation
 	)
 
 	$solrHome = [environment]::GetEnvironmentVariable("SOLR_HOME",[EnvironmentVariableTarget]::Machine)
 
 	if($pscmdlet.ShouldProcess($solrHome, "Verify if SOLR is installed"))
     {
-	if( $solrHome -ne $null )
-	{
-		Write-Verbose "Solr already installed SOLR_HOME is set to $solrHome"
-		return	
-	}
+		if( $solrHome -ne $null )
+		{
+			Write-Verbose "Solr already installed SOLR_HOME is set to $solrHome"
+			return	
+		}
 
-    if( -not (Test-Path $InstallLocation) )
-    {
-        md $InstallLocation
-    }
+		if( -not (Test-Path $InstallLocation) )
+		{
+			md $InstallLocation
+		}
 
-    $solrRoot= UnZip-Directory -SourceZipFile $SolrPackage -DestinationDirectory $InstallLocation
-    if( $solrRoot -ne $null )
-    {
-        $solrHome = Join-Path -Path $solrRoot -ChildPath "\server\solr"
+		$solrRoot= UnZip-Directory -SourceZipFile $SolrPackage -DestinationDirectory $InstallLocation
+		if( $solrRoot -ne $null )
+		{
+			$solrHome = Join-Path -Path $solrRoot -ChildPath "\server\solr"
  
-        [environment]::SetEnvironmentVariable("SOLR_HOME",$solrHome,[EnvironmentVariableTarget]::Machine) 
-        Write-Verbose "Set SOLR_HOME variable to $solrHome"
+			[environment]::SetEnvironmentVariable("SOLR_HOME",$solrHome,[EnvironmentVariableTarget]::Machine) 
+			Write-Verbose "Set SOLR_HOME variable to $solrHome"
  
-        $solrBin = Join-Path -Path $solrRoot -ChildPath "bin"
-    }
+			$solrBin = Join-Path -Path $solrRoot -ChildPath "bin"
+		}
 	}
 }
 
@@ -78,20 +74,18 @@ function Install-SolrAsService
 {
 	[CmdletBinding(SupportsShouldProcess=$true)]
 	param(
-	# MongoMsi path to MongoDB installer
+		# Solr Port
         [Parameter(Mandatory=$false)]
         $Port,
 
-        # Path where you want to install Solr
+        # Solr Memory
         [Parameter(Mandatory=$false)]
         $Memory
 	)
 
-	
-
 	if($pscmdlet.ShouldProcess("PSSolrService", "Verify if Solr as a service is installed"))
     {
-		#region Check if MongoDb is already installed
+		#region Check if PSSolrService is already installed
 		$service = Get-Service | Where-Object {$_.name -eq "PSSolrService"} 
   
 		if( $service -ne $null -and $service.Status -eq 'Running' )
@@ -109,29 +103,6 @@ function Install-SolrAsService
 		&$command1 -Start -Verbose	
 	}
 }
-
-function Import-SolrCertificateTask
-{
-	[CmdletBinding(SupportsShouldProcess=$true)]
-	param(
-		# Path to certificate
-        [Parameter(Mandatory = $true)]
-        [string] $CertificatePath,
-		[Parameter()]
-        [string] $KeystorePassword = "secret"
-	)
-
-	
-	$parameters = @{
-		"FilePath" = $CertificatePath
-		"Password" = ConvertTo-SecureString -String $KeystorePassword -Force -AsPlainText
-		"CertStoreLocation" = "Cert:\LocalMachine\Root"
-
-	}
-	$root = Import-PfxCertificate @parameters
-		
-}
-
 
 Export-ModuleMember Invoke-EnsureSolrTask
 Export-ModuleMember Install-SolrAsService
