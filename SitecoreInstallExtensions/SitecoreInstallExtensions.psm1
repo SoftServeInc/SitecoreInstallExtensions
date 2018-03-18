@@ -34,6 +34,7 @@ else
 	Register-SitecoreInstallExtension -Command Invoke-EnsureMogoDbTask -As EnsureMongoDb -Type Task
 	Register-SitecoreInstallExtension -Command Invoke-EnsureSolrTask -As EnsureSolr -Type Task
 	Register-SitecoreInstallExtension -Command Install-SolrAsService -As SolrAsService -Type Task
+	Register-SitecoreInstallExtension -Command Remove-SolrService -As RemoveSolrService -Type Task
 
 	Register-SitecoreInstallExtension -Command Invoke-SetSqlMixedModeTask -As SetSqlMixedMode -Type Task
 	Register-SitecoreInstallExtension -Command Invoke-CreateSqlUserTask -As CreateSqlUser -Type Task

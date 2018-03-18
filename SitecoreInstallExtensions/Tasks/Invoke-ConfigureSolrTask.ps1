@@ -46,12 +46,12 @@ function Invoke-ConfigureSolrTask
         if($solrSSL)
         {
             Write-TaskInfo -Message "HTTPS" -Tag "Configuring Solr for HTTPS access"
-            configureHTTPS $solrHost $solrRoot $certificateStore
+            Configure-HTTPS $solrHost $solrRoot $certificateStore
         }
         else
         {
             Write-TaskInfo -Message "HTTP" -Tag "Configuring Solr for HTTP access"
-            configureHTTP $solrHost $solrRoot
+            Configure-HTTP $solrHost $solrRoot
         }
     }
 }

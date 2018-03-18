@@ -1,108 +1,119 @@
 {
-    "Parameters" : {
-       
-        "SolrVersion": {
-            "Type": "string",
-            "DefaultValue": "6.6.2",
-            "Description": "What version of Solr should be downloaded for install"
-        },
-        "NSSMVersion": {
-            "Type": "string",
-            "DefaultValue": "2.24",
-            "Description": "What version of NSSM should be downloaded for install"
-        },
-        "InstallFolder": {
-            "Type": "string",
-            "DefaultValue": "c:\\solr",
-            "Description": "Where should Solr and NSSM be installed to"
-        },
-        "DownloadFolder": {
-            "Type": "string",
-            "DefaultValue": "~\\Downloads",
-            "Description": "Where should downloaded files be placed"
-        },
-        "SolrUseSSL": {
-            "Type": "boolean",
-            "DefaultValue": true,
-            "Description": "Should Solr require HTTPS for access?"
-        },
-        "SolrHost": {
-            "Type": "string",
-            "DefaultValue": "solr",
-            "Description": "What host name should the Solr service use"
-        },
-        "SolrPort": {
-            "Type": "string",
-            "DefaultValue": "8983",
-            "Description": "The port the Solr service should use"
-        }
+  "Parameters": {
+    "LocalStorage": {
+      "Type": "string",
+      "Description": "The root folder for packages"
     },
-
-    "Modules" : [
-        "SitecoreInstallExtensions"
-    ],
-
-    "Variables" : {
-        "NSSMSourcePackage": "[concat('https://nssm.cc/release/nssm-', parameter('NSSMVersion'), '.zip')]",
-        "SolrSourcePackage": "[concat('https://archive.apache.org/dist/lucene/solr/', parameter('SolrVersion'), '/solr-', parameter('SolrVersion'), '.zip')]",
-        "SolrInstallFolder": "[concat(parameter('InstallFolder'), '\\solr-', parameter('SolrVersion'))]",
-        "SolrName":          "[concat('solr-', parameter('SolrVersion'))]",
-        "CertStoreFile":     "[concat(variable('SolrInstallFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]"
+    " SolrPackage": {
+      "Type": "string",
+      "Description": "The path to the SOLR zip package.",
+      "DefaultValue": "solr-6.6.2.zip"
     },
-
-    "Tasks" : {
-        "Ensure NSSM is installed": {
-            "Type": "EnsureNSSM",
-            "Params": {
-                "downloadFolder":    "[parameter('DownloadFolder')]",
-                "nssmVersion":       "[parameter('NSSMVersion')]",
-                "installFolder":     "[parameter('InstallFolder')]",
-                "nssmSourcePackage": "[variable('NSSMSourcePackage')]"
-            }
-        },
-        "Ensure Solr is installed": {
-            "Type": "EnsureSolr",
-            "Params": {
-                "downloadFolder":    "[parameter('DownloadFolder')]",
-                "solrVersion":       "[parameter('SolrVersion')]",
-                "installFolder":     "[parameter('InstallFolder')]",
-                "solrSourcePackage": "[variable('SolrSourcePackage')]"
-            }
-        },
-      "Ensure host name exists": {
-        "Type": "HostHeader",
-        "Params": {
-          "Hostname": "[parameter('SolrHost')]"
-        }
-      },
-        "Rewrite Solr config file": {
-            "Type": "ConfigureSolr",
-            "Params": {
-                "solrSSL":             "[parameter('SolrUseSSL')]",
-                "solrHost":             "[parameter('SolrHost')]",
-                "solrRoot":             "[variable('SolrInstallFolder')]",
-                "certificateStore":  "[variable('CertStoreFile')]"
-            }
-        },
-        "Ensure trusted SSL certificate exists (if required)": {
-            "Type": "EnsureSSLCertificate",
-            "Params": {
-                "solrSSL":             "[parameter('SolrUseSSL')]",
-                "solrName":             "[variable('SolrName')]",
-                "solrHost":             "[parameter('SolrHost')]",
-                "certificateStore":  "[variable('CertStoreFile')]"
-            }
-        },
-        "Ensure Solr runs as a service": {
-            "Type": "EnsureSolrService",
-            "Params": {
-                "solrName":          "[variable('SolrName')]",
-                "installFolder":     "[parameter('InstallFolder')]",
-                "nssmVersion":       "[parameter('NSSMVersion')]",
-                "solrRoot":          "[variable('SolrInstallFolder')]",
-                "solrPort":          "[parameter('SolrPort')]"
-            }
-        }
+    "SolrVersion": {
+      "Type": "string",
+      "DefaultValue": "6.6.2",
+      "Description": "What version of Solr should be downloaded for install"
+    },
+    "NSSMVersion": {
+      "Type": "string",
+      "DefaultValue": "2.24",
+      "Description": "What version of NSSM should be downloaded for install"
+    },
+    "InstallFolder": {
+      "Type": "string",
+      "DefaultValue": "c:\\solr",
+      "Description": "Where should Solr and NSSM be installed to"
+    },
+    "SolrUseSSL": {
+      "Type": "boolean",
+      "DefaultValue": true,
+      "Description": "Should Solr require HTTPS for access?"
+    },
+    "SolrHost": {
+      "Type": "string",
+      "DefaultValue": "solr",
+      "Description": "What host name should the Solr service use"
+    },
+    "SolrPort": {
+      "Type": "string",
+      "DefaultValue": "8983",
+      "Description": "The port the Solr service should use"
     }
+  },
 
+  "Modules": [
+    "SitecoreInstallExtensions"
+  ],
+
+  "Variables": {
+    "NSSMSourcePackage": "[concat('https://nssm.cc/release/nssm-', parameter('NSSMVersion'), '.zip')]",
+    "Source.Solr": "[joinpath(parameter('LocalStorage'), parameter('SolrPackage'))]",
+    "SolrName": "[concat('solr-', parameter('SolrVersion'))]",
+
+    "SolrInstallFolder": "[concat(parameter('InstallFolder'), '\\solr-', parameter('SolrVersion'))]",
+    "CertStoreFile": "[concat(variable('SolrInstallFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]",
+
+    "SolrProtocol": "[if ( parameter('SolrUseSSL'), 'https', 'http')]",
+    "SolrUrl": "[concat(variable('SolrProtocol'), '://', parameter('SolrHost'), ':', parameter('SolrPort'), '/solr/')]"
+  },
+
+  "Tasks": {
+    "Ensure NSSM is installed": {
+      "Type": "EnsureNSSM",
+      "Params": {
+        "downloadFolder": "[parameter('LocalStorage')]",
+        "nssmVersion": "[parameter('NSSMVersion')]",
+        "installFolder": "[parameter('InstallFolder')]",
+        "nssmSourcePackage": "[variable('NSSMSourcePackage')]"
+      }
+    },
+    "InstallSolr": {
+      "Type": "EnsureSolr",
+      "Params": {
+        "SolrPackage": "[variable('Source.Solr')]",
+        "InstallLocation": "[variable('SolrInstallFolder')]"
+      }
+    },
+
+    "Ensure host name exists": {
+      "Type": "HostHeader",
+      "Params": {
+        "Hostname": "[parameter('SolrHost')]"
+      }
+    },
+    "Rewrite Solr config file": {
+      "Type": "ConfigureSolr",
+      "Params": {
+        "solrSSL": "[parameter('SolrUseSSL')]",
+        "solrHost": "[parameter('SolrHost')]",
+        "solrRoot": "[variable('SolrInstallFolder')]",
+        "certificateStore": "[variable('CertStoreFile')]"
+      }
+    },
+    "Ensure trusted SSL certificate exists (if required)": {
+      "Type": "EnsureSSLCertificate",
+      "Params": {
+        "solrSSL": "[parameter('SolrUseSSL')]",
+        "solrName": "[variable('SolrName')]",
+        "solrHost": "[parameter('SolrHost')]",
+        "certificateStore": "[variable('CertStoreFile')]"
+      }
+    },
+    "Ensure Solr runs as a service": {
+      "Type": "EnsureSolrService",
+      "Params": {
+        "solrName": "[variable('SolrName')]",
+        "installFolder": "[parameter('InstallFolder')]",
+        "nssmVersion": "[parameter('NSSMVersion')]",
+        "solrRoot": "[variable('SolrInstallFolder')]",
+        "solrPort": "[parameter('SolrPort')]"
+      }
+    },
+    "Ensure Solr is running": {
+      "Type": "HttpRequest",
+      "Params": {
+        "Uri": "[variable('SolrUrl')]"
+      }
+    }
+  }
 }

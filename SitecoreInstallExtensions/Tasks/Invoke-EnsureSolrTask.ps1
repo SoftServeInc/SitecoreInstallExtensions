@@ -1,34 +1,28 @@
 #
 # Ensure_SolrTask.ps1
 #
-function UnZip-Directory {
-    Param(
-      [Parameter(Mandatory=$True)][string]$SourceZipFile,
-      [Parameter(Mandatory=$True)][string]$DestinationDirectory,
-      [Parameter()][switch]$Force
-    )
-
-    Add-Type -AssemblyName System.IO.Compression.FileSystem
-    
-    $archive = [System.IO.Compression.ZipFile]::OpenRead($SourceZipFile)
-    $targetFolder = Join-Path -Path $DestinationDirectory -ChildPath $archive.Entries[0].FullName
-    $archive.Dispose();
-
-    Write-Verbose "$SourceZipFile will be extracted to $targetFolder"
-    
-    if( $Force -eq $true )
-    {
-        Remove-Item -Path $targetFolder -Recurse -Force
-    }
-
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($SourceZipFile, $DestinationDirectory)
-
-    return $targetFolder
-}
-
-
 function Invoke-EnsureSolrTask
 {
+<#
+.SYNOPSIS
+	Extracts Solr zip archive to specified path. 
+
+.DESCRIPTION
+	The Invoke-EnsureSolrTask is registered as EnsureSolr type.
+	Sets SOLR_HOME variable to 'InstallLocation\server\solr'
+
+.EXAMPLE
+	Json task configuration for Sitecore Install Framework:
+
+	"InstallSolr": {
+      "Type": "EnsureSolr",
+      "Params": {
+        "SolrPackage": "[variable('Source.Solr')]",
+        "InstallLocation": "[variable('SolrInstallFolder')]"
+      }
+    }
+#>
+
 	[CmdletBinding(SupportsShouldProcess=$true)]
 	param(
 		# SolrPackage path to Solr zip archive
@@ -55,15 +49,21 @@ function Invoke-EnsureSolrTask
 			md $InstallLocation
 		}
 
-		$solrRoot= UnZip-Directory -SourceZipFile $SolrPackage -DestinationDirectory $InstallLocation
-		if( $solrRoot -ne $null )
+	
+		Expand-Archive -Path $SolrPackage -DestinationPath $InstallLocation
+		
+		# Move expanded content up one level
+        $cleanupPath = Join-Path $InstallLocation ([IO.Path]::GetFileNameWithoutExtension($SolrPackage))
+        Move-Item -Path "$cleanUpPath\*" -Destination $InstallLocation
+        Remove-Item $cleanupPath
+		
+		if( $InstallLocation -ne $null )
 		{
-			$solrHome = Join-Path -Path $solrRoot -ChildPath "\server\solr"
+			$solrHome = Join-Path -Path $InstallLocation -ChildPath "\server\solr"
  
 			[environment]::SetEnvironmentVariable("SOLR_HOME",$solrHome,[EnvironmentVariableTarget]::Machine) 
 			Write-Verbose "Set SOLR_HOME variable to $solrHome"
- 
-			$solrBin = Join-Path -Path $solrRoot -ChildPath "bin"
+
 		}
 	}
 }
@@ -104,5 +104,30 @@ function Install-SolrAsService
 	}
 }
 
+function Remove-SolrService
+{
+	[CmdletBinding(SupportsShouldProcess=$true)]
+	param(
+		# Solr Port
+        [Parameter(Mandatory=$false)]
+        $Port
+	)
+
+	if($pscmdlet.ShouldProcess("PSSolrService", "Verify if Solr as a service is installed"))
+    {
+		#region Check if PSSolrService is already installed
+		$service = Get-Service | Where-Object {$_.name -eq "PSSolrService"} 
+  
+		if( $service -ne $null -and $service.Status -eq 'Running' )
+		{
+			$command1= $PSScriptRoot+"\PSSolrService.ps1" 
+			&$command1 -Stop -Verbose
+			&$command1 -Remove -Verbose	
+		}
+		#endregion
+	}
+}
+
 Export-ModuleMember Invoke-EnsureSolrTask
 Export-ModuleMember Install-SolrAsService
+Export-ModuleMember Remove-SolrService
