@@ -1,8 +1,7 @@
-
 #Requires -RunAsAdministrator
 
 # Get Functions
-Write-Host $PSScriptRoot
+#Write-Host $PSScriptRoot
 
 $private = Get-ChildItem -Path (Join-Path $PSScriptRoot Private) -Include *.ps1 -File -Recurse
 #$public = Get-ChildItem -Path (Join-Path $PSScriptRoot Public) -Include *.ps1 -File -Recurse
@@ -35,6 +34,7 @@ else
 	Register-SitecoreInstallExtension -Command Invoke-EnsureMogoDbTask -As EnsureMongoDb -Type Task
 	Register-SitecoreInstallExtension -Command Invoke-EnsureSolrTask -As EnsureSolr -Type Task
 	Register-SitecoreInstallExtension -Command Install-SolrAsService -As SolrAsService -Type Task
+	Register-SitecoreInstallExtension -Command Remove-SolrService -As RemoveSolrService -Type Task
 
 	Register-SitecoreInstallExtension -Command Invoke-SetSqlMixedModeTask -As SetSqlMixedMode -Type Task
 	Register-SitecoreInstallExtension -Command Invoke-CreateSqlUserTask -As CreateSqlUser -Type Task
