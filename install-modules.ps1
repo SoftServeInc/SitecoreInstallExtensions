@@ -1,6 +1,8 @@
 #requires -RunAsAdministrator 
 #requires -Version 5.1
 
+Get-PackageProvider -Name Nuget -ForceBootstrap
+
 #region "Register Sitecore Gallery
 if( (Get-PSRepository -Name SitecoreGallery -ErrorAction SilentlyContinue) -eq $null )
 {
