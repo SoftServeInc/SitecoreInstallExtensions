@@ -48,13 +48,15 @@ Function Invoke-InstallWindowsFeatureTask {
 		throw "Install-Module servermanager"
 	}
 
-	if( $FeaturesToInstall.Count > 0 )
+	if( ($FeaturesToInstall -ne $null) -and ($FeaturesToInstall.Count -gt 0) )
 	{
+		Write-Verbose "Install windows features from array $FeaturesToInstall"
 		Install-WindowsFeature -Name $FeaturesToInstall 
 	}
 
-	if( Test-Path $XmlPath )
+	if( ($XmlPath -ne '') -and (Test-Path $XmlPath) )
 	{
+		Write-Verbose "Install windows features from file $XmlPath"
 		Install-WindowsFeature -ConfigurationFilePath $XmlPath
 	}
 }
