@@ -62,6 +62,7 @@
     <Compile Include="Tasks\Invoke-MoveTask.ps1" />
     <Compile Include="Tasks\Invoke-EnsureNSSMTask.ps1" />
     <Compile Include="Tasks\Invoke-EnsureSolrServiceTask.ps1" />
+    <Compile Include="Tasks\Invoke-InstallWindowsFeatureTask.ps1" />
     <Compile Include="Tasks\SqlTasks.ps1" />
   </ItemGroup>
   <ItemGroup>

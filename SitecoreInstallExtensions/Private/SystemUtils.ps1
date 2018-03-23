@@ -59,3 +59,19 @@ function Get-ServicePath
 		return ""
 	}
 }
+
+
+
+# Some utility functions to help in the script
+# Source: https://github.com/Kieranties/SIfSug/blob/master/Environment/Server-Setup.ps1
+Function ModuleAbsent ($Name){
+    return $null -eq (Get-InstalledModule -Name $Name -ErrorAction SilentlyContinue)
+}
+
+Function PackageAbsent ($Name){
+    return $null -eq (Get-Package -Name $Name -ErrorAction SilentlyContinue)
+}
+
+Function RepositoryAbsent ($Name) {
+    return $null -eq (Get-PSRepository -Name $Name -ErrorAction SilentlyContinue)
+}
