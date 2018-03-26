@@ -1,0 +1,46 @@
+{
+  "Parameters": {
+    "SolrUrl": {
+      "Type": "string",
+      "DefaultValue": "http://localhost:8983/solr",
+      "Description": "The Solr instance to use."
+    }
+  },
+  "Modules": [
+    "SitecoreInstallExtensions"
+  ],
+  "Variables": {
+    "ContainedQuery": "[converttoherestring('sp_configure #contained database authentication#, 1;', 'GO', 'RECONFIGURE;', 'GO')]"
+  },
+  "Tasks": {
+    "WriteMessage": {
+      "Type": "ScriptBlock",
+      "Params": {
+        "Script": "PARAM($Message,$Tag) Write-TaskInfo -Message $Message -Tag $Tag",
+        "Arguments": [ "message to display", "ScriptBlock" ]
+      }
+    },
+    "DisplayVariable": {
+      "Type": "ScriptBlock",
+      "Params": {
+        "Script": "PARAM($Message,$Tag) Write-TaskInfo -Message $Message -Tag $Tag",
+        "Arguments": [ "[variable('ContainedQuery')]", "ScriptBlock" ]
+      }
+    },
+    "SqlCommand": {
+      "Type": "ScriptBlock",
+      "Params": {
+        "Script": "PARAM($Query,$ServerInstance) Invoke-SqlCmd -Query $Query.Replace('#','''') -ServerInstance $ServerInstance",
+        "Arguments": [ "[variable('ContainedQuery')]", "[environment('computername')]" ]
+      }
+    },
+    "OpenSolr": {
+      "Type": "ScriptBlock",
+      "Skip": "true",
+      "Params": {
+        "Script": "PARAM($Url) start $url",
+        "Arguments": [ "[parameter('SolrUrl')]" ]
+      }
+    }
+  }
+}

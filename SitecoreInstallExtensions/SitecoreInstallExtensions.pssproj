@@ -37,6 +37,7 @@
     <Folder Include="Tasks\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigFunctions\Invoke-ConvertToHereStringConfigFunction.ps1" />
     <Compile Include="ConfigFunctions\Invoke-GetConnectionStringSettingsFunction.ps1" />
     <Compile Include="ConfigFunctions\Invoke-MongoConnectionStringConfigFunction.ps1" />
     <Compile Include="Private\SolrUtils.ps1" />
@@ -48,6 +49,7 @@
     <Compile Include="Tasks\Invoke-InstallPackageTask.ps1" />
     <Compile Include="Tasks\Invoke-ManageAppPoolTaskEx.ps1" />
     <Compile Include="Tasks\Invoke-ManageWebsiteTaskEx.ps1" />
+    <Compile Include="Tasks\Invoke-ScriptBlockTask.ps1" />
     <Compile Include="Tasks\PSSolrService.ps1" />
     <Compile Include="Private\SQLUtils.ps1" />
     <Compile Include="install.ps1" />
