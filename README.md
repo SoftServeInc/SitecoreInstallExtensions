@@ -2,6 +2,10 @@
 A Powershell module with extensions for Sitecore Install Framework. The introduction to Sitecore Install Framework is available on [Youtube](https://youtu.be/syslVshavOw)
 You can follow @SIExtensions to be updated
 
+[![Very Short Introduction](https://s3.eu-central-1.amazonaws.com/lets-share.senktas.net/images/six/six-features.jpg)](https://youtu.be/-u2BGO6yM-w)
+
+
+
 ## With SIX module we are able to install:
 * Sitecore prerequisites like JRE, MongoDb, Solr [An example configuration to install prerequisites](Configuration/sitecore-prerequisites.json)
 * Configure Solr as a Windows service without any dependence [Details on blog](http://lets-share.senktas.net/2017/11/solr-as-a-service.html)
