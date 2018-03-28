@@ -2,7 +2,7 @@
 A Powershell module with extensions for Sitecore Install Framework. The introduction to Sitecore Install Framework is available on [Youtube](https://youtu.be/syslVshavOw)
 You can follow @SIExtensions to be updated
 
-[![Very Short Introduction](https://s3.eu-central-1.amazonaws.com/lets-share.senktas.net/images/six/six-features.jpg)](https://youtu.be/-u2BGO6yM-w)
+[![Very Short Introduction]](https://youtu.be/-u2BGO6yM-w)
 
 
 
