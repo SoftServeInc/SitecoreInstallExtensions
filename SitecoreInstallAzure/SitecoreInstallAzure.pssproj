@@ -33,10 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="ConfigFunctions\" />
     <Folder Include="Tasks\" />
     <Folder Include="Private\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigFunctions\Invoke-GetAzureSecretConfigFunction.ps1" />
     <Compile Include="Install.ps1" />
     <Compile Include="SitecoreInstallAzure.psd1" />
     <Compile Include="SitecoreInstallAzure.psm1" />
@@ -44,6 +46,7 @@
     <Compile Include="Tasks\Invoke-AzureLoginTask.ps1" />
     <Compile Include="Tasks\Invoke-GetAzureBlobContentTask.ps1" />
     <Compile Include="Tasks\Invoke-ListAzureContainerTask.ps1" />
+    <Compile Include="Tasks\Invoke-SetAzureSecretTask.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="Build" />
