@@ -38,8 +38,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigFunctions\Invoke-ConvertToHereStringConfigFunction.ps1" />
+    <Compile Include="ConfigFunctions\Invoke-GeneratePasswordConfigFunction.ps1" />
     <Compile Include="ConfigFunctions\Invoke-GetConnectionStringSettingsFunction.ps1" />
     <Compile Include="ConfigFunctions\Invoke-MongoConnectionStringConfigFunction.ps1" />
+    <Compile Include="ConfigFunctions\Invoke-RandomHexConfigFunction.ps1" />
     <Compile Include="Private\SolrUtils.ps1" />
     <Compile Include="Private\SystemUtils.ps1" />
     <Compile Include="Select-WebSite.ps1" />
