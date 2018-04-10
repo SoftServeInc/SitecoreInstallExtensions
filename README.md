@@ -24,6 +24,18 @@ To start work with Sitecore Install Extensions you have to install or update the
 
 You can do this manually or just run script [install-modules.ps1](install-modules.ps1). This script will install or update required modules automatically.
 
+This snippet will download script from GitHub and execute. Administrator rights are required.
+```PowerShell
+$url = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/install-modules.ps1"
+$scriptPath = "$home\Desktop\install-modules.ps1"
+# Maybe required if you got an error 'The request was aborted: Could not create SSL/TLS secure channel.'
+#[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+$code = Invoke-WebRequest -Uri $url -UseBasicParsing -OutFile $scriptPath
+& $scriptPath
+```
+
+
 # Tasks & Config Functions
 
 Tasks are actions that are conducted in sequence when the Install-SitecoreConfiguration cmdlet
