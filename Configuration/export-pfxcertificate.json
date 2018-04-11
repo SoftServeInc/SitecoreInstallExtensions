@@ -1,8 +1,13 @@
 {
   "Parameters": {
+    // An example of CertStoreLocation Cert:\LocalMachine\My
     "CertStoreLocation": {
-      "Type": "String"
+      "Type": "String",
+      "Description" : "Specifies the path of the store from which certificates will be exported."
     },
+    // Property and value are used to choose certificate from CertStoreLocation
+    // By defaul FriendlyName is used to find certificate to export, 
+    // but you can specify other property available in certificate ex. Subject
     "Property": {
       "Type": "String",
       "DefaultValue" : "FriendlyName"
@@ -11,10 +16,12 @@
       "Type": "String"
     },
     "PfxFile": {
-      "Type": "String"
+      "Type": "String",
+      "Description" : "Specifies the path for the PFX file."
     },
     "CertPassword": {
-      "Type": "String"
+      "Type": "String",
+      "Description" : "Specifies the password for the exported PFX file."
     }
   },
   "Modules": [
