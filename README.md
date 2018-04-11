@@ -26,13 +26,7 @@ You can do this manually or just run script [install-modules.ps1](install-module
 
 This snippet will download script from GitHub and execute. Administrator rights are required.
 ```PowerShell
-$url = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/install-modules.ps1"
-$scriptPath = "$home\Desktop\install-modules.ps1"
-# Maybe required if you got an error 'The request was aborted: Could not create SSL/TLS secure channel.'
-#[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-
-$code = Invoke-WebRequest -Uri $url -UseBasicParsing -OutFile $scriptPath
-& $scriptPath
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('http://bit.ly/installmodules'))
 ```
 
 
