@@ -66,3 +66,5 @@ else
 	Update-Module SitecoreInstallAzure -Force
 }
 #endregion
+
+Get-Module Sitecore* -ListAvailable
