@@ -1,0 +1,34 @@
+{
+  "Parameters": {
+    "CertStoreLocation": {
+      "Type": "String"
+    },
+    "Property": {
+      "Type": "String",
+      "DefaultValue" : "FriendlyName"
+    },
+    "Value": {
+      "Type": "String"
+    },
+    "PfxFile": {
+      "Type": "String"
+    },
+    "CertPassword": {
+      "Type": "String"
+    }
+  },
+  "Modules": [
+    "SitecoreInstallExtensions"
+  ],
+  "Variables": {
+  },
+  "Tasks": {
+    "Export-Certificate": {
+      "Type": "ScriptBlock",
+      "Params": {
+        "Script": "PARAM($CertStoreLocation,$Property,$Value,$PfxFile,$CertPassword) Get-ChildItem $CertStoreLocation | where $Property -eq $Value | Export-PfxCertificate -FilePath $PfxFile -Password (ConvertTo-SecureString -String $CertPassword -Force -AsPlainText) | Out-Null",
+        "Arguments": [ "[parameter('CertStoreLocation')]", "[parameter('Property')]", "[parameter('Value')]", "[parameter('PfxFile')]", "[parameter('CertPassword')]" ]
+      }
+    }
+  } 
+}
