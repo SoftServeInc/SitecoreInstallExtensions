@@ -3,6 +3,10 @@
 
 Get-PackageProvider -Name Nuget -ForceBootstrap
 
+
+Install-Module Azure -MinimumVersion 5.1.2
+Install-Module AzureRM -MinimumVersion 5.1.2
+
 #region "Register Sitecore Gallery
 if( (Get-PSRepository -Name SitecoreGallery -ErrorAction SilentlyContinue) -eq $null )
 {
@@ -62,3 +66,5 @@ else
 	Update-Module SitecoreInstallAzure -Force
 }
 #endregion
+
+Get-Module Sitecore* -ListAvailable

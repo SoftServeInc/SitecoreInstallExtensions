@@ -10,6 +10,7 @@
     "SitecoreInstallExtensions"
   ],
   "Variables": {
+    // Watch out - ugly hack is here. # must be replaced with ' . Look at SqlCommand task.
     "ContainedQuery": "[converttoherestring('sp_configure #contained database authentication#, 1;', 'GO', 'RECONFIGURE;', 'GO')]"
   },
   "Tasks": {
