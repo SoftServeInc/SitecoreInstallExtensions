@@ -1,0 +1,130 @@
+{
+  "Parameters": {
+    "LocalStorage": {
+      "Type": "string",
+      "Description": "The root folder for packages"
+    },
+	"JREInstaller": {
+      "Type": "string",
+      "Description": "The path to the Java SE Runtime Environment installer.",
+      "DefaultValue": "jre-8u151-windows-x64.exe"
+    },
+    "SolrPackage": {
+      "Type": "string",
+      "Description": "The path to the SOLR zip package.",
+      "DefaultValue": "solr-6.6.2.zip"
+    },
+    "SolrVersion": {
+      "Type": "string",
+      "DefaultValue": "6.6.2",
+      "Description": "What version of Solr should be downloaded for install"
+    },
+    "InstallFolder": {
+      "Type": "string",
+      "DefaultValue": "c:\\solr",
+      "Description": "Where should Solr be installed to"
+    },
+    "SolrUseSSL": {
+      "Type": "boolean",
+      "DefaultValue": true,
+      "Description": "Should Solr require HTTPS for access?"
+    },
+    "SolrHost": {
+      "Type": "string",
+      "DefaultValue": "solr.local",
+      "Description": "What host name should the Solr service use"
+    },
+    "SolrPort": {
+      "Type": "string",
+      "DefaultValue": "8983",
+      "Description": "The port the Solr service should use"
+    },
+    // An example of CertStoreLocation Cert:\LocalMachine\My
+    "CertStoreLocation": {
+      "Type": "String",
+      "Description" : "Specifies the path of the store from which certificates will be exported."
+    },
+    // Property and value are used to choose certificate from CertStoreLocation
+    // By defaul FriendlyName is used to find certificate to export, 
+    // but you can specify other property available in certificate ex. Subject
+    "Property": {
+      "Type": "String",
+      "DefaultValue" : "FriendlyName"
+    },
+    "Value": {
+      "Type": "String"
+    },
+    "CertPassword": {
+      "Type": "String",
+      "Description" : "Specifies the password for the exported PFX file."
+    }
+  },
+  "Modules": [
+    "SitecoreInstallExtensions"
+  ],
+
+  "Variables": {
+	
+	"Source.JRE": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]",
+	 
+    "Source.Solr": "[joinpath(parameter('LocalStorage'), parameter('SolrPackage'))]",
+    "SolrName": "[concat('solr-', parameter('SolrVersion'))]",
+
+    "SolrInstallFolder": "[concat(parameter('InstallFolder'), '\\solr-', parameter('SolrVersion'))]",
+    "CertStoreFile": "[concat(variable('SolrInstallFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]",
+
+    "SolrProtocol": "[if ( parameter('SolrUseSSL'), 'https', 'http')]",
+    "SolrUrl": "[concat(variable('SolrProtocol'), '://', parameter('SolrHost'), ':', parameter('SolrPort'), '/solr/')]"
+  },
+
+  "Tasks": {
+	"InstallJRE": {
+      "Type": "EnsureJRE",
+      "Params": {
+        "JavaPackagePath": "[variable('Source.JRE')]"
+      }
+    },
+    "InstallSolr": {
+      "Type": "EnsureSolr",
+      "Params": {
+        "SolrPackage": "[variable('Source.Solr')]",
+        "InstallLocation": "[variable('SolrInstallFolder')]"
+      }
+    },
+    "Ensure host name exists": {
+      "Type": "HostHeader",
+      "Params": {
+        "Hostname": "[parameter('SolrHost')]"
+      }
+    },
+     "Export-Certificate": {
+      "Type": "ScriptBlock",
+      "Params": {
+        "Script": "PARAM($CertStoreLocation,$Property,$Value,$PfxFile,$CertPassword) Get-ChildItem $CertStoreLocation | where $Property -eq $Value | Export-PfxCertificate -FilePath $PfxFile -Password (ConvertTo-SecureString -String $CertPassword -Force -AsPlainText) | Out-Null",
+        "Arguments": [ "[parameter('CertStoreLocation')]", "[parameter('Property')]", "[parameter('Value')]", "[variable('CertStoreFile')]", "[parameter('CertPassword')]" ]
+      }
+    },
+    "Rewrite Solr config file": {
+      "Type": "ConfigureSolr",
+      "Params": {
+        "solrSSL": "[parameter('SolrUseSSL')]",
+        "solrHost": "[parameter('SolrHost')]",
+        "solrRoot": "[variable('SolrInstallFolder')]",
+        "certificateStore": "[variable('CertStoreFile')]"
+      }
+    },
+    "RunSolrAsService": {
+		"Type": "SolrAsService",
+        "Params": {
+          "Port": "",
+          "Memory": ""
+       }
+    },
+    "Ensure Solr is running": {
+      "Type": "HttpRequest",
+      "Params": {
+        "Uri": "[variable('SolrUrl')]"
+      }
+    }
+  }
+}
