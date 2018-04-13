@@ -3,6 +3,14 @@
 
 Get-PackageProvider -Name Nuget -ForceBootstrap
 
+#region "WebAdministration module"
+# Module WebAdministration is required by Sitecore Install Framework
+# This module is installed as part of Web-Server feature
+if( (Get-Module -Name WebAdministration -ListAvailable) -eq $null )
+{
+	Install-WindowsFeature -Name Web-Server
+}
+#endregion
 
 Install-Module Azure -MinimumVersion 5.1.2
 Install-Module AzureRM -MinimumVersion 5.1.2
