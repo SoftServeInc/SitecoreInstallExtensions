@@ -4,7 +4,12 @@
       "Type": "string",
       "Description": "The root folder for packages"
     },
-	"JREInstaller": {
+    "JREDownloadUrl": {
+      "Type": "string",
+      "DefaultValue": "http://javadl.oracle.com/webapps/download/AutoDL?BundleId=230540_2f38c3b165be4555a1fa6e98c45e0808",
+      "Description": "Link to JRE 8u161"
+    },
+    "JREInstaller": {
       "Type": "string",
       "Description": "The path to the Java SE Runtime Environment installer.",
       "DefaultValue": "jre-8u151-windows-x64.exe"
@@ -13,6 +18,10 @@
       "Type": "string",
       "Description": "The path to the SOLR zip package.",
       "DefaultValue": "solr-6.6.2.zip"
+    },
+    "SolrDownloadUrl": {
+      "Type": "string",
+      "DefaultValue": "http://archive.apache.org/dist/lucene/solr/6.6.2/solr-6.6.2.zip"
     },
     "SolrVersion": {
       "Type": "string",
@@ -39,24 +48,29 @@
       "DefaultValue": "8983",
       "Description": "The port the Solr service should use"
     },
+    "UseLocalFiles": {
+      "Type": "boolean",
+      "DefaultValue": true,
+      "Description": "Should use local Solr and JRE files or download from Internet?"
+    },
     // An example of CertStoreLocation Cert:\LocalMachine\My
     "CertStoreLocation": {
       "Type": "String",
-      "Description" : "Specifies the path of the store from which certificates will be exported."
+      "Description": "Specifies the path of the store from which certificates will be exported."
     },
     // Property and value are used to choose certificate from CertStoreLocation
-    // By defaul FriendlyName is used to find certificate to export, 
+    // By defaul FriendlyName is used to find certificate to export,
     // but you can specify other property available in certificate ex. Subject
     "Property": {
       "Type": "String",
-      "DefaultValue" : "FriendlyName"
+      "DefaultValue": "FriendlyName"
     },
     "Value": {
       "Type": "String"
     },
     "CertPassword": {
       "Type": "String",
-      "Description" : "Specifies the password for the exported PFX file."
+      "Description": "Specifies the password for the exported PFX file."
     }
   },
   "Modules": [
@@ -64,9 +78,9 @@
   ],
 
   "Variables": {
-	
-	"Source.JRE": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]",
-	 
+
+    "Source.JRE": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]",
+
     "Source.Solr": "[joinpath(parameter('LocalStorage'), parameter('SolrPackage'))]",
     "SolrName": "[concat('solr-', parameter('SolrVersion'))]",
 
@@ -78,7 +92,23 @@
   },
 
   "Tasks": {
-	"InstallJRE": {
+    "DownloadJRE": {
+      "Type": "DownloadFile",
+      "Skip": "[parameter('UseLocalFiles')]",
+      "Params": {
+        "SourceUri": "[parameter('JREDownloadUrl')]",
+        "DestinationPath": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]"
+      }
+    },
+    "DownloadSolr": {
+      "Type": "DownloadFile",
+      "Skip": "[parameter('UseLocalFiles')]",
+      "Params": {
+        "SourceUri": "[parameter('SolrDownloadUrl')]",
+        "DestinationPath": "[joinpath(parameter('LocalStorage'), parameter('SolrPackage'))]"
+      }
+    },
+    "InstallJRE": {
       "Type": "EnsureJRE",
       "Params": {
         "JavaPackagePath": "[variable('Source.JRE')]"
@@ -97,7 +127,7 @@
         "Hostname": "[parameter('SolrHost')]"
       }
     },
-     "Export-Certificate": {
+    "Export-Certificate": {
       "Type": "ScriptBlock",
       "Params": {
         "Script": "PARAM($CertStoreLocation,$Property,$Value,$PfxFile,$CertPassword) Get-ChildItem $CertStoreLocation | where $Property -eq $Value | Export-PfxCertificate -FilePath $PfxFile -Password (ConvertTo-SecureString -String $CertPassword -Force -AsPlainText) | Out-Null",
@@ -114,11 +144,11 @@
       }
     },
     "RunSolrAsService": {
-		"Type": "SolrAsService",
-        "Params": {
-          "Port": "",
-          "Memory": ""
-       }
+      "Type": "SolrAsService",
+      "Params": {
+        "Port": "",
+        "Memory": ""
+      }
     },
     "Ensure Solr is running": {
       "Type": "HttpRequest",
