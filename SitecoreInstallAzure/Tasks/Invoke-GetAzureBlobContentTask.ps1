@@ -52,8 +52,12 @@ function Invoke-GetAzureBlobContentTask
 		{
 			if( -not (Test-Path $destinationPath ) )
 			{
+				$startTime = Get-Date
 				Write-TaskInfo -Message "$Container\$blob => $destinationPath" -Tag 'Download'
 				Get-AzureStorageBlobContent -Context $StorageContext -Container $Container -Blob $blob -Destination $destinationPath -Force | Out-Null
+				$endTime = Get-Date
+				$timeTaken = $endTime.Subtract($startTime)
+				Write-Verbose "Time taken: $($timeTaken.TotalSeconds) seconds"
 			}
 			else
 			{
