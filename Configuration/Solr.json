@@ -92,6 +92,15 @@
   },
 
   "Tasks": {
+    "CreatePaths": {
+      // Ensure the destination path for the site exists.
+      "Type": "EnsurePath",
+      "Params": {
+        "Exists": [
+          "[parameter('LocalStorage')]"
+        ]
+      }
+    },
     "DownloadJRE": {
       "Type": "DownloadFile",
       "Skip": "[parameter('UseLocalFiles')]",
