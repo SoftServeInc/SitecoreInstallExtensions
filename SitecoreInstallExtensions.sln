@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configura
 		Configuration\sitecore-packages.json = Configuration\sitecore-packages.json
 		Configuration\sitecore-prerequisites.json = Configuration\sitecore-prerequisites.json
 		Configuration\sitecore8-xp0.json = Configuration\sitecore8-xp0.json
+		Configuration\Solr.json = Configuration\Solr.json
 		Configuration\SolrServerNSSM.json = Configuration\SolrServerNSSM.json
 	EndProjectSection
 	ProjectSection(FolderGlobals) = preProject

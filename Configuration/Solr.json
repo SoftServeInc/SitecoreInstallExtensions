@@ -70,7 +70,22 @@
     },
     "CertPassword": {
       "Type": "String",
+      "DefaultValue" :  "secret",
       "Description": "Specifies the password for the exported PFX file."
+    },
+    "CertificateName": {
+      "Type": "string",
+      "Description": "The name of the certificate to be created."
+    },
+    "CertPath": {
+      "Type": "string",
+      "Description": "The physical path on disk where certificates will be stored.",
+      "DefaultValue": "c:\\certificates"
+    },
+    "RootCertFileName": {
+      "Type": "string",
+      "Description": "The file name of the root certificate to be created.",
+      "DefaultValue": "SitecoreRootCert"
     }
   },
   "Modules": [
@@ -78,20 +93,66 @@
   ],
 
   "Variables": {
-
+    // Creates a path to the JRE install package.
     "Source.JRE": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]",
-
+    // Creates a path to the Solr install package.
     "Source.Solr": "[joinpath(parameter('LocalStorage'), parameter('SolrPackage'))]",
-    "SolrName": "[concat('solr-', parameter('SolrVersion'))]",
 
+    // The path where should Solr be installed.
     "SolrInstallFolder": "[concat(parameter('InstallFolder'), '\\solr-', parameter('SolrVersion'))]",
+    // The path where should Solr SSL certificate be installed.
     "CertStoreFile": "[concat(variable('SolrInstallFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]",
 
     "SolrProtocol": "[if ( parameter('SolrUseSSL'), 'https', 'http')]",
-    "SolrUrl": "[concat(variable('SolrProtocol'), '://', parameter('SolrHost'), ':', parameter('SolrPort'), '/solr/')]"
+    "SolrUrl": "[concat(variable('SolrProtocol'), '://', parameter('SolrHost'), ':', parameter('SolrPort'), '/solr/')]",
+
+    // The name dns name of the root certificate.
+    "Root.Cert.DnsName": "[concat('DO_NOT_TRUST_', parameter('RootCertFileName'))]",
+    // The certificate store for the root certificate.
+    "Root.Cert.Store": "cert:\\LocalMachine\\Root",
+    // The certificate store for the client certificate.
+    "Client.Cert.Store": "cert:\\LocalMachine\\My"
   },
 
   "Tasks": {
+    "CreatePaths": {
+      // Create the physical disk path.
+      "Type": "EnsurePath",
+      "Params": {
+        "Exists": [
+          "[parameter('CertPath')]"
+        ]
+      }
+    },
+    "CreateRootCert": {
+      // Create the root certificate.
+      "Type": "NewRootCertificate",
+      "Params": {
+        "Path": "[parameter('CertPath')]",
+        "Name": "[parameter('RootCertFileName')]",
+        "StoreLocation": "CurrentUser",
+        "DnsName": "[variable('Root.Cert.DnsName')]"
+      }
+    },
+    "ImportRootCertificate": {
+      // Import the root certificate.
+      "Type": "ImportCertificate",
+      "Params": {
+        "CertStoreLocation": "[variable('Root.Cert.Store')]",
+        "FilePath": "[concat(joinpath(parameter('CertPath'), parameter('RootCertFileName')), '.crt')]"
+      }
+    },
+    "CreateSignedCert": {
+      // Create a certificate signed by the root authority.
+      "Type": "NewSignedCertificate",
+      "Params": {
+        "Signer": "[GetCertificate(variable('Root.Cert.DnsName'), variable('Root.Cert.Store'))]",
+        "Path": "[parameter('CertPath')]",
+        "CertStoreLocation": "[variable('Client.Cert.Store')]",
+        "Name": "[parameter('CertificateName')]",
+        "DnsName": "[parameter('CertificateName')]"
+      }
+    },
     "DownloadJRE": {
       "Type": "DownloadFile",
       "Skip": "[parameter('UseLocalFiles')]",
