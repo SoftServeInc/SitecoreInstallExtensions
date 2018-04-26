@@ -6,13 +6,13 @@
     },
     "JREDownloadUrl": {
       "Type": "string",
-      "DefaultValue": "http://javadl.oracle.com/webapps/download/AutoDL?BundleId=230540_2f38c3b165be4555a1fa6e98c45e0808",
-      "Description": "Link to JRE 8u161"
+      "DefaultValue": "http://javadl.oracle.com/webapps/download/AutoDL?BundleId=233172_512cd62ec5174c3487ac17c61aaa89e8",
+      "Description": "Link to JRE 8u171"
     },
     "JREInstaller": {
       "Type": "string",
       "Description": "The path to the Java SE Runtime Environment installer.",
-      "DefaultValue": "jre-8u151-windows-x64.exe"
+      "DefaultValue": "jre-8u171-windows-x64.exe"
     },
     "SolrPackage": {
       "Type": "string",
