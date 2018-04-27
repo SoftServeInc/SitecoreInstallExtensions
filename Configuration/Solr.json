@@ -120,7 +120,8 @@
       "Type": "EnsurePath",
       "Params": {
         "Exists": [
-          "[parameter('CertPath')]"
+          "[parameter('CertPath')]",
+          "[parameter('LocalStorage')]"
         ]
       }
     },
