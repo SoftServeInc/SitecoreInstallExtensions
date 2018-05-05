@@ -180,8 +180,11 @@ Param(
   [Parameter(ParameterSetName='Control', Mandatory=$true)]
   [String]$Control = $null,     # Control message to send to the service
 
+  [Parameter(Mandatory=$true)]
+  [String]$ServiceName = "PSSolrService",   #A one-word name used for net start commands  
+
   [Parameter(ParameterSetName='Version', Mandatory=$true)]
-  [Switch]$Version              # Get this script version
+  [Switch]$Version              # Get this script version 
 )
 
 $scriptVersion = "2017-05-10"
@@ -204,21 +207,21 @@ $scriptName = $argv0.name               # Ex: PSService.ps1
 $scriptFullName = $argv0.fullname       # Ex: C:\Temp\PSService.ps1
 
 # Global settings
-$serviceName = $script                  # A one-word name used for net start commands
+$serviceName = $ServiceName                  # A one-word name used for net start commands
 $serviceDisplayName = "Solr as Windows Service"
 $ServiceDescription = "Solr as Windows Service"
 
 
 $pipeName = "Service_$serviceName"      # Named pipe name. Used for sending messages to the service task
 
-$installDir = "${ENV:ProgramFiles}\$serviceName" # Where to install the service files
+$installDir = "$solrRoot\$serviceName" # Where to install the service files
 
 #$installDir = "${ENV:windir}\System32"  # Where to install the service files
 
 $scriptCopy = "$installDir\$scriptName"
 $exeName = "$serviceName.exe"
 $exeFullName = "$installDir\$exeName"
-$logDir = "${ENV:windir}\Logs"          # Where to log the service messages
+$logDir = "$solrRoot\ServiceLogs"          # Where to log the service messages
 $logFile = "$logDir\$serviceName.log"
 $logName = "Application"                # Event Log name (Unrelated to the logFile!)
 # Note: The current implementation only supports "classic" (ie. XP-compatble) event logs.
@@ -953,6 +956,7 @@ if ($Service) {                 # Run the service
   # Do the service background job
   try 
   {
+	  # -p -m
       &$sorlStartCmd start -f
   } 
   catch 

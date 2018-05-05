@@ -46,7 +46,8 @@ function Invoke-GetAzureBlobContentTask
 
 	foreach( $blob in $Blobs )		
 	{
-		$destinationPath = Join-Path -Path $Destination -ChildPath $blob
+		$fileName = Split-Path $blob -Leaf
+		$destinationPath = Join-Path -Path $Destination -ChildPath $fileName
 
 		if($pscmdlet.ShouldProcess($StorageName, "Download $Container\$blob => $destinationPath"))
 		{
