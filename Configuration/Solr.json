@@ -212,6 +212,13 @@
         "Memory": ""
       }
     },
+    "WaitForSolr": {
+      "Type": "ScriptBlock",
+      "Params": {
+        "Script": "PARAM($Seconds) Start-Sleep -Seconds $Seconds",
+        "Arguments": [ "5" ]
+      }
+    },
     "Ensure Solr is running": {
       "Type": "HttpRequest",
       "Params": {
