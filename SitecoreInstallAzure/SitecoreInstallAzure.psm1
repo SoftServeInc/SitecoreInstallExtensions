@@ -1,6 +1,7 @@
 #Requires -Modules Azure
-#Requires -Modules AzureRM
-
+#Requires -Modules AzureRM.Profile
+#Requires -Modules AzureRM.Storage
+#Requires -Modules AzureRM.KeyVault
 
 if(  (Get-Command Register-SitecoreInstallExtension -ErrorAction SilentlyContinue) -eq $null )
 {
