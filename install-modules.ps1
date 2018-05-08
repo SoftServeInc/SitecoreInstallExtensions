@@ -16,6 +16,8 @@ if( (Get-Module -Name WebAdministration -ListAvailable) -eq $null )
 }
 #endregion
 
+#Temporary change default installation policy
+$defaultPolicy = (Get-PSRepository -Name PSGallery).InstallationPolicy
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 
 if( $Azure -eq $true)
@@ -88,6 +90,8 @@ if( $Azure -eq $true)
 	}
 }
 #endregion
+
+Set-PSRepository PSGallery -InstallationPolicy $defaultPolicy
 
 Get-Module Sitecore* -ListAvailable | Format-List
 
