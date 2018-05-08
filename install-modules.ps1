@@ -21,9 +21,9 @@ Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 if( $Azure -eq $true)
 {
 	Install-Module Azure -MinimumVersion 5.1.2
-	Install-Module AzureRM.Profile -MinimumVersion 5.1.2
-	Install-Module AzureRM.Storage -MinimumVersion 5.1.2
-	Install-Module AzureRM.KeyVault -MinimumVersion 5.1.2
+	Install-Module AzureRM.Profile
+	Install-Module AzureRM.Storage
+	Install-Module AzureRM.KeyVault
 }
 
 #region "Register Sitecore Gallery
