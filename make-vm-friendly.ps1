@@ -9,9 +9,9 @@
 
 function Install-FromWeb {
     param(
-	    [Parameter(Mandatory=$true)]
+		[Parameter(Mandatory=$true)]
 		[string]$Url,
-        [Parameter(Mandatory=$true)]
+		[Parameter(Mandatory=$true)]
 		[string]$Args
 	)
     $Path = $env:TEMP; 
