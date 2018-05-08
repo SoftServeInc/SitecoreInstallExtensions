@@ -1,6 +1,10 @@
 #requires -RunAsAdministrator 
 #requires -Version 5.1
 
+param(
+    [switch] $Azure	= $true
+)
+
 Get-PackageProvider -Name Nuget -ForceBootstrap
 
 #region "WebAdministration module"
@@ -13,9 +17,14 @@ if( (Get-Module -Name WebAdministration -ListAvailable) -eq $null )
 #endregion
 
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
- 
-Install-Module Azure -MinimumVersion 5.1.2
-Install-Module AzureRM -MinimumVersion 5.1.2
+
+if( $Azure -eq $true)
+{
+	Install-Module Azure -MinimumVersion 5.1.2
+	Install-Module AzureRM.Profile -MinimumVersion 5.1.2
+	Install-Module AzureRM.Storage -MinimumVersion 5.1.2
+	Install-Module AzureRM.KeyVault -MinimumVersion 5.1.2
+}
 
 #region "Register Sitecore Gallery
 if( (Get-PSRepository -Name SitecoreGallery -ErrorAction SilentlyContinue) -eq $null )
@@ -65,15 +74,18 @@ else
 #endregion
 
 #region "SitecoreInstallAzure"
-if( (Get-Module -Name SitecoreInstallAzure -ListAvailable) -eq $null )
+if( $Azure -eq $true)
 {
-    #If install-module is not available check https://www.microsoft.com/en-us/download/details.aspx?id=49186
-    Install-Module SitecoreInstallAzure -Scope AllUsers -Repository PSGallery
-}
-else
-{
-    Write-Verbose "SitecoreInstallAzure module already installed, update then"
-	Update-Module SitecoreInstallAzure -Force
+	if( (Get-Module -Name SitecoreInstallAzure -ListAvailable) -eq $null )
+	{
+    	#If install-module is not available check https://www.microsoft.com/en-us/download/details.aspx?id=49186
+    	Install-Module SitecoreInstallAzure -Scope AllUsers -Repository PSGallery
+	}
+	else
+	{
+    	Write-Verbose "SitecoreInstallAzure module already installed, update then"
+		Update-Module SitecoreInstallAzure -Force
+	}
 }
 #endregion
 
