@@ -12,6 +12,8 @@ if( (Get-Module -Name WebAdministration -ListAvailable) -eq $null )
 }
 #endregion
 
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+ 
 Install-Module Azure -MinimumVersion 5.1.2
 Install-Module AzureRM -MinimumVersion 5.1.2
 
@@ -75,4 +77,5 @@ else
 }
 #endregion
 
-Get-Module Sitecore* -ListAvailable
+Get-Module Sitecore* -ListAvailable | Format-List
+
