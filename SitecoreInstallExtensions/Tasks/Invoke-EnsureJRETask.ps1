@@ -30,10 +30,17 @@ Function Invoke-EnsureJRETask {
 			Start-Process $JavaPackagePath -ArgumentList $MSIArguments -Wait -NoNewWindow
  
 			$items = Get-ChildItem -Path $env:ProgramFiles -Filter "java.exe" -Recurse -ErrorAction SilentlyContinue -ErrorVariable searchError
-			#$items += Get-ChildItem -Path ${env:ProgramFiles(x86)} -Filter "java.exe" -Recurse -ErrorAction SilentlyContinue -ErrorVariable $searchError
-			$javaPath = $items | Out-GridView -PassThru  
-			$javaHome  = Split-Path -Parent $javaPath.Directory.FullName
-      
+			
+			if( $items.Count -eq 1 )
+			{
+				$javaHome  = Split-Path -Parent $items.Directory.FullName
+			}
+			else
+			{
+				$javaPath = $items | Out-GridView -PassThru  
+				$javaHome  = Split-Path -Parent $javaPath.Directory.FullName
+			}
+			
 			[environment]::SetEnvironmentVariable("JAVA_HOME",$javaHome,[EnvironmentVariableTarget]::Machine)   
 			Write-Verbose "JAVA already installed $javaHome"
 		}
