@@ -1,7 +1,7 @@
 ﻿{
   "Parameters": {
     "SubscriptionName": {
-      "Type": "string",
+      "Type": "string"
     },
     "ResourceGroupName": {
       "Type": "string",
@@ -23,7 +23,7 @@
       "Type": "string",
       "DefaultValue": "sitecore9"
     },
-	"ModulesContainer": {
+    "ModulesContainer": {
       "Type": "string",
       "DefaultValue": "modules"
     },
@@ -34,12 +34,10 @@
   "Modules": [
     "SitecoreInstallAzure"
   ],
-  "Variables": {
-
-  },
+  "Variables": {},
   "Tasks": {
     "CreatePaths": {
-      // Ensure the destination path for the site exists.
+      "Description": "Ensure the destination path for the site exists.",
       "Type": "EnsurePath",
       "Params": {
         "Exists": [
@@ -48,7 +46,7 @@
       }
     },
     "Login": {
-      // Login to Azure account
+      "Description": "Login to Azure account",
       "Type": "AzureLogin",
       "Params": {
         "AzureSubscription": "[parameter('SubscriptionName')]"
@@ -69,8 +67,8 @@
           "WebDeploy_amd64_en-US.msi",
           "SQLSysClrTypes(x64).msi",
           "DacFramework(x64).msi",
-		  "rewrite_amd64_en-US.msi",
-		  "WebPlatformInstaller_amd64_en-US.msi"
+          "rewrite_amd64_en-US.msi",
+          "WebPlatformInstaller_amd64_en-US.msi"
         ]
       }
     },
@@ -94,4 +92,3 @@
     }
   }
 }
-

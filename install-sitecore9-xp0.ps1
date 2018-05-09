@@ -41,7 +41,7 @@ $global:ProgressPreference = 'silentlyContinue'
 #region "Download Artifacts"
 Invoke-WebRequest -Uri "$GitHubRoot/sitecore9-azure.json" -OutFile "$PSScriptRoot\sitecore9-azure.json"
 $downloadSitecorePrerequisites =@{
-    Path = "$folderRoot\sitecore9-azure.json"   
+    Path = "$PSScriptRoot\sitecore9-azure.json"   
     LocalStorage = "$LocalStorage"
     SubscriptionName = ""
     ResourceGroupName = ""
@@ -152,9 +152,9 @@ $sitecoreParams = @{
 Install-SitecoreConfiguration @sitecoreParams -Verbose 
 #endregion
 
-start $SolrUrl
-start "http://$sitecoreSiteName"
-start "https://$XConnectCollectionService"
+Start-Process "$SolrUrl"
+Start-Process "http://$sitecoreSiteName"
+Start-Process "https://$XConnectCollectionService"
 	
 	
 
