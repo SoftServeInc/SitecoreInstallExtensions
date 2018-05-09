@@ -68,7 +68,9 @@
           "SQLSysClrTypes(x64).msi",
           "DacFramework(x64).msi",
           "rewrite_amd64_en-US.msi",
-          "WebPlatformInstaller_amd64_en-US.msi"
+          "WebPlatformInstaller_amd64_en-US.msi",
+          "solr-6.6.2.zip",
+          "jre-8u151-windows-x64.exe"
         ]
       }
     },
