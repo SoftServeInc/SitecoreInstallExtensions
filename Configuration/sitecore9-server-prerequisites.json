@@ -46,9 +46,9 @@
     "Install-WPI": {
       "Type": "Exe",
       "Skip": "[not(testpackage('Microsoft Web Platform Installer 5.0'))]",
-      "Params": {
-        "ExePath": "[joinpath(parameter('LocalStorage'), 'wpilauncher.exe'))]",
-        "Arguments": "/quiet"
+	    "Params": {
+          "ExePath": "C:\\Windows\\System32\\msiexec.exe",
+          "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'WebPlatformInstaller_amd64_en-US.msi') ,' /quiet')]"
       }
     },
     "Install-WebDeploy": {

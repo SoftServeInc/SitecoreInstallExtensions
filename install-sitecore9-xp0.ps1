@@ -42,12 +42,12 @@ $global:ProgressPreference = 'silentlyContinue'
 Invoke-WebRequest -Uri "$GitHubRoot/sitecore9-azure.json" -OutFile "$PSScriptRoot\sitecore9-azure.json"
 $downloadSitecorePrerequisites =@{
     Path = "$PSScriptRoot\sitecore9-azure.json"   
-    LocalStorage = "$LocalStorage"
+    Destination = "$LocalStorage"
     SubscriptionName = ""
     ResourceGroupName = ""
     StorageName = ""
 }
-Install-SitecoreConfiguration @downloadSitecorePrerequisites -Verbose
+Install-SitecoreConfiguration @downloadSitecorePrerequisites
 #endregion
 
 #region "Install Prerequisites"
