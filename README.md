@@ -26,7 +26,8 @@ You can do this manually or just run script [install-modules.ps1](install-module
 
 This snippet will download script from GitHub and execute. Administrator rights are required.
 ```PowerShell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('http://bit.ly/installmodules'))
+Set-ExecutionPolicy Bypass -Scope Process -Force;
+iex ((New-Object System.Net.WebClient).DownloadString('http://bit.ly/installmodules'))
 ```
 
 

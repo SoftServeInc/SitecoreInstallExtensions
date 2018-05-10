@@ -180,14 +180,14 @@ Param(
   [Parameter(ParameterSetName='Control', Mandatory=$true)]
   [String]$Control = $null,     # Control message to send to the service
 
-  [Parameter(Mandatory=$true)]
+  [Parameter()]
   [String]$ServiceName = "PSSolrService",   #A one-word name used for net start commands  
 
   [Parameter(ParameterSetName='Version', Mandatory=$true)]
   [Switch]$Version              # Get this script version 
 )
 
-$scriptVersion = "2017-05-10"
+$scriptVersion = "2018-05-10"
 
 
  $solrHome = [environment]::GetEnvironmentVariable("SOLR_HOME",[EnvironmentVariableTarget]::Machine)  
