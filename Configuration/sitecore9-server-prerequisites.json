@@ -3,15 +3,24 @@
     "LocalStorage": {
       "Type": "string",
       "Description": "The root folder for packages"
+    },
+    "SqlServer": {
+      "Type": "string",
+      "Description": "The Sql Server where databases will be installed."
+    },
+    "SqlAdminPassword": {
+      "Type": "string",
+      "Description": "The admin password for the Sitecore instance."
+    },
+    "SqlAdminUser": {
+      "Type": "string",
+      "Description": "The Sql admin user account to use when installing databases."
     }
   },
   "Modules": [
     "SitecoreInstallExtensions"
   ],
   "Variables": {
-    // Variables are values calculated in a configuration.
-    // They can reference Parameters, other Variables, and config functions.
-
     // Watch out - ugly hack is here. # must be replaced with ' . Look at SqlCommand task.
     "ContainedQuery": "[converttoherestring('sp_configure #contained database authentication#, 1;', 'GO', 'RECONFIGURE;', 'GO')]"
   },
@@ -46,9 +55,9 @@
     "Install-WPI": {
       "Type": "Exe",
       "Skip": "[not(testpackage('Microsoft Web Platform Installer 5.0'))]",
-	    "Params": {
-          "ExePath": "C:\\Windows\\System32\\msiexec.exe",
-          "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'WebPlatformInstaller_amd64_en-US.msi') ,' /quiet')]"
+      "Params": {
+        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
+        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'WebPlatformInstaller_amd64_en-US.msi') ,' /quiet')]"
       }
     },
     "Install-WebDeploy": {
@@ -83,11 +92,28 @@
         "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'DacFramework(x64).msi') ,' /quiet')]"
       }
     },
+    "SetDbMixedMode": {
+      "Type": "SetSqlMixedMode",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServer')]"
+      }
+    },
+    "CreateDatabaseUser": {
+      "Type": "CreateSqlUser",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServer')]",
+        "UserName": "[parameter('SqlAdminUser')]",
+        "Password": "[parameter('SqlAdminPassword')]"
+      }
+    },
     "Set-Contained-Database-Authentication": {
       "Type": "ScriptBlock",
       "Params": {
         "Script": "PARAM($Query,$ServerInstance) Invoke-SqlCmd -Query $Query.Replace('#','''') -ServerInstance $ServerInstance",
-        "Arguments": [ "[variable('ContainedQuery')]", "[environment('computername')]" ]
+        "Arguments": [
+          "[variable('ContainedQuery')]",
+          "[parameter('SqlServer')]"
+        ]
       }
     }
   }
