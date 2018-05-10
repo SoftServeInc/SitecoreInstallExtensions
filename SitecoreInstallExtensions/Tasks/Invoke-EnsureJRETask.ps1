@@ -28,8 +28,9 @@ Function Invoke-EnsureJRETask {
 			if( -not (Test-Path -Path $JavaPackagePath ) ) { Write-Error "$JavaPackagePath not exists!"  return}
       
 			Start-Process $JavaPackagePath -ArgumentList $MSIArguments -Wait -NoNewWindow
- 
-			$items = Get-ChildItem -Path $env:ProgramFiles -Filter "java.exe" -Recurse -ErrorAction SilentlyContinue -ErrorVariable searchError
+			
+			$items = @()
+			$items += Get-ChildItem -Path $env:ProgramFiles -Filter "java.exe" -Recurse -ErrorAction SilentlyContinue -ErrorVariable searchError
 			
 			if( $items.Count -eq 1 )
 			{
