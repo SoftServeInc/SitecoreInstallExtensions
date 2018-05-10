@@ -14,7 +14,6 @@ If(![Environment]::Is64BitProcess)
     return
 }
 
-
 #define parameters 
 $LocalStorage = "$PSScriptRoot\Storage"
 $GitHubRoot = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/Configuration/"
@@ -37,7 +36,6 @@ $SqlAdminPassword= ""
 $global:ProgressPreference = 'silentlyContinue'
 
 
-
 #region "Download Artifacts"
 Invoke-WebRequest -Uri "$GitHubRoot/sitecore9-azure.json" -OutFile "$PSScriptRoot\sitecore9-azure.json"
 $downloadSitecorePrerequisites =@{
@@ -55,7 +53,10 @@ Invoke-WebRequest -Uri "$GitHubRoot/sitecore9-server-prerequisites.json" -OutFil
 
 $serverParams = @{    
     Path = "$PSScriptRoot\sitecore9-server-prerequisites.json" 
-    LocalStorage = "$LocalStorage"
+	LocalStorage = $LocalStorage
+	SqlServer = $SqlServer 
+	SqlAdminUser = $SqlAdminUser   
+	SqlAdminPassword = $SqlAdminPassword
 } 
 Install-SitecoreConfiguration @serverParams -Verbose
 #endregion
@@ -152,9 +153,9 @@ $sitecoreParams = @{
 Install-SitecoreConfiguration @sitecoreParams -Verbose 
 #endregion
 
-Start-Process "$SolrUrl"
+
+Start-Process $SolrUrl
 Start-Process "http://$sitecoreSiteName"
 Start-Process "https://$XConnectCollectionService"
-	
 	
 
