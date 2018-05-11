@@ -38,7 +38,7 @@ function Invoke-EnsureSolrTask
 
 	if($pscmdlet.ShouldProcess($solrHome, "Verify if SOLR is installed"))
     {
-		if( $solrHome -ne $null )
+		if( $solrHome -ne $null -and (Test-Path -Path $solrHome))
 		{
 			Write-Verbose "Solr already installed SOLR_HOME is set to $solrHome"
 			return	
@@ -50,7 +50,7 @@ function Invoke-EnsureSolrTask
 		}
 
 	
-		Expand-Archive -Path $SolrPackage -DestinationPath $InstallLocation
+		Expand-Archive -Path $SolrPackage -DestinationPath $InstallLocation -Force
 		
 		# Move expanded content up one level
         $cleanupPath = Join-Path $InstallLocation ([IO.Path]::GetFileNameWithoutExtension($SolrPackage))

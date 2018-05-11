@@ -45,7 +45,7 @@ else
 	Register-SitecoreInstallExtension -Command Invoke-SetSqlDatabaseRolesTask -As SetSqlDatabaseRoles -Type Task
 	
 	Register-SitecoreInstallExtension -Command Invoke-InstallChocolateyPackageTask -As InstallChocolateyPackage -Type Task
-	Register-SitecoreInstallExtension -Command Invoke-InstallPackageTask -As InstallPackage -Type Task
+	Register-SitecoreInstallExtension -Command Invoke-InstallPackageTask -As InstallSitecorePackage -Type Task
 	
 	Register-SitecoreInstallExtension -Command Invoke-DropMongoDatabaseTask -As DropMongoDatabase -Type Task
 
