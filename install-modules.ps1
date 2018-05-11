@@ -12,7 +12,14 @@ Get-PackageProvider -Name Nuget -ForceBootstrap
 # This module is installed as part of Web-Server feature
 if( (Get-Module -Name WebAdministration -ListAvailable) -eq $null )
 {
-	Install-WindowsFeature -Name Web-Server
+	If ( [bool](Get-Command -Name "Install-WindowsFeature" -ErrorAction SilentlyContinue) )
+	{
+        Install-WindowsFeature -Name Web-Server
+    }
+	else 
+	{
+        Enable-WindowsOptionalFeature -Online -FeatureName IIS-WebServerRole
+    }
 }
 #endregion
 

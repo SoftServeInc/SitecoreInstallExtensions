@@ -12,7 +12,7 @@ Function Invoke-InstallPackageTask {
 	This function requires PackageInstaller.asmx on host where package will be installed.
 	The URI is build in the following way: "http://$($HostName):$($Port)/packageinstaller.asmx?WSDL"
 	
-	The Invoke-InstallPackageTask is registered as InstallPackage type.
+	The Invoke-InstallPackageTask is registered as InstallSitecorePackage type.
 
 .NOTE
 	Package or update must be located on server in place where IIS process has access rights
@@ -21,7 +21,7 @@ Function Invoke-InstallPackageTask {
 	Json task configuration for Sitecore Install Framework:
 
 	 "InstallWFFMPackage": {
-      "Type": "InstallPackage",
+      "Type": "InstallSitecorePackage",
       "Params": {
         "HostName": "[parameter('SiteName')]",
         "PackagePath": "[joinpath(variable('Site.PackagesPath'),'Web Forms for Marketers 8.2 rev. 170807.zip')]"
