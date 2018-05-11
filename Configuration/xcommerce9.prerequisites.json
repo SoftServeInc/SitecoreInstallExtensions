@@ -1,0 +1,126 @@
+﻿{
+  "Parameters": {
+    "LocalStorage": {
+      "Type": "string"
+    },
+	"DeployFolder" : {
+		"Type" : "string",
+		"DefaultValue" : "C:\\xc9-deploy"
+	},
+	"CertificateName": {
+      "Type": "string",
+      "Description": "The name of the certificate to be created.",
+	  "DefaultValue" : "storefront.local"
+    },
+    "CertPath": {
+      "Type": "string",
+      "Description": "The physical path on disk where certificates will be stored.",
+      "DefaultValue": "C:\\xc9-deploy"
+    },
+    "RootCertFileName": {
+      "Type": "string",
+      "Description": "The file name of the root certificate to be created.",
+      "DefaultValue": "SitecoreRootCert"
+    }
+  },
+  "Modules": [
+	"SitecoreInstallExtensions"
+  ],
+  "Variables": {
+    "Assets" : "[joinpath(parameter('LocalStorage'),'assets')]",
+	"SIF.Commerce" : "[joinpath(parameter('DeployFolder'),'SIF')]",
+	"Sitecore.Commerce.Engine.SDK" : "[joinpath(parameter('DeployFolder'),'Sitecore.Commerce.Engine.SDK.2.1.10')]",
+	"Sitecore.Commerce.Engine" : "[joinpath(parameter('DeployFolder'),'Sitecore.Commerce.Engine.2.1.55')]",
+	"Sitecore.BizFX.SDK" : "[joinpath(parameter('DeployFolder'),'Sitecore.BizFX.SDK.1.1.9')]",
+	"Sitecore.BizFX" : "[joinpath(parameter('DeployFolder'),'Sitecore.BizFX.1.1.9')]",
+	"Sitecore.IdentityServer" : "[joinpath(parameter('DeployFolder'),'Sitecore.IdentityServer.1.1.3')]",
+	
+	// The name dns name of the root certificate.
+    "Root.Cert.DnsName": "[concat('DO_NOT_TRUST_', parameter('RootCertFileName'))]",
+    // The certificate store for the root certificate.
+    "Root.Cert.Store": "cert:\\LocalMachine\\Root",
+    // The certificate store for the client certificate.
+    "Client.Cert.Store": "cert:\\LocalMachine\\My"
+  },
+  "Tasks": {
+    "CreatePaths": {
+      // Ensure the destination path for the site exists.
+      "Type": "EnsurePath",
+      "Params": {
+        "Exists": [
+          "[parameter('LocalStorage')]",
+		  "[parameter('DeployFolder')]",
+		  "[variable('SIF.Commerce')]",
+		  "[variable('Sitecore.Commerce.Engine.SDK')]",
+		  "[variable('Sitecore.Commerce.Engine')]",
+		  "[variable('Sitecore.BizFX.SDK')]",
+		  "[variable('Sitecore.BizFX')]",
+		  "[variable('Sitecore.IdentityServer')]"   
+        ]
+      }
+    },
+	"CreateSignedCert": {
+      // Create a certificate signed by the root authority.
+      "Type": "NewSignedCertificate",
+      "Params": {
+        "Signer": "[GetCertificate(variable('Root.Cert.DnsName'), variable('Root.Cert.Store'))]",
+        "Path": "[parameter('CertPath')]",
+        "CertStoreLocation": "[variable('Client.Cert.Store')]",
+        "Name": "[parameter('CertificateName')]",
+        "DnsName": "[parameter('CertificateName')]"
+      }
+    },
+	"InstallDotNet-SDK": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft .NET Core SDK - 2.1.105 (x64)'))]",
+      "Params": {
+        "ExePath": "[joinpath(parameter('LocalStorage'), 'dotnet-sdk-2.1.105-win-x64.exe')]",
+        "Arguments": "/install /quiet"
+      }
+    },
+	"InstallDotNet-WindowsHosting": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft .NET Core 2.0.7 - Windows Server Hosting'))]",
+      "Params": {
+        "ExePath": "[joinpath(parameter('LocalStorage'), 'DotNetCore.2.0.7-WindowsHosting.exe')]",
+        "Arguments": "/install /quiet OPT_NO_X86=1"
+      }
+    },
+	"Unpack-SIF": {
+      "Type": "Unpack",
+      "Params": {
+        "Source": "[joinpath(parameter('DeployFolder'),'SIF.Sitecore.Commerce.1.1.4.zip')]",
+        "Destination": "[variable('SIF.Commerce')]"
+      }
+    },
+	"Unpack-Commerce.Engine": {
+      "Type": "Unpack",
+      "Params": {
+        "Source": "[joinpath(parameter('DeployFolder'),'Sitecore.Commerce.Engine.2.1.55.zip')]",
+        "Destination": "[variable('Sitecore.Commerce.Engine')]"
+      }
+    },
+	"Unpack-EngineSDK": {
+      "Type": "Unpack",
+      "Params": {
+        "Source": "[joinpath(parameter('DeployFolder'),'Sitecore.Commerce.Engine.SDK.2.1.10.zip')]",
+        "Destination": "[variable('Sitecore.Commerce.Engine.SDK')]"
+      }
+    },
+	"Sitecore.Commerce.Engine.DB.dacpac": {
+        "Type": "Copy",
+        "Params": {
+            "Source": "[joinpath(variable('Sitecore.Commerce.Engine.SDK'),'Sitecore.Commerce.Engine.DB.dacpac')]",
+            "Destination": "[parameter('DeployFolder')]"
+        }
+     },
+	"Unpack-BizFX": {
+      "Type": "Unpack",
+      "Params": {
+        "Source": "[joinpath(parameter('DeployFolder'),'Sitecore.BizFX.1.1.9.zip')]",
+        "Destination": "[variable('Sitecore.BizFX')]"
+      }
+    }
+  }
+}
+
