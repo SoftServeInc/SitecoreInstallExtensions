@@ -1,7 +1,7 @@
 ﻿{
   "Parameters": {
     "SubscriptionName": {
-      "Type": "string",
+      "Type": "string"
     },
     "ResourceGroupName": {
       "Type": "string",
