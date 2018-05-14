@@ -15,6 +15,11 @@
     "SqlAdminUser": {
       "Type": "string",
       "Description": "The Sql admin user account to use when installing databases."
+    },
+    "Workstation": {
+      "Type": "boolean",
+      "DefaultValue": false,
+      "Description": "Set to true if you install Sitecore not on server."
     }
   },
   "Modules": [
@@ -22,11 +27,13 @@
   ],
   "Variables": {
     // Watch out - ugly hack is here. # must be replaced with ' . Look at SqlCommand task.
-    "ContainedQuery": "[converttoherestring('sp_configure #contained database authentication#, 1;', 'GO', 'RECONFIGURE;', 'GO')]"
+    "ContainedQuery": "[converttoherestring('sp_configure #contained database authentication#, 1;', 'GO', 'RECONFIGURE;', 'GO')]",
+    "SqlVersion": "SELECT @@VERSION AS 'SQL Server Version';"
   },
   "Tasks": {
-    "InstallRequiredFeatures": {
+    "InstallRequiredServerFeatures": {
       "Type": "InstallWindowsFeature",
+      "Skip": "[parameter('Workstation')]",
       "Params": {
         "FeaturesToInstall": [
           "Net-Framework-45-ASPNET",
@@ -107,12 +114,26 @@
       }
     },
     "Set-Contained-Database-Authentication": {
+      "Description": "Enable Contained Database Authentication, see chapter 2.3.3 Installation Guide",
       "Type": "ScriptBlock",
       "Params": {
         "Script": "PARAM($Query,$ServerInstance) Invoke-SqlCmd -Query $Query.Replace('#','''') -ServerInstance $ServerInstance",
         "Arguments": [
           "[variable('ContainedQuery')]",
           "[parameter('SqlServer')]"
+        ]
+      }
+    },
+    "Check-MSSQL-Password": {
+      "Description" :  "This task will check if user is able to login to MSSQL server.",
+      "Type": "ScriptBlock",
+      "Params": {
+        "Script": "PARAM($Query,$ServerInstance,$SqlAdminUser,$SqlAdminPassword) Invoke-SqlCmd -Query $Query.Replace('#','''') -ServerInstance $ServerInstance -Username $SqlAdminUser -Password $SqlAdminPassword",
+        "Arguments": [
+          "[variable('SqlVersion')]",
+          "[parameter('SqlServer')]",
+          "[parameter('SqlAdminUser')]",
+          "[parameter('SqlAdminPassword')]"
         ]
       }
     }
