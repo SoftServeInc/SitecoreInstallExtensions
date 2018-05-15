@@ -47,6 +47,7 @@
     <Compile Include="Private\SystemUtils.ps1" />
     <Compile Include="Select-WebSite.ps1" />
     <Compile Include="Tasks\Invoke-ConfigureSolrTask.ps1" />
+    <Compile Include="Tasks\Invoke-DeployDacpacTask.ps1" />
     <Compile Include="Tasks\Invoke-DropMongoDatabaseTask.ps1" />
     <Compile Include="Tasks\Invoke-EnsureSSLCertificateTask.ps1" />
     <Compile Include="Tasks\Invoke-InstallPackageTask.ps1" />
