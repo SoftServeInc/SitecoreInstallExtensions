@@ -44,6 +44,8 @@ Function Invoke-InstallPackageTask {
 
 	if($pscmdlet.ShouldProcess($HostName, "Install package/update $PackagePath or $UpdatePath"))
     {
+		Write-TaskInfo -Message "packageinstaller expected http://$($HostName):$($Port)" -Tag Info 
+
 		$proxy = New-WebServiceProxy -uri "http://$($HostName):$($Port)/packageinstaller.asmx?WSDL"
 		$proxy.Timeout = $Timeout
 
