@@ -1,0 +1,40 @@
+{
+  "Parameters": {
+    "ModuleFullPath": { "Type": "string" },
+    "BaseUrl": { "Type": "string" },
+    "SiteUtilitiesSrc": { "Type": "string" },
+    "SiteName" : {"Type" : "string" }
+  },
+  "Modules":
+    [ 
+     "C:\\SC9-install\\SitecoreUtilityTasks.psm1",
+     "SitecoreInstallExtensions"
+    ],
+  "Variables": {
+    "Site.PhysicalPath": "[joinpath(environment('SystemDrive'), 'inetpub', 'wwwroot', parameter('SiteName'))]",
+    "Site.PackagesPath": "[joinpath(variable('Site.PhysicalPath'),'App_Data','Packages')]"
+  },
+  "Tasks" : {
+    "CopySiteUtilityFolder": {
+      "Type": "Copy",
+      "Params": {
+        "Source": "[parameter('SiteUtilitiesSrc')]",
+        "Destination": "[variable('Site.PhysicalPath')]"
+      }
+    },
+    "InstallModule": {
+      "Type": "InstallModule",
+      "Params": {
+        "ModuleFullPath": "[parameter('ModuleFullPath')]",
+        "ModulesDirDst": "[variable('Site.PackagesPath')]",
+        "BaseUrl": "[parameter('BaseUrl')]"
+      }
+    },
+    "DeleteSiteUtilityFolder": {
+      "Type": "Remove",
+      "Params": {
+        "Source": "[joinpath(variable('Site.PhysicalPath'),'SiteUtilityPages')]" 
+      }
+    }
+  } 
+}
