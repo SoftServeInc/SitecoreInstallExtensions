@@ -1,0 +1,44 @@
+{
+  "Parameters": {
+    "Patch" : {
+        "Type" : "string"
+    },
+    "SiteName" : {
+        "Type" : "string"
+    }
+  },
+  "Modules" : [
+    "SitecoreInstallExtensions"
+  ],
+  "Variables": {
+    "Site.PhysicalPath": "[joinpath(environment('SystemDrive'), 'inetpub', 'wwwroot', parameter('SiteName') )]",
+    "Site.ConfigPath" : "[joinpath(variable('Site.PhysicalPath'),'App_Config','Include')]"
+  },
+  "Tasks" : {
+    "CreatePatchFile" : {
+        "Type" : "Six-CreatePatchFile",
+        "Params" : {
+            "XmlPath" : "[joinpath(variable('Site.ConfigPath'), parameter('Patch'))]",
+            "Comment" : "This patch file was created by SIX module"
+        }
+    },
+    "DisablePerformanceCounters" : {
+        "Type" : "Six-AddPatch",
+        "Params" : {
+            "XmlPath" : "[joinpath(variable('Site.ConfigPath'), parameter('Patch'))]",
+            "Name" : "Counters.Enbled",
+            "Value" : "false",
+            "Comment" : "Disable Sitecore performance counters"
+        }
+    },
+    "DisableCacheSizeLimits" : {
+        "Type" : "Six-AddPatch",
+        "Params" : {
+            "XmlPath" : "[joinpath(variable('Site.ConfigPath'), parameter('Patch'))]",
+            "Name" : "Caching.DisableCacheSizeLimits",
+            "Value" : "true",
+            "Comment" : "Enabling this setting can improve the application's performance in 64-bit environments"
+        }
+    }
+  } 
+}

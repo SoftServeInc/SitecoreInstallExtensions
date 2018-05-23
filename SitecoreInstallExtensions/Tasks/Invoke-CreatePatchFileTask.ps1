@@ -110,21 +110,27 @@ function Invoke-AddPatchTask
 	$existingNode = $XmlDocument.SelectNodes("//configuration/sitecore/settings/setting") | Where-Object {$_ -ne $null -and $_.Name -eq $Name}
 	if( $existingNode -ne $null )
 	{
-		Write-Verbose "Patch for setting $Name already exist"
+		Write-TaskInfo "Patch for setting $Name already exist" -Tag "Patch"
 		return
 	}
 
 	[System.Xml.XmlElement]$item = $XmlDocument.CreateElement("setting")
+    if( $item -eq $null )
+    {
+        Write-Verbose "Cannot create element setting"
+        return
+    }
 	$item.SetAttribute("name",  $Name)
-
+    
+    Write-TaskInfo -Message "Create patch for setting $Name = $Value" -Tag "Patch"
 	if( $Value -eq $null -or $Value -eq '')
 	{
-		$patch = $XmlDocument.CreateElement("patch","delete","http://www.sitecore.net/xmlconfig/") | Out-Null
+		$patch = $XmlDocument.CreateElement("patch","delete","http://www.sitecore.net/xmlconfig/")
 		$item.AppendChild($patch)
 	}
 	else
 	{
-		$patch = $XmlDocument.CreateElement("patch","attribute","http://www.sitecore.net/xmlconfig/") | Out-Null
+		$patch = $XmlDocument.CreateElement("patch","attribute","http://www.sitecore.net/xmlconfig/")
 		$patch.SetAttribute("name",  "value")
 		$patch.InnerText = $Value
 		$item.AppendChild($patch)
