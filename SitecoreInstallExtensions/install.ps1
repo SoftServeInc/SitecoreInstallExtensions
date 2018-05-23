@@ -2,7 +2,7 @@
 # This script will install module in Powershell modules localization.
 # Install means copy files from repo to $env:USERPROFILE\Documents\WindowsPowerShell\Modules\$moduleName"
 #
-$moduleName = "sitecoreinstallextensions"
+$moduleName = "SitecoreInstallExtensions"
 $projectFolder = Split-Path -Parent $MyInvocation.MyCommand.Path
 $solutionFolder = Split-Path -Parent $projectFolder
 #$modulePath = Join-Path $projectFolder -ChildPath $moduleName 
