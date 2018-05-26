@@ -4,6 +4,9 @@
       "Type": "string",
       "DefaultValue": "http://localhost:8983/solr",
       "Description": "The Solr instance to use."
+    },
+    "SiteName" : {
+      "Type" : "string"
     }
   },
   "Modules": [
@@ -11,7 +14,8 @@
   ],
   "Variables": {
     // Watch out - ugly hack is here. # must be replaced with ' . Look at SqlCommand task.
-    "ContainedQuery": "[converttoherestring('sp_configure #contained database authentication#, 1;', 'GO', 'RECONFIGURE;', 'GO')]"
+    "ContainedQuery": "[converttoherestring('sp_configure #contained database authentication#, 1;', 'GO', 'RECONFIGURE;', 'GO')]",
+    "Site.PhysicalPath" : "[webSitePath(parameter('SiteName'))]"
   },
   "Tasks": {
     "WriteMessage": {
@@ -19,6 +23,13 @@
       "Params": {
         "Script": "PARAM($Message,$Tag) Write-TaskInfo -Message $Message -Tag $Tag",
         "Arguments": [ "message to display", "ScriptBlock" ]
+      }
+    },
+    "DisplayPhysicalPath": {
+      "Type": "ScriptBlock",
+      "Params": {
+        "Script": "PARAM($Message,$Tag) Write-TaskInfo -Message $Message -Tag $Tag",
+        "Arguments": [ "[variable('Site.PhysicalPath')]", "ScriptBlock" ]
       }
     },
     "DisplayVariable": {
