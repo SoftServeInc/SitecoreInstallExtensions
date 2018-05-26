@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{8501A592-0ACB-470D-8971-DFA2123A90B9}"
 	ProjectSection(SolutionItems) = preProject
 		Configuration\empty.json = Configuration\empty.json
+		Configuration\example-azure-sas.json = Configuration\example-azure-sas.json
 		Configuration\example-azure.json = Configuration\example-azure.json
 		Configuration\remove-sitecore8-xp0.json = Configuration\remove-sitecore8-xp0.json
 		Configuration\secrets-example.json = Configuration\secrets-example.json
