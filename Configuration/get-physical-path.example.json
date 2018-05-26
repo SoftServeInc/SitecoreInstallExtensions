@@ -1,0 +1,22 @@
+{
+  "Parameters": {
+    "SiteName" : {
+      "Type" : "string"
+    }
+  },
+  "Modules": [
+    "SitecoreInstallExtensions"
+  ],
+  "Variables": {
+    "Site.PhysicalPath" : "[webSitePath(parameter('SiteName'))]"
+  },
+  "Tasks": {
+    "DisplayPhysicalPath": {
+      "Type": "ScriptBlock",
+      "Params": {
+        "Script": "PARAM($Message,$Tag) Write-TaskInfo -Message $Message -Tag $Tag",
+        "Arguments": [ "[variable('Site.PhysicalPath')]", "ScriptBlock" ]
+      }
+    }
+  }
+}
