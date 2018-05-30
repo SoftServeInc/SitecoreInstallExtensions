@@ -14,6 +14,41 @@ If(![Environment]::Is64BitProcess)
     return
 }
 
+#region Steps implementation
+class Steps
+{
+   [string] $Path
+   $Steps = @()
+
+   Steps ([string] $path)
+   {
+	   $this.Path = $path -replace "ps1","steps.json"
+       if( (Test-Path $this.Path) )
+       {
+           $this.Steps = (Get-Content -Path $this.Path -Raw) | ConvertFrom-Json
+       }    
+       else
+       {
+           $this.Steps = @()
+	   }
+   }
+
+	# mark step as executed
+	Executed([string] $stepName)
+	{
+        $this.Steps += $stepName
+
+        $json = ConvertTo-Json -InputObject $this.Steps
+        Set-Content -Path $this.Path -Value $json
+	}
+
+	[bool] IsNotExecuted([string] $stepName)
+	{
+		return -not ($this.Steps.Contains($stepName))
+	}
+}
+#endregion
+
 #define parameters 
 $LocalStorage = "$PSScriptRoot\Storage"
 $GitHubRoot = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/Configuration/"
@@ -32,33 +67,61 @@ $SqlServer = "$env:computername" #OR "SQLServerName\SQLInstanceName"
 $SqlAdminUser = ""
 $SqlAdminPassword= "" 
 
+
 # Do not display progress (performance improvement)
 $global:ProgressPreference = 'silentlyContinue'
+
+# initialize steps functionality
+$steps = [Steps]::new($MyInvocation.MyCommand.Source)
 
 
 #region "Download Artifacts"
 Invoke-WebRequest -Uri "$GitHubRoot/sitecore9.azure.json" -OutFile "$PSScriptRoot\sitecore9.azure.json"
-$downloadSitecorePrerequisites =@{
+$downloadSitecorePrerequisites = @{
     Path = "$PSScriptRoot\sitecore9.azure.json"   
     Destination = "$LocalStorage"
     SubscriptionName = ""
     ResourceGroupName = ""
     StorageName = ""
 }
-Install-SitecoreConfiguration @downloadSitecorePrerequisites
+
+try
+{
+	if( $steps.IsNotExecuted("downloadSitecorePrerequisites") )
+	{
+		Install-SitecoreConfiguration @downloadSitecorePrerequisites
+		$steps.Executed("downloadSitecorePrerequisites")
+	}
+}
+catch
+{
+	throw
+}
 #endregion
 
 #region "Install Prerequisites"
 Invoke-WebRequest -Uri "$GitHubRoot/sitecore9.prerequisites.json" -OutFile "$PSScriptRoot\sitecore9.prerequisites.json"
 
-$serverParams = @{    
+$prerequisites = @{    
     Path = "$PSScriptRoot\sitecore9.prerequisites.json" 
 	LocalStorage = $LocalStorage
 	SqlServer = $SqlServer 
 	SqlAdminUser = $SqlAdminUser   
 	SqlAdminPassword = $SqlAdminPassword
 } 
-Install-SitecoreConfiguration @serverParams -Verbose
+
+try
+{	
+	if( $steps.IsNotExecuted("installPrerequisites") )
+	{
+		Install-SitecoreConfiguration @prerequisites
+		$steps.Executed("installPrerequisites")
+	}
+}
+catch
+{
+	throw
+}
 #endregion
  
 #region "Install Solr with SSL"
@@ -77,7 +140,18 @@ $installSolr =@{
     UseLocalFiles = $true
 }
 
-Install-SitecoreConfiguration @installSolr -Verbose
+try
+{
+	if( $steps.IsNotExecuted("installSolr") )
+	{
+		Install-SitecoreConfiguration @installSolr
+		$steps.Executed("installSolr")
+	}
+}
+catch
+{
+	throw
+}
 #endregion
 
 #region "Step-CreateCert"
@@ -87,8 +161,19 @@ $certParams = @{
     Path = "$LocalStorage\xconnect-createcert.json" 
     CertificateName = "$prefix.xconnect_client" 
 } 
-Install-SitecoreConfiguration @certParams -Verbose 
 
+try
+{
+	if( $steps.IsNotExecuted("certParams") )
+	{
+		Install-SitecoreConfiguration @certParams
+		$steps.Executed("certParams")
+	}
+}
+catch
+{
+	throw
+}
 #endregion 
 
 #region "Step-Solr-XConnect"
@@ -99,11 +184,23 @@ $solrParams = @{
 	 SolrRoot = $SolrRoot  
 	 SolrService = $SolrService  
 	 CorePrefix = $prefix 
- }
- Install-SitecoreConfiguration @solrParams -Verbose 
- #endregion 
+}
+  
+try
+{
+	if( $steps.IsNotExecuted("solrParams") )
+	{
+		Install-SitecoreConfiguration @solrParams
+		$steps.Executed("solrParams")
+	}
+}
+catch
+{
+	throw
+} 
+#endregion 
 
-#region "Step-XConnect"
+#region "Step-XConnect-Web"
 #deploy xconnect instance 
 $xconnectParams = @{   
 	Path = "$LocalStorage\xconnect-xp0.json" 
@@ -118,24 +215,46 @@ $xconnectParams = @{
 	SolrCorePrefix = $prefix  
 	SolrURL = $SolrUrl  
 } 
-Install-SitecoreConfiguration @xconnectParams -Verbose 
+try
+{
+	if( $steps.IsNotExecuted("xconnectParams") )
+	{
+		Install-SitecoreConfiguration @xconnectParams
+		$steps.Executed("xconnectParams")
+	}
+}
+catch
+{
+	throw
+} 
 #endregion
 
 #region "Step-Solr-Sitecore"
 #install solr cores for sitecore 
-$solrParams = @{  
+$sitecoreSolrParams = @{  
    Path = "$LocalStorage\sitecore-solr.json" 
    SolrUrl = $SolrUrl  
    SolrRoot = $SolrRoot  
    SolrService = $SolrService   
    CorePrefix = $prefix 
 } 
-Install-SitecoreConfiguration @solrParams -Verbose 
+ 
+try
+{
+	if( $steps.IsNotExecuted("sitecoreSolrParams") )
+	{
+		Install-SitecoreConfiguration @sitecoreSolrParams
+		$steps.Executed("sitecoreSolrParams")
+	}
+}
+catch
+{
+	throw
+}
 #endregion
 
 #region "Step-Sitecore"
 #install sitecore instance 
-
 $sitecoreParams = @{  
 	Path = "$LocalStorage\sitecore-XP0.json"   
 	Package = "$LocalStorage\Sitecore 9.0.1 rev. 171219 (OnPrem)_single.scwdp.zip" 
@@ -150,7 +269,18 @@ $sitecoreParams = @{
 	Sitename = $sitecoreSiteName       
 	XConnectCollectionService = "https://$XConnectCollectionService"
 }
-Install-SitecoreConfiguration @sitecoreParams -Verbose 
+try
+{
+	if( $steps.IsNotExecuted("sitecoreParams") )
+	{
+		Install-SitecoreConfiguration @sitecoreParams
+		$steps.Executed("sitecoreParams")
+	}
+}
+catch
+{
+	throw
+}
 #endregion
 
 
