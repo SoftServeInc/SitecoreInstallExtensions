@@ -9,12 +9,13 @@ A Powershell module with extensions for Sitecore Install Framework. The introduc
 
 # How to start?
 To start work with Sitecore Install Extensions you have to run this snippet with _Administrator_ rights.
+
 ```PowerShell
 Set-ExecutionPolicy Bypass -Scope Process -Force;
 iex ((New-Object System.Net.WebClient).DownloadString('http://bit.ly/installmodules'))
 ```
 
-To start work with Sitecore Install Extensions you have to install or update the following modules:
+The script above download install or update the following modules:
 * Sitecore Install Framework
 * Sitecore Fundamentals
 * [Sitecore Install Extensions](https://www.powershellgallery.com/packages/sitecoreinstallextensions)
