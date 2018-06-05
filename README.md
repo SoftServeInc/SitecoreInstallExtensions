@@ -8,6 +8,12 @@ A Powershell module with extensions for Sitecore Install Framework. The introduc
 
 
 # How to start?
+To start work with Sitecore Install Extensions you have to run this snippet with _Administrator_ rights.
+```PowerShell
+Set-ExecutionPolicy Bypass -Scope Process -Force;
+iex ((New-Object System.Net.WebClient).DownloadString('http://bit.ly/installmodules'))
+```
+
 To start work with Sitecore Install Extensions you have to install or update the following modules:
 * Sitecore Install Framework
 * Sitecore Fundamentals
@@ -16,11 +22,7 @@ To start work with Sitecore Install Extensions you have to install or update the
 
 You can do this manually or just run script [install-modules.ps1](install-modules.ps1). This script will install or update required modules automatically.
 
-This snippet will download script from GitHub and execute. Administrator rights are required.
-```PowerShell
-Set-ExecutionPolicy Bypass -Scope Process -Force;
-iex ((New-Object System.Net.WebClient).DownloadString('http://bit.ly/installmodules'))
-```
+
 
 ## Features:
 
