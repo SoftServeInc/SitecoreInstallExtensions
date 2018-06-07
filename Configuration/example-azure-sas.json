@@ -56,7 +56,7 @@
           "mongodb-win32-x86_64-2008plus-ssl-3.4.10-signed.msi",
           "solr-6.6.2.zip",
           "vc_redist.x64.exe",
-          "license.xml",
+          "license.xml"
         ]
       }
     },
