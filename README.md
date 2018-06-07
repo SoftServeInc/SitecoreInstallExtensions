@@ -1,12 +1,35 @@
 # Sitecore Install Extensions (SIX) 
 A Powershell module with extensions for Sitecore Install Framework. The introduction to Sitecore Install Framework is available on [Youtube](https://youtu.be/syslVshavOw)
-You can follow @SIExtensions to be updated
+
+| Module | Downloads |  Version |
+|---|---|---|
+| Sitecore Install Extensions | [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/sitecoreinstallextensions.svg?style=flat-square)](https://www.powershellgallery.com/packages/sitecoreinstallextensions)| [![powershellgallery](https://img.shields.io/powershellgallery/v/sitecoreinstallextensions.svg?style=flat-square)](https://www.powershellgallery.com/packages/sitecoreinstallextensions) |
+| Sitecore Install Azure | [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/sitecoreinstallazure.svg?style=flat-square)](https://www.powershellgallery.com/packages/sitecoreinstallazure) | [![powershellgallery](https://img.shields.io/powershellgallery/v/sitecoreinstallazure.svg?style=flat-square)](https://www.powershellgallery.com/packages/sitecoreinstallazure) |
+
+
+# How to start?
+To start work with Sitecore Install Extensions you have to run this snippet with _Administrator_ rights.
+
+```PowerShell
+Set-ExecutionPolicy Bypass -Scope Process -Force;
+iex ((New-Object System.Net.WebClient).DownloadString('http://bit.ly/installmodules'))
+```
+
+The script above download install or update the following modules:
+* Sitecore Install Framework
+* Sitecore Fundamentals
+* [Sitecore Install Extensions](https://www.powershellgallery.com/packages/sitecoreinstallextensions)
+* [Sitecore Install Azure](https://www.powershellgallery.com/packages/SitecoreInstallAzure)
+
+You can do this manually or just run script [install-modules.ps1](install-modules.ps1). This script will install or update required modules automatically.
+
+
+
+## Features:
 
 [![Very Short Introduction](http://img.youtube.com/vi/-u2BGO6yM-w/0.jpg)](https://youtu.be/-u2BGO6yM-w)
 
 
-
-## With SIX module we are able to install:
 * Sitecore prerequisites like JRE, MongoDb, Solr [An example configuration to install prerequisites](Configuration/sitecore-prerequisites.json)
 * Configure Solr as a Windows service without any dependence [Details on blog](http://lets-share.senktas.net/2017/11/solr-as-a-service.html)
 * Install Sitecore 8+ in a SIF manner [An example configuration to install Sitecore 8 Update 6](Configuration/sitecore8-xp0.json)
@@ -15,20 +38,7 @@ You can follow @SIExtensions to be updated
 
 > Remember to configure installation process regarding to your requirements.
 
-# How to start?
-To start work with Sitecore Install Extensions you have to install or update the following modules:
-* Sitecore Install Framework
-* Sitecore Fundamentals
-* [Sitecore Install Extensions](https://www.powershellgallery.com/packages/sitecoreinstallextensions)
-* [Sitecore Install Azure](https://www.powershellgallery.com/packages/SitecoreInstallAzure)
 
-You can do this manually or just run script [install-modules.ps1](install-modules.ps1). This script will install or update required modules automatically.
-
-This snippet will download script from GitHub and execute. Administrator rights are required.
-```PowerShell
-Set-ExecutionPolicy Bypass -Scope Process -Force;
-iex ((New-Object System.Net.WebClient).DownloadString('http://bit.ly/installmodules'))
-```
 
 
 # Tasks & Config Functions
