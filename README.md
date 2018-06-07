@@ -20,8 +20,7 @@ Sitecore Install Framework, Sitecore Fundamentals, [Sitecore Install Extensions]
 You can install modues manually or just run script [install-modules.ps1](install-modules.ps1).
 
 ## Features
-
-[Very Short Introduction to SIX module on Youtube](http://img.youtube.com/vi/-u2BGO6yM-w/0.jpg)](https://youtu.be/-u2BGO6yM-w)
+[Very Short Introduction to SIX module on Youtube](https://youtu.be/-u2BGO6yM-w)
 
 * Sitecore prerequisites like JRE, MongoDb, Solr [An example configuration to install prerequisites](Configuration/sitecore-prerequisites.json)
 * Configure Solr as a Windows service without any dependence [Details on blog](http://lets-share.senktas.net/2017/11/solr-as-a-service.html)
@@ -73,6 +72,7 @@ Softserve is a global leader in IT services and has offices around the world del
 
 # Bitly
 A few handy short links are configured:
+
 http://bit.ly/git-six redirect to https://github.com/SoftServeInc/SitecoreInstallExtensions
 
 http://bit.ly/installmodules redirect to https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/install-modules.ps1
