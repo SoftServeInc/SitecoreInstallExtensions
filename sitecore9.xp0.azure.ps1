@@ -108,6 +108,9 @@ $prerequisites = @{
 	SqlServer = $SqlServer 
 	SqlAdminUser = $SqlAdminUser   
 	SqlAdminPassword = $SqlAdminPassword
+	
+	# uncomment for workstation
+	#Workstation = $true
 } 
 
 try
