@@ -6,7 +6,6 @@ A Powershell module with extensions for Sitecore Install Framework. The introduc
 | Sitecore Install Extensions | [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/sitecoreinstallextensions.svg?style=flat-square)](https://www.powershellgallery.com/packages/sitecoreinstallextensions)| [![powershellgallery](https://img.shields.io/powershellgallery/v/sitecoreinstallextensions.svg?style=flat-square)](https://www.powershellgallery.com/packages/sitecoreinstallextensions) |
 | Sitecore Install Azure | [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/sitecoreinstallazure.svg?style=flat-square)](https://www.powershellgallery.com/packages/sitecoreinstallazure) | [![powershellgallery](https://img.shields.io/powershellgallery/v/sitecoreinstallazure.svg?style=flat-square)](https://www.powershellgallery.com/packages/sitecoreinstallazure) |
 
-
 # How to start?
 To start work with Sitecore Install Extensions you have to run this snippet with _Administrator_ rights.
 
@@ -16,19 +15,13 @@ iex ((New-Object System.Net.WebClient).DownloadString('http://bit.ly/installmodu
 ```
 
 The script above download install or update the following modules:
-* Sitecore Install Framework
-* Sitecore Fundamentals
-* [Sitecore Install Extensions](https://www.powershellgallery.com/packages/sitecoreinstallextensions)
-* [Sitecore Install Azure](https://www.powershellgallery.com/packages/SitecoreInstallAzure)
+Sitecore Install Framework, Sitecore Fundamentals, [Sitecore Install Extensions](https://www.powershellgallery.com/packages/sitecoreinstallextensions), [Sitecore Install Azure](https://www.powershellgallery.com/packages/SitecoreInstallAzure)
 
-You can do this manually or just run script [install-modules.ps1](install-modules.ps1). This script will install or update required modules automatically.
+You can install modues manually or just run script [install-modules.ps1](install-modules.ps1).
 
+## Features
 
-
-## Features:
-
-[![Very Short Introduction](http://img.youtube.com/vi/-u2BGO6yM-w/0.jpg)](https://youtu.be/-u2BGO6yM-w)
-
+[Very Short Introduction to SIX module on Youtube](http://img.youtube.com/vi/-u2BGO6yM-w/0.jpg)](https://youtu.be/-u2BGO6yM-w)
 
 * Sitecore prerequisites like JRE, MongoDb, Solr [An example configuration to install prerequisites](Configuration/sitecore-prerequisites.json)
 * Configure Solr as a Windows service without any dependence [Details on blog](http://lets-share.senktas.net/2017/11/solr-as-a-service.html)
@@ -38,7 +31,8 @@ You can do this manually or just run script [install-modules.ps1](install-module
 
 > Remember to configure installation process regarding to your requirements.
 
-
+## Examples
+[The bigest how to collection about Sitecore Installation Framework and Sitecore Install Extensions is wiki](https://github.com/SoftServeInc/SitecoreInstallExtensions/wiki)
 
 
 # Tasks & Config Functions
@@ -77,4 +71,12 @@ Time to time, we want to uninstall Sitecore and here *[uninstall-sitecore.ps1](u
 Thanks to [SoftServe](https://www.softserveinc.com/en-US/) sponsorship initial version of Sitecore Install Extensions modul will be open for public access for Sitecore Community attendees.
 Softserve is a global leader in IT services and has offices around the world delivering tailored tech solutions for various branches and business sectors.
 
+# Bitly
+A few handy short links are configured:
+http://bit.ly/git-six redirect to https://github.com/SoftServeInc/SitecoreInstallExtensions
 
+http://bit.ly/installmodules redirect to https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/install-modules.ps1
+
+http://bit.ly/six-wiki redirects to https://github.com/SoftServeInc/SitecoreInstallExtensions/wiki
+
+http://bit.ly/six-raw redirects to https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master
