@@ -49,23 +49,40 @@ class Steps
 }
 #endregion
 
-#define parameters 
+#region "Parameters" 
 $LocalStorage = "$PSScriptRoot\Storage"
 $GitHubRoot = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/Configuration/"
 
+# Prefix is used for Sitecore website, xConnect website and database 
 $prefix = "sc9u1"
 $sitecoreSiteName = "$prefix.local" 
 
 $XConnectCollectionService = "$prefix.xconnect"
 
 $SolrHost = "solr.local"
-$SolrUrl = "https://solr.local:8983/solr" 
-$SolrRoot = "C:\solr\solr-6.6.2"
+$SolrUrl = "https://$($SolrHost):8983/solr" 
+$SolrInstallFolder = "C:\solr"
+$SolrRoot = "$SolrInstallFolder\solr-6.6.2"
 $SolrService = "PSSolrService"
 
 $SqlServer = "$env:computername" #OR "SQLServerName\SQLInstanceName"
 $SqlAdminUser = ""
 $SqlAdminPassword= "" 
+
+$AzureSubscription = ""
+$AzureResourceGroup = ""
+$AzureStorageName = ""
+
+# For Windows Server $Workstation must be set to $false, for Windows 8/10/Next to $true
+$Workstation = $false
+#endregion
+
+###################################################################################
+#
+#	Always read and configure parameters in section above
+#
+###################################################################################
+
 
 
 # Do not display progress (performance improvement)
@@ -80,17 +97,20 @@ Invoke-WebRequest -Uri "$GitHubRoot/sitecore9.azure.json" -OutFile "$PSScriptRoo
 $downloadSitecorePrerequisites = @{
     Path = "$PSScriptRoot\sitecore9.azure.json"   
     Destination = "$LocalStorage"
-    SubscriptionName = ""
-    ResourceGroupName = ""
-    StorageName = ""
+    SubscriptionName = "$AzureSubscription"
+    ResourceGroupName = "$AzureResourceGroup"
+    StorageName = "$AzureStorageName"
 }
 
 try
 {
-	if( $steps.IsNotExecuted("downloadSitecorePrerequisites") )
+	if( $AzureSubscription -ne $null -and  $AzureResourceGroup -ne $null )
 	{
-		Install-SitecoreConfiguration @downloadSitecorePrerequisites
-		$steps.Executed("downloadSitecorePrerequisites")
+		if( $steps.IsNotExecuted("downloadSitecorePrerequisites") )
+		{
+			Install-SitecoreConfiguration @downloadSitecorePrerequisites
+			$steps.Executed("downloadSitecorePrerequisites")
+		}
 	}
 }
 catch
@@ -108,9 +128,7 @@ $prerequisites = @{
 	SqlServer = $SqlServer 
 	SqlAdminUser = $SqlAdminUser   
 	SqlAdminPassword = $SqlAdminPassword
-	
-	# uncomment for workstation
-	#Workstation = $true
+	Workstation = $Workstation
 } 
 
 try
@@ -133,6 +151,10 @@ $installSolr =@{
     Path = "$PSScriptRoot\Solr.json"   
     LocalStorage = "$LocalStorage"
     
+	SolrHost = "$SolrHost"
+	# By default SOLR will be installed in "C:\solr", change install folder parameter if you want
+	InstallFolder = "$SolrInstallFolder"
+
 	CertPassword = "secret"
     CertStoreLocation = "Cert:\LocalMachine\My"
     CertificateName = $SolrHost
