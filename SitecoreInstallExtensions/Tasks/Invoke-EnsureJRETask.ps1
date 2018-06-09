@@ -13,17 +13,18 @@ Function Invoke-EnsureJRETask {
 
 	$javaHome = [environment]::GetEnvironmentVariable("JAVA_HOME",[EnvironmentVariableTarget]::Machine)
 
-	if($pscmdlet.ShouldProcess($javaHome, "Verify if JavaRE is installed"))
+	if($pscmdlet.ShouldProcess($javaHome, "Verify if JRE is installed"))
     {
-		if( $javaHome -eq $null)
+		if( $javaHome -eq $null -or -not (Test-Path -Path $javaHome))
 		{
-			Write-Warning "Java is not installed (Solr requires JavaRE)"
+			[environment]::SetEnvironmentVariable("JAVA_HOME",$null,[EnvironmentVariableTarget]::Machine)   
+			Write-Warning "Java is not installed (Solr requires JRE)"
  
 			$MSIArguments = @(
 				"/s"
 			)
   
-			Write-Host "Start installing Java: $JavaPackagePath"  
+			Write-Verbose "Start installing Java: $JavaPackagePath"  
 
 			if( -not (Test-Path -Path $JavaPackagePath ) ) { Write-Error "$JavaPackagePath not exists!"  return}
       
@@ -34,16 +35,18 @@ Function Invoke-EnsureJRETask {
 			
 			if( $items.Count -eq 1 )
 			{
+				Write-Verbose "$items"
 				$javaHome  = Split-Path -Parent $items.Directory.FullName
 			}
 			else
 			{
-				$javaPath = $items | Out-GridView -PassThru  
+				Write-Verbose "Ambigous Java installation $items"
+				$javaPath = $items | Out-GridView -PassThru
 				$javaHome  = Split-Path -Parent $javaPath.Directory.FullName
 			}
 			
 			[environment]::SetEnvironmentVariable("JAVA_HOME",$javaHome,[EnvironmentVariableTarget]::Machine)   
-			Write-Verbose "JAVA already installed $javaHome"
+			Write-Verbose "JAVA installed $javaHome"
 		}
 		else
 		{
