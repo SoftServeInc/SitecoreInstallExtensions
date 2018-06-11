@@ -73,11 +73,15 @@ $AzureStorageToken = ""
 # Do not display progress (performance improvement)
 $global:ProgressPreference = 'silentlyContinue'
 
+# initialize steps functionality
+$steps = [Steps]::new($MyInvocation.MyCommand.Source)
+
+
 #region "Download Artifacts"
 Invoke-WebRequest -Uri "$GitHubRoot/xcommerce9.azure.sas.json" -OutFile "$PSScriptRoot\xcommerce9.azure.json"
 $downloadPrerequisites =@{
     Path = "$PSScriptRoot\xcommerce9.azure.json"   
-    Destination = $LocalStorage
+    LocalStorage = $LocalStorage
     StorageUrl = $AzureStorageUrl
     StorageSas = $AzureStorageToken
 }
