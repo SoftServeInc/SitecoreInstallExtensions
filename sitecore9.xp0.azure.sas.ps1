@@ -92,7 +92,7 @@ $steps = [Steps]::new($MyInvocation.MyCommand.Source)
 
 
 #region "Download Artifacts"
-Invoke-WebRequest -Uri "$GitHubRoot/sitecore9.azure.json" -OutFile "$PSScriptRoot\sitecore9.azure.sas.json"
+Invoke-WebRequest -Uri "$GitHubRoot/sitecore9.azure.sas.json" -OutFile "$PSScriptRoot\sitecore9.azure.json"
 $downloadSitecorePrerequisites = @{
     Path = "$PSScriptRoot\sitecore9.azure.json"   
     Destination = $LocalStorage
