@@ -1,12 +1,10 @@
 ﻿{
   "Parameters": {
     "StorageSas": {
-      "Type": "string",
-      "Description": ""
+      "Type": "string"
     },
     "StorageUrl": {
-      "Type": "string",
-      "Description": ""
+      "Type": "string"
     },
     "ToolsContainer": {
       "Type": "string",
@@ -46,7 +44,7 @@
       "Type": "DownloadBlobContent",
       "Params": {
         "Url": "[parameter('StorageUrl')]",
-        "Token": "[parameter('StorageSasToken')]",
+        "Token": "[parameter('StorageSas')]",
         "Container": "[parameter('ToolsContainer')]",
         "Destination": "[parameter('Destination')]",
         "Blobs": [
@@ -68,7 +66,7 @@
       "Type": "DownloadBlobContent",
       "Params": {
         "Url": "[parameter('StorageUrl')]",
-        "Token": "[parameter('StorageSasToken')]",
+        "Token": "[parameter('StorageSas')]",
         "Container": "[parameter('Sitecore9Container')]",
         "Destination": "[parameter('Destination')]",
         "Blobs": [

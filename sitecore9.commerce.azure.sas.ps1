@@ -51,7 +51,7 @@ If(![Environment]::Is64BitProcess)
 
 #define parameters 
 $LocalStorage = "$PSScriptRoot\Storage"
-$GitHubRoot = "http://bit.ly/six-raw/Configuration/"
+$GitHubRoot = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/Configuration/"
 
 $prefix = "sc9u1"
 $sitecoreSiteName = "$prefix.local" 
@@ -77,9 +77,9 @@ $global:ProgressPreference = 'silentlyContinue'
 Invoke-WebRequest -Uri "$GitHubRoot/xcommerce9.azure.sas.json" -OutFile "$PSScriptRoot\xcommerce9.azure.json"
 $downloadPrerequisites =@{
     Path = "$PSScriptRoot\xcommerce9.azure.json"   
-    Destination = "$LocalStorage"
-    Url = "$AzureStorageUrl"
-    Token = "$AzureStorageToken"
+    Destination = $LocalStorage
+    StorageUrl = $AzureStorageUrl
+    StorageSas = $AzureStorageToken
 }
 
 try

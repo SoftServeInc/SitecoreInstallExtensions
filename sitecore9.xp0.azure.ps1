@@ -151,11 +151,11 @@ $installSolr =@{
     Path = "$PSScriptRoot\Solr.json"   
     LocalStorage = "$LocalStorage"
     
-	SolrHost = "$SolrHost"
-	# By default SOLR will be installed in "C:\solr", change install folder parameter if you want
-	InstallFolder = "$SolrInstallFolder"
+    SolrHost = "$SolrHost"
+    # By default SOLR will be installed in "C:\solr", change install folder parameter if you want
+    InstallFolder = "$SolrInstallFolder"
 
-	CertPassword = "secret"
+    CertPassword = "secret"
     CertStoreLocation = "Cert:\LocalMachine\My"
     CertificateName = $SolrHost
     
