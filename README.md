@@ -79,4 +79,3 @@ http://bit.ly/installmodules redirect to https://raw.githubusercontent.com/SoftS
 
 http://bit.ly/six-wiki redirects to https://github.com/SoftServeInc/SitecoreInstallExtensions/wiki
 
-http://bit.ly/six-raw redirects to https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master
