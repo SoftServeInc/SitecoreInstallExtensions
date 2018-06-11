@@ -1,12 +1,10 @@
 ﻿{
   "Parameters": {
     "StorageSas": {
-      "Type": "string",
-      "Description": ""
+      "Type": "string"
     },
     "StorageUrl": {
-      "Type": "string",
-      "Description": ""
+      "Type": "string"
     },
     "ToolsContainer": {
       "Type": "string",
@@ -82,7 +80,7 @@
       "Skip": "[not(parameter('InstallPostman'))]",
       "Params": {
         "Url": "[parameter('StorageUrl')]",
-        "Token": "[parameter('StorageSasToken')]",
+        "Token": "[parameter('StorageSas')]",
         "Container": "[parameter('ToolsContainer')]",
         "Destination": "[parameter('LocalStorage')]",
         "Blobs": [
@@ -95,7 +93,7 @@
       "Type": "DownloadBlobContent",
       "Params": {
         "Url": "[parameter('StorageUrl')]",
-        "Token": "[parameter('StorageSasToken')]",
+        "Token": "[parameter('StorageSas')]",
         "Container": "[parameter('ToolsContainer')]",
         "Destination": "[parameter('DeployFolder')]",
         "Blobs": [
@@ -107,7 +105,7 @@
       "Type": "DownloadBlobContent",
       "Params": {
         "Url": "[parameter('StorageUrl')]",
-        "Token": "[parameter('StorageSasToken')]",
+        "Token": "[parameter('StorageSas')]",
         "Container": "[parameter('Sitecore9Container')]",
         "Destination": "[parameter('DeployFolder')]",
         "Blobs": [
@@ -120,7 +118,7 @@
       "Type": "DownloadBlobContent",
       "Params": {
         "Url": "[parameter('StorageUrl')]",
-        "Token": "[parameter('StorageSasToken')]",
+        "Token": "[parameter('StorageSas')]",
         "Container": "[parameter('SitecoreModules')]",
         "Destination": "[parameter('DeployFolder')]",
         "Blobs": [
@@ -138,7 +136,7 @@
       "Type": "DownloadBlobContent",
       "Params": {
         "Url": "[parameter('StorageUrl')]",
-        "Token": "[parameter('StorageSasToken')]",
+        "Token": "[parameter('StorageSas')]",
         "Container": "[parameter('SitecoreCommerce')]",
         "Destination": "[parameter('DeployFolder')]",
         "Blobs": [

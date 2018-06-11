@@ -8,6 +8,41 @@
 #requires -module SitecoreInstallExtensions
 #requires -module SitecoreInstallAzure
 
+#region Steps implementation
+class Steps
+{
+   [string] $Path
+   $Steps = @()
+
+   Steps ([string] $path)
+   {
+	   $this.Path = $path -replace "ps1","steps.json"
+       if( (Test-Path $this.Path) )
+       {
+           $this.Steps = (Get-Content -Path $this.Path -Raw) | ConvertFrom-Json
+       }    
+       else
+       {
+           $this.Steps = @()
+	   }
+   }
+
+	# mark step as executed
+	Executed([string] $stepName)
+	{
+        $this.Steps += $stepName
+
+        $json = ConvertTo-Json -InputObject $this.Steps
+        Set-Content -Path $this.Path -Value $json
+	}
+
+	[bool] IsNotExecuted([string] $stepName)
+	{
+		return -not ($this.Steps.Contains($stepName))
+	}
+}
+#endregion
+
 If(![Environment]::Is64BitProcess) 
 {
     Write-Host "Please run 64-bit PowerShell" -foregroundcolor "yellow"
@@ -44,7 +79,19 @@ $downloadPrerequisites =@{
     ResourceGroupName = ""
     StorageName = ""
 }
-Install-SitecoreConfiguration @downloadPrerequisites
+
+try
+{
+	if( $steps.IsNotExecuted("downloadSitecorePrerequisites") )
+	{
+		Install-SitecoreConfiguration @downloadPrerequisites
+		$steps.Executed("downloadSitecorePrerequisites")
+	}
+}
+catch
+{
+	throw
+}
 #endregion
 
 #region "Install Prerequisites"
@@ -55,5 +102,16 @@ $installPrerequisites = @{
 	LocalStorage = $LocalStorage
 }
 
-Install-SitecoreConfiguration @installPrerequisites -Verbose
+try
+{
+	if( $steps.IsNotExecuted("installPrerequisites") )
+	{
+		Install-SitecoreConfiguration @installPrerequisites
+		$steps.Executed("installPrerequisites")
+	}
+}
+catch
+{
+	throw
+}
 #endregion
