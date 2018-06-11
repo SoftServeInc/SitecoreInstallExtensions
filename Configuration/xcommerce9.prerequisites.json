@@ -5,7 +5,7 @@
     },
     "DeployFolder": {
       "Type": "string",
-      "DefaultValue": "C:\\xc9-deploy"
+      "Reference": "LocalStorage"
     },
     "CertificateName": {
       "Type": "string",
@@ -15,7 +15,7 @@
     "CertPath": {
       "Type": "string",
       "Description": "The physical path on disk where certificates will be stored.",
-      "DefaultValue": "C:\\xc9-deploy"
+      "Reference": "LocalStorage"
     },
     "RootCertFileName": {
       "Type": "string",
@@ -53,8 +53,7 @@
           "[variable('Sitecore.Commerce.Engine.SDK')]",
           "[variable('Sitecore.Commerce.Engine')]",
           "[variable('Sitecore.BizFX.SDK')]",
-          "[variable('Sitecore.BizFX')]",
-          "[variable('Sitecore.IdentityServer')]"
+          "[variable('Sitecore.BizFX')]"
         ]
       }
     },
@@ -88,21 +87,21 @@
     "Unpack-SIF": {
       "Type": "Unpack",
       "Params": {
-        "Source": "[joinpath(parameter('DeployFolder'),'SIF.Sitecore.Commerce.1.1.4.zip')]",
+        "Source": "[joinpath(parameter('LocalStorage'),'SIF.Sitecore.Commerce.1.1.4.zip')]",
         "Destination": "[variable('SIF.Commerce')]"
       }
     },
     "Unpack-Commerce.Engine": {
       "Type": "Unpack",
       "Params": {
-        "Source": "[joinpath(parameter('DeployFolder'),'Sitecore.Commerce.Engine.2.1.55.zip')]",
+        "Source": "[joinpath(parameter('LocalStorage'),'Sitecore.Commerce.Engine.2.1.55.zip')]",
         "Destination": "[variable('Sitecore.Commerce.Engine')]"
       }
     },
     "Unpack-EngineSDK": {
       "Type": "Unpack",
       "Params": {
-        "Source": "[joinpath(parameter('DeployFolder'),'Sitecore.Commerce.Engine.SDK.2.1.10.zip')]",
+        "Source": "[joinpath(parameter('LocalStorage'),'Sitecore.Commerce.Engine.SDK.2.1.10.zip')]",
         "Destination": "[variable('Sitecore.Commerce.Engine.SDK')]"
       }
     },
@@ -116,7 +115,7 @@
     "Unpack-BizFX": {
       "Type": "Unpack",
       "Params": {
-        "Source": "[joinpath(parameter('DeployFolder'),'Sitecore.BizFX.1.1.9.zip')]",
+        "Source": "[joinpath(parameter('LocalStorage'),'Sitecore.BizFX.1.1.9.zip')]",
         "Destination": "[variable('Sitecore.BizFX')]"
       }
     }

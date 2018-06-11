@@ -79,8 +79,8 @@
       "Type": "Exe",
       "Skip": "[not(testpackage('IIS URL Rewrite Module 2'))]",
       "Params": {
-        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
-        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'rewrite_amd64.msi') ,' /quiet')]"
+        "ExePath": "C:\\Program Files\\Microsoft\\Web Platform Installer\\WebpiCmd-x64.exe",
+        "Arguments": "/Install /Products:'UrlRewrite2' /AcceptEULA"
       }
     },
     "Install-SQLSysClrTypes-x64": {
@@ -125,7 +125,7 @@
       }
     },
     "Check-MSSQL-Password": {
-      "Description" :  "This task will check if user is able to login to MSSQL server.",
+      "Description": "This task will check if user is able to login to MSSQL server.",
       "Type": "ScriptBlock",
       "Params": {
         "Script": "PARAM($Query,$ServerInstance,$SqlAdminUser,$SqlAdminPassword) Invoke-SqlCmd -Query $Query.Replace('#','''') -ServerInstance $ServerInstance -Username $SqlAdminUser -Password $SqlAdminPassword",
