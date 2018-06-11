@@ -35,7 +35,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		install-all-example.ps1 = install-all-example.ps1
 		install-modules.ps1 = install-modules.ps1
 		sitecore9.commerce.azure.ps1 = sitecore9.commerce.azure.ps1
+		sitecore9.commerce.azure.sas.ps1 = sitecore9.commerce.azure.sas.ps1
 		sitecore9.xp0.azure.ps1 = sitecore9.xp0.azure.ps1
+		sitecore9.xp0.azure.sas.ps1 = sitecore9.xp0.azure.sas.ps1
 		uninstall-sitecore.ps1 = uninstall-sitecore.ps1
 	EndProjectSection
 EndProject
