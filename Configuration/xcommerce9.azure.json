@@ -40,7 +40,7 @@
     },
     "DeployFolder": {
       "Type": "string",
-      "DefaultValue": "C:\\xc9-deploy"
+      "Reference": "LocalStorage"
     },
     "InstallPostman": {
       "Type": "boolean",
