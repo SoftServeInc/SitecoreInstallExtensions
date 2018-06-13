@@ -70,6 +70,10 @@ $SqlAdminPassword= ""
 # Do not display progress (performance improvement)
 $global:ProgressPreference = 'silentlyContinue'
 
+# initialize steps functionality
+$steps = [Steps]::new($MyInvocation.MyCommand.Source)
+
+
 #region "Download Artifacts"
 Invoke-WebRequest -Uri "$GitHubRoot/xcommerce9.azure.json" -OutFile "$PSScriptRoot\xcommerce9.azure.json"
 $downloadPrerequisites =@{
