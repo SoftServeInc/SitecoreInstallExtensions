@@ -78,7 +78,7 @@ $steps = [Steps]::new($MyInvocation.MyCommand.Source)
 Invoke-WebRequest -Uri "$GitHubRoot/xcommerce9.azure.json" -OutFile "$PSScriptRoot\xcommerce9.azure.json"
 $downloadPrerequisites =@{
     Path = "$PSScriptRoot\xcommerce9.azure.json"   
-    Destination = "$LocalStorage"
+    LocalStorage = "$LocalStorage"
     SubscriptionName = ""
     ResourceGroupName = ""
     StorageName = ""
