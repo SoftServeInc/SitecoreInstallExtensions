@@ -30,7 +30,6 @@
     },
     "InstallFolder": {
       "Type": "string",
-      "DefaultValue": "c:\\solr",
       "Description": "Where should Solr be installed to"
     },
     "SolrUseSSL": {
@@ -40,7 +39,6 @@
     },
     "SolrHost": {
       "Type": "string",
-      "DefaultValue": "solr.local",
       "Description": "What host name should the Solr service use"
     },
     "SolrPort": {
@@ -98,10 +96,12 @@
     // Creates a path to the Solr install package.
     "Source.Solr": "[joinpath(parameter('LocalStorage'), parameter('SolrPackage'))]",
 
+    "SolrFolder": "[concat('\\solr-', parameter('SolrVersion'))]",
+
     // The path where should Solr be installed.
-    "SolrInstallFolder": "[concat(parameter('InstallFolder'), '\\solr-', parameter('SolrVersion'))]",
+    "SolrInstallFolder": "[joinpath(parameter('InstallFolder'), variable('SolrFolder')]",
     // The path where should Solr SSL certificate be installed.
-    "CertStoreFile": "[concat(variable('SolrInstallFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]",
+    "CertStoreFile": "[joinpath(variable('SolrInstallFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]",
 
     "SolrProtocol": "[if ( parameter('SolrUseSSL'), 'https', 'http')]",
     "SolrUrl": "[concat(variable('SolrProtocol'), '://', parameter('SolrHost'), ':', parameter('SolrPort'), '/solr/')]",
@@ -212,17 +212,13 @@
         "Memory": ""
       }
     },
-    "WaitForSolr": {
-      "Type": "ScriptBlock",
-      "Params": {
-        "Script": "PARAM($Seconds) Start-Sleep -Seconds $Seconds",
-        "Arguments": [ "5" ]
-      }
-    },
     "Ensure Solr is running": {
-      "Type": "HttpRequest",
+      "Type": "WebRequest",
       "Params": {
-        "Uri": "[variable('SolrUrl')]"
+        "Uri": "[variable('SolrUrl')]",
+        "RetryCount": "3",
+        "RetryDelay": "5000",
+        "RequestTimeout" :  "5000"
       }
     }
   }

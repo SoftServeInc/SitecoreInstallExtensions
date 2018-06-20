@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configura
 		Configuration\example-azure-sas.json = Configuration\example-azure-sas.json
 		Configuration\example-azure.json = Configuration\example-azure.json
 		Configuration\remove-sitecore8-xp0.json = Configuration\remove-sitecore8-xp0.json
+		Configuration\Remove-Solr.json = Configuration\Remove-Solr.json
 		Configuration\secrets-example.json = Configuration\secrets-example.json
 		Configuration\sifology-demo.json = Configuration\sifology-demo.json
 		Configuration\sitecore-packages.json = Configuration\sitecore-packages.json
