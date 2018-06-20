@@ -54,7 +54,7 @@ function Invoke-EnsureSolrTask
 		
 		# Move expanded content up one level
         $cleanupPath = Join-Path $InstallLocation ([IO.Path]::GetFileNameWithoutExtension($SolrPackage))
-        Move-Item -Path "$cleanUpPath\*" -Destination $InstallLocation
+        Copy-Item -Path "$cleanUpPath\*" -Destination $InstallLocation -Recurse -Force -Confirm:$true
         Remove-Item $cleanupPath
 		
 		if( $InstallLocation -ne $null )
