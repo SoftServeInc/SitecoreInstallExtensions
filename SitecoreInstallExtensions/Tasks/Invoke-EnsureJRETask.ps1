@@ -10,8 +10,17 @@ Function Invoke-EnsureJRETask {
 		[Parameter(Mandatory=$true)]
 		[string]$JavaPackagePath
 	)
+	
+	#region "Verify JAVA_HOME variable"
+	$javaHomeUser = [environment]::GetEnvironmentVariable("JAVA_HOME",[EnvironmentVariableTarget]::User)
 
 	$javaHome = [environment]::GetEnvironmentVariable("JAVA_HOME",[EnvironmentVariableTarget]::Machine)
+
+	if( $javaHome -ne $null -and $javaHomeUser -ne $null -and $javaHomeUser -ne $javaHome ) {
+		Write-Error "JAVA_HOME environment variable has different value on System ($javaHome) and User ($javaHomeUser) level."
+	}
+
+	#endregion
 
 	if($pscmdlet.ShouldProcess($javaHome, "Verify if JRE is installed"))
     {
