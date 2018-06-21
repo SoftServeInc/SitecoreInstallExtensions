@@ -67,6 +67,10 @@ $SqlServer = "$env:computername" #OR "SQLServerName\SQLInstanceName"
 $SqlAdminUser = ""
 $SqlAdminPassword= "" 
 
+$AzureSubscription = ""
+$AzureResourceGroup = ""
+$AzureStorageName = ""
+
 # Do not display progress (performance improvement)
 $global:ProgressPreference = 'silentlyContinue'
 
@@ -79,9 +83,9 @@ Invoke-WebRequest -Uri "$GitHubRoot/xcommerce9.azure.json" -OutFile "$PSScriptRo
 $downloadPrerequisites =@{
     Path = "$PSScriptRoot\xcommerce9.azure.json"   
     LocalStorage = "$LocalStorage"
-    SubscriptionName = ""
-    ResourceGroupName = ""
-    StorageName = ""
+    SubscriptionName = $AzureSubscription
+    ResourceGroupName = $AzureResourceGroup
+    StorageName = $AzureStorageName
 }
 
 try

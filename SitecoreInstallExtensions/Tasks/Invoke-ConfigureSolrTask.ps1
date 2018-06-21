@@ -27,6 +27,7 @@ function Invoke-ConfigureSolrTask
 
 .NOTE
 	Source: https://gist.github.com/jermdavis/49018386ae7544ce0689568edb7ca2b8
+	Modified by: @RobsonAutomator
 #>
 
     [CmdletBinding(SupportsShouldProcess=$true)]
@@ -37,8 +38,13 @@ function Invoke-ConfigureSolrTask
         [string]$solrHost,
         [parameter(Mandatory=$true)]
         [string]$solrRoot,
-        [parameter(Mandatory=$true)]
-        [string]$certificateStore
+		[parameter(Mandatory=$true)]
+        [string]$certificateStore,
+		
+        [string]$solrPort = "8983",
+        
+        [string]$solrMemory = "512m"
+
     )
 
     PROCESS
@@ -53,6 +59,9 @@ function Invoke-ConfigureSolrTask
             Write-TaskInfo -Message "HTTP" -Tag "Configuring Solr for HTTP access"
             Configure-HTTP $solrHost $solrRoot
         }
+
+		Write-TaskInfo -Message "PORT-MEMORY" -Tag "Configuring Solr port & memory"
+		Configure-Solr $solrRoot $solrHost $solrPort $solrMemory
     }
 }
 

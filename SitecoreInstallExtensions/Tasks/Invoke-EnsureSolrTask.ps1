@@ -34,13 +34,13 @@ function Invoke-EnsureSolrTask
         $InstallLocation
 	)
 
-	$solrHome = [environment]::GetEnvironmentVariable("SOLR_HOME",[EnvironmentVariableTarget]::Machine)
+	$solrHome = Join-Path -Path $InstallLocation -ChildPath "\bin\solr.in.cmd"
 
 	if($pscmdlet.ShouldProcess($solrHome, "Verify if SOLR is installed"))
     {
 		if( $solrHome -ne $null -and (Test-Path -Path $solrHome))
 		{
-			Write-Verbose "Solr already installed SOLR_HOME is set to $solrHome"
+			Write-Verbose "Solr already installed in $solrHome"
 			return	
 		}
 
@@ -54,17 +54,10 @@ function Invoke-EnsureSolrTask
 		
 		# Move expanded content up one level
         $cleanupPath = Join-Path $InstallLocation ([IO.Path]::GetFileNameWithoutExtension($SolrPackage))
-        Copy-Item -Path "$cleanUpPath\*" -Destination $InstallLocation -Recurse -Force -Confirm:$true
-        Remove-Item $cleanupPath
+        Copy-Item -Path "$cleanUpPath\*" -Destination $InstallLocation -Recurse -Force
+        Remove-Item $cleanupPath -Recurse -Force
 		
-		if( $InstallLocation -ne $null )
-		{
-			$solrHome = Join-Path -Path $InstallLocation -ChildPath "\server\solr"
- 
-			[environment]::SetEnvironmentVariable("SOLR_HOME",$solrHome,[EnvironmentVariableTarget]::Machine) 
-			Write-Verbose "Set SOLR_HOME variable to $solrHome"
-
-		}
+		Write-Verbose "Solr installed $InstallLocation"
 	}
 }
 
@@ -74,33 +67,33 @@ function Install-SolrAsService
 {
 	[CmdletBinding(SupportsShouldProcess=$true)]
 	param(
-		# Solr Port
+		[Parameter(Mandatory=$false)]
+        $SolrRoot,
         [Parameter(Mandatory=$false)]
-        $Port,
-
-        # Solr Memory
-        [Parameter(Mandatory=$false)]
-        $Memory
+        $SolrPort,
+		[Parameter(Mandatory=$false)]
+        $ServiceName
 	)
 
 	if($pscmdlet.ShouldProcess("PSSolrService", "Verify if Solr as a service is installed"))
     {
 		#region Check if PSSolrService is already installed
-		$service = Get-Service | Where-Object {$_.name -eq "PSSolrService"} 
+		$service = Get-Service | Where-Object {$_.name -eq $ServiceName} 
   
 		if( $service -ne $null -and $service.Status -eq 'Running' )
 		{
-			Write-Warning -Message "PSSolrService is installed and running"
+			Write-Warning -Message "$ServiceName is installed and running"
 			return
 		}
 		#endregion
 	}
 
-	if($pscmdlet.ShouldProcess("PSSolrService.ps1", "Install SOLR as a Service"))
+	if($pscmdlet.ShouldProcess($SolrRoot, "Install SOLR as a $ServiceName on port $SolrPort"))
     {
 		$command1= $PSScriptRoot+"\PSSolrService.ps1" 
-		&$command1 -Setup -Verbose
-		&$command1 -Start -Verbose	
+		&$command1 -Setup -ServiceName $ServiceName -SolrPort $SolrPort -SolrRoot $SolrRoot -Verbose
+		
+        Start-Service -Name $ServiceName
 	}
 }
 
@@ -108,21 +101,31 @@ function Remove-SolrService
 {
 	[CmdletBinding(SupportsShouldProcess=$true)]
 	param(
-		# Solr Port
-        [Parameter(Mandatory=$false)]
-        $Port
+		[Parameter(Mandatory=$false)]
+        $ServiceName
 	)
 
-	if($pscmdlet.ShouldProcess("PSSolrService", "Verify if Solr as a service is installed"))
+	if($pscmdlet.ShouldProcess($ServiceName, "Verify if Solr as a service is installed"))
     {
 		#region Check if PSSolrService is already installed
-		$service = Get-Service | Where-Object {$_.name -eq "PSSolrService"} 
+		$service = Get-Service | Where-Object {$_.name -eq $ServiceName} 
   
 		if( $service -ne $null -and $service.Status -eq 'Running' )
 		{
-			$command1= $PSScriptRoot+"\PSSolrService.ps1" 
-			&$command1 -Stop -Verbose
-			&$command1 -Remove -Verbose	
+            Stop-Service -Name $ServiceName -Force
+
+			$msg = sc.exe delete $ServiceName
+            if ($LastExitCode) 
+            {
+                Write-Error "Failed to remove the service ${ServiceName}: $msg"
+            } 
+            else 
+            {
+                Write-TaskInfo -Message "Delete $ServiceName - $msg" -Tag "RemoveSolrService"
+
+            }
+
+            #Split-Path (Get-Process -Name solr2 -FileVersionInfo).FileName -Parent
 		}
 		#endregion
 	}

@@ -46,6 +46,9 @@
       "DefaultValue": "8983",
       "Description": "The port the Solr service should use"
     },
+    "SolrServiceName" : {
+      "Type": "string"
+    },
     "UseLocalFiles": {
       "Type": "boolean",
       "DefaultValue": true,
@@ -202,14 +205,16 @@
         "solrSSL": "[parameter('SolrUseSSL')]",
         "solrHost": "[parameter('SolrHost')]",
         "solrRoot": "[variable('SolrInstallFolder')]",
+        "solrPort": "[parameter('SolrPort')]",
         "certificateStore": "[variable('CertStoreFile')]"
       }
     },
     "RunSolrAsService": {
       "Type": "SolrAsService",
       "Params": {
-        "Port": "",
-        "Memory": ""
+        "SolrPort": "[parameter('SolrPort')]",
+        "SolrRoot": "[variable('SolrInstallFolder')]",
+        "ServiceName" : "[parameter('SolrServiceName')]"
       }
     },
     "Ensure Solr is running": {

@@ -5,7 +5,7 @@
 #requires -module AzureRm.Storage
 #requires -module AzureRm.KeyVault
 #requires -module SitecoreInstallFramework
-#requires -module SitecoreInstallExtensions
+#requires -module SitecoreInstallExtensions 
 #requires -module SitecoreInstallAzure
 
 #region Steps implementation
