@@ -59,11 +59,16 @@ $sitecoreSiteName = "$prefix.local"
 
 $XConnectCollectionService = "$prefix.xconnect"
 
+#for Solr installation
 $SolrHost = "solr.local"
-$SolrUrl = "https://$($SolrHost):8983/solr" 
+$SolrPort = "8983"
+# internally in 'solr.json', installation path is build like $SolrInstallFolder\solr-parameter('SolrVersion')
 $SolrInstallFolder = "C:\solr"
-$SolrRoot = "$SolrInstallFolder\solr-6.6.2"
 $SolrService = "PSSolrService"
+
+# for Solr cores configuration
+$SolrRoot = "$SolrInstallFolder\solr-6.6.2"
+$SolrUrl = "https://$($SolrHost):$($SolrPort)/solr"
 
 $SqlServer = "$env:computername" #OR "SQLServerName\SQLInstanceName"
 $SqlAdminUser = ""
@@ -96,10 +101,10 @@ $steps = [Steps]::new($MyInvocation.MyCommand.Source)
 Invoke-WebRequest -Uri "$GitHubRoot/sitecore9.azure.json" -OutFile "$PSScriptRoot\sitecore9.azure.json"
 $downloadSitecorePrerequisites = @{
     Path = "$PSScriptRoot\sitecore9.azure.json"   
-    Destination = "$LocalStorage"
-    SubscriptionName = "$AzureSubscription"
-    ResourceGroupName = "$AzureResourceGroup"
-    StorageName = "$AzureStorageName"
+    Destination = $LocalStorage
+    SubscriptionName = $AzureSubscription
+    ResourceGroupName = $AzureResourceGroup
+    StorageName = $AzureStorageName
 }
 
 try
@@ -151,17 +156,20 @@ $installSolr =@{
     Path = "$PSScriptRoot\Solr.json"   
     LocalStorage = "$LocalStorage"
     
-    SolrHost = "$SolrHost"
-    # By default SOLR will be installed in "C:\solr", change install folder parameter if you want
+	SolrHost = $SolrHost
+    SolrPort = $SolrPort
+    SolrServiceName = $SolrService
     InstallFolder = "$SolrInstallFolder"
 
+	# For SSL certificate generation
     CertPassword = "secret"
     CertStoreLocation = "Cert:\LocalMachine\My"
     CertificateName = $SolrHost
-    
     Property = "Subject"
     Value = "CN=$SolrHost"
-  
+	
+	# if you want to download JRE and Solr check JREDownloadUrl and SolrDownloadUrl in solr.json
+	# and switch to $false
     UseLocalFiles = $true
 }
 

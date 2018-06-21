@@ -1,40 +1,48 @@
 {
-	"Parameters": {
-		"SolrRoot": {
-			"Type": "string",
-			"Description": "The root folder where Solr is installed"
+  "Parameters": {
+	 "SolrRoot": {
+      "Type": "string",
+      "Description": "The root folder where Solr is installed"
+    },
+    "SolrServiceName" : {
+       "Type": "string",
+        "Description": "The name of Solr service"
+    }
+  },
+  "Modules": [
+    "SitecoreInstallExtensions"
+  ],
+
+  "Variables": {
+
+  },
+
+  "Tasks": {
+	"Remove-Solr-Service" : {
+		"Type" : "RemoveSolrService",
+		"Params" : {
+			"ServiceName": "[parameter('SolrServiceName')]"
 		}
 	},
-	"Modules": [
-		"SitecoreInstallExtensions"
-	],
-	"Variables": {},
-	"Tasks": {
-		"Remove-Solr-Service": {
-			"Type": "RemoveSolrService",
-			"Params": {
-				"Port": ""
-			}
-		},
-		"Remove-Solr-Folder": {
-			"Type": "Remove",
-			"Params": {
-				"Source": "[parameter('SolrRoot')]"
-			}
-		},
-		"Remove-Solr-Home-Variable": {
-			"Type": "ScriptBlock",
-			"Params": {
-				"Script": "[environment]::SetEnvironmentVariable('SOLR_HOME',$null,[EnvironmentVariableTarget]::Machine)",
-				"Arguments": ""
-			}
-		},
-		"Check-Solr-Home-Variable": {
-			"Type": "ScriptBlock",
-			"Params": {
-				"Script": "[environment]::GetEnvironmentVariable('SOLR_HOME',[EnvironmentVariableTarget]::Machine)",
-				"Arguments": ""
-			}
+	"Remove-Solr-Folder" : {
+		"Type" : "Remove",
+		"Params" : {
+			"Source" : "[parameter('SolrRoot')]"
+		}
+	},
+	"Remove-Solr-Home" : {
+		"Type" : "ScriptBlock" ,
+		"Params" : {
+			"Script" : "[environment]::SetEnvironmentVariable('SOLR_HOME',$null,[EnvironmentVariableTarget]::Machine)",
+			"Arguments" : ""
+		}
+	},
+	"Check-Solr-Home" : {
+		"Type" : "ScriptBlock" ,
+		"Params" : {
+			"Script" : "[environment]::GetEnvironmentVariable('SOLR_HOME',[EnvironmentVariableTarget]::Machine)",
+			"Arguments" : ""
 		}
 	}
+  }
 }

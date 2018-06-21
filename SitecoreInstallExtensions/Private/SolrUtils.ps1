@@ -65,3 +65,42 @@ function Configure-HTTPS
         Write-TaskInfo -Message "$solrConfig" -Tag "Solr config already updated for HTTPS access - skipping"
     }
 }
+
+
+
+function Configure-Solr
+{
+	[CmdletBinding(SupportsShouldProcess=$true)]
+    Param(
+		[string]$solrRoot,
+        [string]$solrHost = "localhost",
+		[string]$solrPort = "8983",
+		[string]$solrMemory = "512m"        
+    )
+
+    $solrConfig = "$solrRoot\bin\solr.in.cmd"
+    if(!(Test-Path -Path "$solrConfig.config.old"))
+    {
+        if($pscmdlet.ShouldProcess("$solrConfig", "Rewriting Solr config file"))
+        {
+            $cfg = Get-Content $solrConfig
+            Rename-Item $solrConfig "$solrConfig.config.old"
+
+            $newCfg = $cfg | % { $_ -replace "REM set SOLR_HOST=192.168.1.1", "set SOLR_HOST=$solrHost" }
+            
+			$newCfg = $newCfg | % { $_ -replace "REM set SOLR_PORT=8983", "set SOLR_PORT=$solrPort" }
+            
+			$newCfg = $newCfg | % { $_ -replace "REM set SOLR_JAVA_MEM=-Xms512m -Xmx512m", "set SOLR_JAVA_MEM=-Xms$solrMemory -Xmx$solrMemory" }
+            
+			#REM set SOLR_JAVA_HOME=
+
+			$newCfg | Set-Content $solrConfig
+        }
+
+        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config updated: $solrHost, $solrPort, $solrMemory"
+    }
+    else
+    {
+        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config already updated - skipping"
+    }
+}
