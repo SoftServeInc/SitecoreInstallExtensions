@@ -54,7 +54,6 @@
       "DefaultValue": true,
       "Description": "Should use local Solr and JRE files or download from Internet?"
     },
-    // An example of CertStoreLocation Cert:\LocalMachine\My
     "CertStoreLocation": {
       "Type": "String",
       "Description": "Specifies the path of the store from which certificates will be exported."
@@ -94,26 +93,25 @@
   ],
 
   "Variables": {
-    // Creates a path to the JRE install package.
+    
     "Source.JRE": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]",
-    // Creates a path to the Solr install package.
+    
     "Source.Solr": "[joinpath(parameter('LocalStorage'), parameter('SolrPackage'))]",
 
     "SolrFolder": "[concat('\\solr-', parameter('SolrVersion'))]",
 
-    // The path where should Solr be installed.
-    "SolrInstallFolder": "[joinpath(parameter('InstallFolder'), variable('SolrFolder')]",
-    // The path where should Solr SSL certificate be installed.
+    "SolrInstallFolder": "[joinpath(parameter('InstallFolder'), variable('SolrFolder'))]",
+    
     "CertStoreFile": "[joinpath(variable('SolrInstallFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]",
 
     "SolrProtocol": "[if ( parameter('SolrUseSSL'), 'https', 'http')]",
     "SolrUrl": "[concat(variable('SolrProtocol'), '://', parameter('SolrHost'), ':', parameter('SolrPort'), '/solr/')]",
 
-    // The name dns name of the root certificate.
+  
     "Root.Cert.DnsName": "[concat('DO_NOT_TRUST_', parameter('RootCertFileName'))]",
-    // The certificate store for the root certificate.
+   
     "Root.Cert.Store": "cert:\\LocalMachine\\Root",
-    // The certificate store for the client certificate.
+   
     "Client.Cert.Store": "cert:\\LocalMachine\\My"
   },
 
@@ -139,7 +137,7 @@
       }
     },
     "ImportRootCertificate": {
-      // Import the root certificate.
+      "Description" : "Import the root certificate.",
       "Type": "ImportCertificate",
       "Params": {
         "CertStoreLocation": "[variable('Root.Cert.Store')]",
