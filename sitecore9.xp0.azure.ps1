@@ -78,6 +78,9 @@ $AzureSubscription = ""
 $AzureResourceGroup = ""
 $AzureStorageName = ""
 
+# Choose version for download
+$SitecoreVersion = "9.0.2"
+
 # For Windows Server $Workstation must be set to $false, for Windows 8/10/Next to $true
 $Workstation = $false
 #endregion
@@ -105,6 +108,7 @@ $downloadSitecorePrerequisites = @{
     SubscriptionName = $AzureSubscription
     ResourceGroupName = $AzureResourceGroup
     StorageName = $AzureStorageName
+	SitecoreVersion = $SitecoreVersion
 }
 
 try
@@ -237,7 +241,7 @@ catch
 #deploy xconnect instance 
 $xconnectParams = @{   
 	Path = "$LocalStorage\xconnect-xp0.json" 
-	Package = "$LocalStorage\Sitecore 9.0.1 rev. 171219 (OnPrem)_xp0xconnect.scwdp.zip"   
+	Package = "$LocalStorage\Sitecore * (OnPrem)_xp0xconnect.scwdp.zip"   
 	LicenseFile = "$LocalStorage\license.xml"  
 	Sitename = $XConnectCollectionService    
 	XConnectCert = $certParams.CertificateName   
@@ -290,7 +294,7 @@ catch
 #install sitecore instance 
 $sitecoreParams = @{  
 	Path = "$LocalStorage\sitecore-XP0.json"   
-	Package = "$LocalStorage\Sitecore 9.0.1 rev. 171219 (OnPrem)_single.scwdp.zip" 
+	Package = "$LocalStorage\Sitecore * (OnPrem)_single.scwdp.zip" 
     LicenseFile = "$LocalStorage\license.xml"   
 	SqlDbPrefix = $prefix  
 	SqlServer = $SqlServer 
