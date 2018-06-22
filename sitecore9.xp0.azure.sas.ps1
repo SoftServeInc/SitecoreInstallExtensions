@@ -239,7 +239,7 @@ catch
 #deploy xconnect instance 
 $xconnectParams = @{   
 	Path = "$LocalStorage\xconnect-xp0.json" 
-	Package = "$LocalStorage\Sitecore 9.0.1 rev. 171219 (OnPrem)_xp0xconnect.scwdp.zip"   
+	Package = "$LocalStorage\Sitecore * (OnPrem)_xp0xconnect.scwdp.zip"   
 	LicenseFile = "$LocalStorage\license.xml"  
 	Sitename = $XConnectCollectionService    
 	XConnectCert = $certParams.CertificateName   
@@ -292,7 +292,7 @@ catch
 #install sitecore instance 
 $sitecoreParams = @{  
 	Path = "$LocalStorage\sitecore-XP0.json"   
-	Package = "$LocalStorage\Sitecore 9.0.1 rev. 171219 (OnPrem)_single.scwdp.zip" 
+	Package = "$LocalStorage\Sitecore * (OnPrem)_single.scwdp.zip" 
     LicenseFile = "$LocalStorage\license.xml"   
 	SqlDbPrefix = $prefix  
 	SqlServer = $SqlServer 
