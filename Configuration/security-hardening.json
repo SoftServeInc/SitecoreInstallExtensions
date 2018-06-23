@@ -1,0 +1,60 @@
+{
+  "Parameters": {
+    "SiteName": {
+      "Type": "string",
+      "Description": "The name of the site to be deployed."
+    },
+    "SqlServer": {
+      "Type": "string"
+    },
+    "SqlDbPrefix": {
+      "Type": "string",
+      "Description": "The prefix used for all Sql databases."
+    },
+    "SitecoreAdminPassword": {
+      "Type": "string",
+      "DefaultValue": "b",
+      "Description": "The admin password for the Sitecore instance."
+    },
+    "SqlAdminUser": {
+      "Type": "string",
+      "Description": "The Sql admin user account to use when installing databases."
+    },
+    "SqlAdminPassword": {
+      "Type": "string",
+      "Description": "The Sql admin password to use when installing databases."
+    }
+  },
+  "Modules": [
+    "SitecoreInstallExtensions"
+  ],
+  "Variables": {
+    "Sql.Database.Core": "[concat(parameter('SqlDbPrefix'), '_Core')]"
+  },
+  "Tasks": {
+    "Set-HashAlgorithmType": {
+      "Description": "Change the hash algorithm for password encryption",
+      "Type": "SetXml",
+      "Params": {
+        "FilePath": "[joinpath(webSitePath(parameter('SiteName')),'web.config')]",
+        "XPath": "//configuration/system.web/membership",
+        "Attributes": [
+          {
+            "hashAlgorithmType": "SHA512"
+          }
+        ]
+      }
+    },
+    "SetSitecoreAdminPassword": {
+      "Description": "Reset Sitecore administrator password",
+      "Type": "SetSitecoreAdminPassword",
+      "Params": {
+        "SqlServer": "[parameter('SqlServer')]",
+        "SqlAdminUser": "[parameter('SqlAdminUser')]",
+        "SqlAdminPassword": "[parameter('SqlAdminPassword')]",
+        "SqlDb": "[variable('Sql.Database.Core')]",
+        "SitecoreAdminPassword": "[parameter('SitecoreAdminPassword')]"
+      }
+    }
+  }
+}

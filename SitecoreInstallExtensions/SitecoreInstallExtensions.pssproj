@@ -40,6 +40,7 @@
     <Compile Include="ConfigFunctions\Invoke-ConvertToHereStringConfigFunction.ps1" />
     <Compile Include="ConfigFunctions\Invoke-GeneratePasswordConfigFunction.ps1" />
     <Compile Include="ConfigFunctions\Invoke-GetConnectionStringSettingsFunction.ps1" />
+    <Compile Include="ConfigFunctions\Invoke-GetModulePathConfigFunction.ps1" />
     <Compile Include="ConfigFunctions\Invoke-GetPhysicalPathConfigFunction.ps1" />
     <Compile Include="ConfigFunctions\Invoke-MongoConnectionStringConfigFunction.ps1" />
     <Compile Include="ConfigFunctions\Invoke-RandomHexConfigFunction.ps1" />
