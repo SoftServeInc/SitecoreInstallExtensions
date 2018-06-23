@@ -429,6 +429,75 @@ Json task configuration for Sitecore Install Framework
 }
 
 
+$sql = @"
+declare @ApplicationName nvarchar(256) = 'sitecore'
+declare @UserName nvarchar(256) = 'sitecore\admin'
+declare @Password nvarchar(128) = 'passwordplaceholder'
+declare @HashAlgorithm nvarchar(10) = 'SHA2_512'
+declare @PasswordFormat int = 1 -- Hashed
+declare @CurrentTimeUtc datetime = SYSUTCDATETIME()
+declare @Salt varbinary(16) = 0x
+declare @HashedPassword varbinary(512)
+declare @EncodedHash nvarchar(128)
+declare @EncodedSalt nvarchar(128)
+
+-- Generate random salt
+while len(@Salt) < 16
+begin
+	set @Salt = (@Salt + cast(cast(floor(rand() * 256) as tinyint) as binary(1)))
+end
+
+-- Hash password
+set @HashedPassword = HASHBYTES(@HashAlgorithm, @Salt + cast(@Password as varbinary(128)));
+
+-- Convert hash and salt to BASE64
+select @EncodedHash = cast(N'' as xml).value(
+                  'xs:base64Binary(xs:hexBinary(sql:column("bin")))'
+                , 'varchar(max)'
+            ) from (select @HashedPassword as [bin] ) T
+
+select @EncodedSalt = cast(N'' as xml).value(
+                  'xs:base64Binary(xs:hexBinary(sql:column("bin")))'
+                , 'VARCHAR(MAX)'
+            ) from (select @Salt as [bin] ) T 
+
+execute [dbo].[aspnet_Membership_SetPassword] 
+   @ApplicationName
+  ,@UserName
+  ,@EncodedHash
+  ,@EncodedSalt
+  ,@CurrentTimeUtc
+  ,@PasswordFormat
+
+"@
+
+
+
+function Invoke-SetSitecoreAdminPasswordTask {
+	[CmdletBinding(SupportsShouldProcess=$true)]
+	param(
+		[Parameter(Mandatory=$true)]
+		[string]$SqlServer,
+		[Parameter(Mandatory=$true)]
+		[string]$SqlDb,
+		[Parameter(Mandatory=$true)]
+		[string]$SqlAdminUser,
+		[Parameter(Mandatory=$true)]
+		[string]$SqlAdminPassword,
+		[Parameter(Mandatory=$true)]
+		[string]$SitecoreAdminPassword
+	)
+
+	if($pscmdlet.ShouldProcess($SqlServer, "Reset Sitecore admin password at database $SqlDb"))
+    {
+		Write-TaskInfo -Message "Reset Sitecore admin password at database $SqlDb" -Tag 'MSSQL'
+
+		$query = $sql -replace 'passwordplaceholder',$SitecoreAdminPassword
+		Invoke-SQLcmd -ServerInstance $SqlServer -Query $Query -Database $SqlDb -Username $SqlAdminUser -Password $SqlAdminPassword
+	}
+}
+
+
 Export-ModuleMember Invoke-SetSqlMixedModeTask
 Export-ModuleMember Invoke-AttachSqlDatabaseTask
 Export-ModuleMember Invoke-DeleteSqlDatabaseTask
@@ -436,5 +505,10 @@ Export-ModuleMember Invoke-SetSqlDatabaseRolesTask
 Export-ModuleMember Invoke-SetSqlDatabasePermisionsTask
 Export-ModuleMember Invoke-CreateSqlUserTask
 Export-ModuleMember Invoke-DeleteSqlUserTask
+Export-ModuleMember Invoke-SetSitecoreAdminPasswordTask
+
+Register-SitecoreInstallExtension -Command Invoke-SetSitecoreAdminPasswordTask -As SetSitecoreAdminPassword -Type Task
+
+
 
 

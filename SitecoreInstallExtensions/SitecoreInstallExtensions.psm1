@@ -10,7 +10,7 @@ $private = Get-ChildItem -Path (Join-Path $PSScriptRoot Private) -Include *.ps1 
 # Private must be sourced first - usage in public functions during load
 ($private) | ForEach-Object {
     try {
-		Write-Host $_.FullName
+		#Write-Host $_.FullName
         . $_.FullName
     }
     catch {
