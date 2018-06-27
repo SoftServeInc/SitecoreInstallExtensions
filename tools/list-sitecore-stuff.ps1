@@ -15,23 +15,18 @@ Get-Service *xconnect*
 
 
 Write-Host "Sitecore websites" -ForegroundColor Green
-
 Get-WebSite | ForEach-Object { 
     
     $binPath = Join-Path -Path $_.PhysicalPath -ChildPath "bin\Sitecore.Kernel.dll" 
-
     $item = Get-Item -Path $binPath -ErrorAction SilentlyContinue
 
     if( $item -ne $null )
     {
         "Sitecore Site: Name:$($_.Name), Version: $($item.VersionInfo.FileVersion), Path  $($_.PhysicalPath)" 
     }
-
 }
 
-
 Write-Host "Environment Variables" -ForegroundColor Green
-
 [environment]::GetEnvironmentVariable("JAVA_HOME")
 [environment]::GetEnvironmentVariable("SOLR_HOME")
 
