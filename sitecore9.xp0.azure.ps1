@@ -90,7 +90,7 @@ $SitecoreVersion = "9.0.2"
 ###################################################################################
 
 # For Windows Server $Workstation must be set to $false, for Windows 8/10/Next to $true
-$Workstation = (gwmi win32_operatingsystem).caption -split " " -contains "Server"
+$Workstation = !((gwmi win32_operatingsystem).caption -split " " -contains "Server")
 
 # Do not display progress (performance improvement)
 $global:ProgressPreference = 'silentlyContinue'
