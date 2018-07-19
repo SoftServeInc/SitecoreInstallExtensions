@@ -29,11 +29,10 @@
   "Variables": {
     "Assets": "[joinpath(parameter('LocalStorage'),'assets')]",
     "SIF.Commerce": "[joinpath(parameter('DeployFolder'),'SIF')]",
-    "Sitecore.Commerce.Engine.SDK": "[joinpath(parameter('DeployFolder'),'Sitecore.Commerce.Engine.SDK.2.1.10')]",
-    "Sitecore.Commerce.Engine": "[joinpath(parameter('DeployFolder'),'Sitecore.Commerce.Engine.2.1.55')]",
-    "Sitecore.BizFX.SDK": "[joinpath(parameter('DeployFolder'),'Sitecore.BizFX.SDK.1.1.9')]",
-    "Sitecore.BizFX": "[joinpath(parameter('DeployFolder'),'Sitecore.BizFX.1.1.9')]",
-    "Sitecore.IdentityServer": "[joinpath(parameter('DeployFolder'),'Sitecore.IdentityServer.1.1.3')]",
+    "Sitecore.Commerce.Engine.SDK": "[joinpath(parameter('DeployFolder'),'Sitecore.Commerce.Engine.SDK.2')]",
+    "Sitecore.Commerce.Engine": "[joinpath(parameter('DeployFolder'),'Sitecore.Commerce.Engine.2')]",
+    "Sitecore.BizFX": "[joinpath(parameter('DeployFolder'),'Sitecore.BizFX.1')]",
+    "Sitecore.IdentityServer": "[joinpath(parameter('DeployFolder'),'Sitecore.IdentityServer.1')]",
     // The name dns name of the root certificate.
     "Root.Cert.DnsName": "[concat('DO_NOT_TRUST_', parameter('RootCertFileName'))]",
     // The certificate store for the root certificate.
@@ -52,7 +51,6 @@
           "[variable('SIF.Commerce')]",
           "[variable('Sitecore.Commerce.Engine.SDK')]",
           "[variable('Sitecore.Commerce.Engine')]",
-          "[variable('Sitecore.BizFX.SDK')]",
           "[variable('Sitecore.BizFX')]"
         ]
       }
@@ -87,21 +85,21 @@
     "Unpack-SIF": {
       "Type": "Unpack",
       "Params": {
-        "Source": "[joinpath(parameter('LocalStorage'),'SIF.Sitecore.Commerce.1.1.4.zip')]",
+        "Source": "[resolvepath(joinpath(parameter('LocalStorage'),'SIF.Sitecore.Commerce.*.zip'))]",
         "Destination": "[variable('SIF.Commerce')]"
       }
     },
     "Unpack-Commerce.Engine": {
       "Type": "Unpack",
       "Params": {
-        "Source": "[joinpath(parameter('LocalStorage'),'Sitecore.Commerce.Engine.2.1.55.zip')]",
+        "Source": "[resolvepath(joinpath(parameter('LocalStorage'),'Sitecore.Commerce.Engine.2.*.zip'))]",
         "Destination": "[variable('Sitecore.Commerce.Engine')]"
       }
     },
     "Unpack-EngineSDK": {
       "Type": "Unpack",
       "Params": {
-        "Source": "[joinpath(parameter('LocalStorage'),'Sitecore.Commerce.Engine.SDK.2.1.10.zip')]",
+        "Source": "[resolvepath(joinpath(parameter('LocalStorage'),'Sitecore.Commerce.Engine.SDK.*.zip'))]",
         "Destination": "[variable('Sitecore.Commerce.Engine.SDK')]"
       }
     },
@@ -115,7 +113,7 @@
     "Unpack-BizFX": {
       "Type": "Unpack",
       "Params": {
-        "Source": "[joinpath(parameter('LocalStorage'),'Sitecore.BizFX.1.1.9.zip')]",
+        "Source": "[resolvepath(joinpath(parameter('LocalStorage'),'Sitecore.BizFX.1.*.zip'))]",
         "Destination": "[variable('Sitecore.BizFX')]"
       }
     }
