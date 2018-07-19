@@ -53,7 +53,7 @@ If(![Environment]::Is64BitProcess)
 $LocalStorage = "$PSScriptRoot\Storage"
 $GitHubRoot = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/Configuration/"
 
-$prefix = "sc9u1"
+$prefix = "sc9u2"
 $sitecoreSiteName = "$prefix.local" 
 
 $XConnectCollectionService = "$prefix.xconnect"

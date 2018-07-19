@@ -54,7 +54,7 @@ $LocalStorage = "$PSScriptRoot\Storage"
 $GitHubRoot = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/Configuration/"
 
 # Prefix is used for Sitecore website, xConnect website and database 
-$prefix = "sc9u1"
+$prefix = "sc9u2"
 $sitecoreSiteName = "$prefix.local" 
 
 $XConnectCollectionService = "$prefix.xconnect"
