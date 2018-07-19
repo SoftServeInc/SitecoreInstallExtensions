@@ -71,6 +71,9 @@ $AzureSubscription = ""
 $AzureResourceGroup = ""
 $AzureStorageName = ""
 
+# Choose version for download
+$SitecoreVersion = "9.0.2"
+
 # Do not display progress (performance improvement)
 $global:ProgressPreference = 'silentlyContinue'
 
@@ -86,6 +89,7 @@ $downloadPrerequisites =@{
     SubscriptionName = $AzureSubscription
     ResourceGroupName = $AzureResourceGroup
     StorageName = $AzureStorageName
+	SitecoreVersion = $SitecoreVersion
 }
 
 try
