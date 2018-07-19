@@ -53,7 +53,7 @@ If(![Environment]::Is64BitProcess)
 $LocalStorage = "$PSScriptRoot\Storage"
 $GitHubRoot = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/Configuration/"
 
-$prefix = "sc9u1"
+$prefix = "sc9u2"
 $sitecoreSiteName = "$prefix.local" 
 
 $XConnectCollectionService = "$prefix.xconnect"
@@ -70,6 +70,9 @@ $SqlAdminPassword= ""
 $AzureStorageUrl = ""
 $AzureStorageToken = ""
 
+# Choose version for download
+$SitecoreVersion = "9.0.2"
+
 # Do not display progress (performance improvement)
 $global:ProgressPreference = 'silentlyContinue'
 
@@ -84,6 +87,7 @@ $downloadPrerequisites =@{
     LocalStorage = $LocalStorage
     StorageUrl = $AzureStorageUrl
     StorageSas = $AzureStorageToken
+	SitecoreVersion = $SitecoreVersion
 }
 
 try
