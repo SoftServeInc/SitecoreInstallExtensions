@@ -10,23 +10,44 @@
    - install Solr as a Windows Service
 #>
 
+
+$LocalStorage = "$PSScriptRoot\Storage"
 # Comment out this if you have own solr.json
-$url = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/Configuration/Solr.json"
-Invoke-WebRequest -Uri $url -OutFile "$PSScriptRoot\Solr.json"
+$GitHubRoot = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/Configuration/"
 
 
-#region "Install Solr with SSL"
+#for Solr installation
+$SolrHost = "solr.local"
+$SolrPort = "8983"
+# internally in 'solr.json', installation path is build like $SolrInstallFolder\solr-parameter('SolrVersion')
+$SolrInstallFolder = "C:\solr"
+$SolrService = "PSSolrService"
+
+Invoke-WebRequest -Uri "$GitHubRoot/Solr.json" -OutFile "$PSScriptRoot\Solr.json"
 $installSolr =@{
     Path = "$PSScriptRoot\Solr.json"   
-    LocalStorage = "$PSScriptRoot\Storage"
+    LocalStorage = "$LocalStorage"
+    
+	SolrHost = $SolrHost
+    SolrPort = $SolrPort
+    SolrServiceName = $SolrService
+    InstallFolder = $SolrInstallFolder
+
+	# For SSL certificate generation
     CertPassword = "secret"
     CertStoreLocation = "Cert:\LocalMachine\My"
-    CertificateName = "solr.local"
+    CertificateName = $SolrHost
     
+    # For SSL certificate export
     Property = "Subject"
-    Value = "CN=solr.local"
-  
+    Value = "CN=$SolrHost"
+	
+	# if you want to download JRE and Solr check JREDownloadUrl and SolrDownloadUrl in solr.json
+	# and switch to $false
     UseLocalFiles = $false
 }
 
 Install-SitecoreConfiguration @installSolr -Verbose
+
+
+
