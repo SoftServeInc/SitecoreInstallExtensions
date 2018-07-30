@@ -134,7 +134,9 @@
     "SetDbMixedMode": {
       "Type": "SetSqlMixedMode",
       "Params": {
-        "SQLServerName": "[parameter('SqlServer')]"
+        "SQLServerName": "[parameter('SqlServer')]",
+		"UserName": "[parameter('SqlAdminUser')]",
+        "Password": "[parameter('SqlAdminPassword')]"
       }
     },
     "CreateDatabaseUser": {
@@ -149,10 +151,12 @@
       "Description": "Enable Contained Database Authentication, see chapter 2.3.3 Installation Guide",
       "Type": "ScriptBlock",
       "Params": {
-        "Script": "PARAM($Query,$ServerInstance) Invoke-SqlCmd -Query $Query.Replace('#','''') -ServerInstance $ServerInstance",
+        "Script": "PARAM($Query,$ServerInstance,$SqlAdminUser,$SqlAdminPassword) Invoke-SqlCmd -Query $Query.Replace('#','''') -ServerInstance $ServerInstance -Username $SqlAdminUser -Password $SqlAdminPassword",
         "Arguments": [
           "[variable('ContainedQuery')]",
-          "[parameter('SqlServer')]"
+          "[parameter('SqlServer')]",
+		  "[parameter('SqlAdminUser')]",
+          "[parameter('SqlAdminPassword')]"
         ]
       }
     },
