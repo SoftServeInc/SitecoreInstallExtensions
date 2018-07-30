@@ -13,14 +13,18 @@ Function Invoke-SetSqlMixedModeTask {
 	"SetDbMixedMode": {
       "Type": "SetSqlMixedMode",
       "Params": {
-        "SQLServerName": "[parameter('SqlServerName')]"
+        "SQLServerName": "[parameter('SqlServerName')]",
+        "UserName": "[parameter('SqlUser')]",
+        "Password": "[parameter('SqlPassword')]"
       }
     }
 #>
 	[CmdletBinding(SupportsShouldProcess=$true)]
 	param(
 		[Parameter(Mandatory=$true)]
-		[string]$SQLServerName
+		[string]$SQLServerName,
+        [string]$UserName,
+        [string]$Password
 	)
 
 	#region "Get MSSQL server instance"
@@ -32,19 +36,29 @@ Function Invoke-SetSqlMixedModeTask {
 		return;
 	}
 	#endregion
+    
+    if( -not ([string]::IsNullOrEmpty($UserName)))
+    {
+        $sqlServerSmo.ConnectionContext.LoginSecure = $false
+        $sqlServerSmo.ConnectionContext.Login = $UserName
+        $sqlServerSmo.ConnectionContext.Password = $Password
+    }
 
 	[string]$nm = $sqlServerSmo.Name
 	[string]$mode = $sqlServerSmo.Settings.LoginMode
 
 	Write-Verbose "Instance Name: $nm, login mode $mode"
 
-	if($pscmdlet.ShouldProcess($SQLServerName, "Set server login mode to mixed"))
+	if($pscmdlet.ShouldProcess($SQLServerName, "Set server login mode ($mode) to mixed"))
     {
-		#Change to Mixed Mode
-		$sqlServerSmo.Settings.LoginMode = [Microsoft.SqlServer.Management.SMO.ServerLoginMode]::Mixed
+        if( $mode -ne "Mixed" )
+        {
+		    #Change to Mixed Mode
+		    $sqlServerSmo.Settings.LoginMode = [Microsoft.SqlServer.Management.SMO.ServerLoginMode]::Mixed
 
-		# Make the changes
-		$sqlServerSmo.Alter()
+		    # Make the changes
+	    	$sqlServerSmo.Alter()
+        }
 	}
 
 	if($pscmdlet.ShouldProcess($SQLServerName, "Restart"))
@@ -104,6 +118,13 @@ function Invoke-CreateSqlUserTask {
 		Write-Error "Cannot find MSSQL server $SQLServerName"
 		return;
 	}
+    
+    if( $UserName -eq "sa" )
+	{
+		Write-Warning "Skipping 'sa' user creation"
+		return;
+	}
+
 
 	if($pscmdlet.ShouldProcess($SQLServerName, "Create user $UserName"))
     {
