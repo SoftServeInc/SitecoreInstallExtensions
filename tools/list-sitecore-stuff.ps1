@@ -10,8 +10,8 @@ Get-Service *mongo*
 (gwmi win32_service|?{$_.name -like "*mongo*"}).pathname
 
 Write-Host "xConnect" -ForegroundColor Green
-Get-Service *xconnect*
-(gwmi win32_service|?{$_.name -like "*xconnect*"}).pathname
+Get-Service -DisplayName *sitecore*
+(gwmi win32_service|?{$_.displayname -like "*sitecore*"}).pathname
 
 
 Write-Host "Sitecore websites" -ForegroundColor Green
