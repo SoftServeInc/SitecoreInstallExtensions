@@ -72,7 +72,8 @@ $SolrUrl = "https://$($SolrHost):$($SolrPort)/solr"
 
 $SqlServer = "$env:computername" #OR "SQLServerName\SQLInstanceName"
 $SqlAdminUser = ""
-$SqlAdminPassword= "" 
+# for password use '' not ""
+$SqlAdminPassword= '' 
 
 $AzureStorageUrl = ""
 $AzureStorageToken = ""

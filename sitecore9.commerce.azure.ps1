@@ -65,7 +65,8 @@ $SolrService = "PSSolrService"
 
 $SqlServer = "$env:computername" #OR "SQLServerName\SQLInstanceName"
 $SqlAdminUser = ""
-$SqlAdminPassword= "" 
+# for password use '' not ""
+$SqlAdminPassword= '' 
 
 $AzureSubscription = ""
 $AzureResourceGroup = ""
