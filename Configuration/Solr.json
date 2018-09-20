@@ -129,6 +129,7 @@
     "CreateRootCert": {
       // Create the root certificate.
       "Type": "NewRootCertificate",
+      "Skip": "[not(parameter('SolrUseSSL'))]",
       "Params": {
         "Path": "[parameter('CertPath')]",
         "Name": "[parameter('RootCertFileName')]",
@@ -137,7 +138,8 @@
       }
     },
     "ImportRootCertificate": {
-      "Description" : "Import the root certificate.",
+      "Description": "Import the root certificate.",
+      "Skip": "[not(parameter('SolrUseSSL'))]",
       "Type": "ImportCertificate",
       "Params": {
         "CertStoreLocation": "[variable('Root.Cert.Store')]",
@@ -147,6 +149,7 @@
     "CreateSignedCert": {
       // Create a certificate signed by the root authority.
       "Type": "NewSignedCertificate",
+      "Skip": "[not(parameter('SolrUseSSL'))]",
       "Params": {
         "Signer": "[GetCertificate(variable('Root.Cert.DnsName'), variable('Root.Cert.Store'))]",
         "Path": "[parameter('CertPath')]",
@@ -192,6 +195,7 @@
     },
     "Export-Certificate": {
       "Type": "ScriptBlock",
+      "Skip": "[not(parameter('SolrUseSSL'))]",
       "Params": {
         "Script": "PARAM($CertStoreLocation,$Property,$Value,$PfxFile,$CertPassword) Get-ChildItem $CertStoreLocation | where $Property -eq $Value | Export-PfxCertificate -FilePath $PfxFile -Password (ConvertTo-SecureString -String $CertPassword -Force -AsPlainText) | Out-Null",
         "Arguments": [ "[parameter('CertStoreLocation')]", "[parameter('Property')]", "[parameter('Value')]", "[variable('CertStoreFile')]", "[parameter('CertPassword')]" ]
