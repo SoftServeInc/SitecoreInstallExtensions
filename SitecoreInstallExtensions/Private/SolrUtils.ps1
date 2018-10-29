@@ -23,11 +23,11 @@ function Configure-HTTP
             $newCfg | Set-Content $solrConfig
         }
 
-        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config updated for HTTP access"
+        Write-Information -Message "$solrConfig" -Tag "Solr config updated for HTTP access"
     }
     else
     {
-        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config already updated for HTTP access - skipping"
+        Write-Information -Message "$solrConfig" -Tag "Solr config already updated for HTTP access - skipping"
     }
 }
 
@@ -58,11 +58,11 @@ function Configure-HTTPS
             $newCfg | Set-Content $solrConfig
         }
 
-        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config updated for HTTPS access"
+        Write-Information -Message "$solrConfig" -Tag "Solr config updated for HTTPS access"
     }
     else
     {
-        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config already updated for HTTPS access - skipping"
+        Write-Information -Message "$solrConfig" -Tag "Solr config already updated for HTTPS access - skipping"
     }
 }
 
@@ -97,11 +97,11 @@ function Configure-Solr
 			$newCfg | Set-Content $solrConfig
         }
 
-        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config updated: $solrHost, $solrPort, $solrMemory"
+        Write-Information -Message "$solrConfig" -Tag "Solr config updated: $solrHost, $solrPort, $solrMemory"
     }
     else
     {
-        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config already updated - skipping"
+        Write-Information -Message "$solrConfig" -Tag "Solr config already updated - skipping"
     }
 }
 # SIG # Begin signature block

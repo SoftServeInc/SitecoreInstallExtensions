@@ -54,7 +54,7 @@ function Invoke-GetAzureBlobContentTask
 			if( -not (Test-Path $destinationPath ) )
 			{
 				$startTime = Get-Date
-				Write-TaskInfo -Message "$Container\$blob => $destinationPath" -Tag 'Download'
+				Write-Information -Message "$Container\$blob => $destinationPath" -Tag 'Download'
 				Get-AzureStorageBlobContent -Context $StorageContext -Container $Container -Blob $blob -Destination $destinationPath -Force | Out-Null
 				$endTime = Get-Date
 				$timeTaken = $endTime.Subtract($startTime)
@@ -107,7 +107,7 @@ function Invoke-DownloadAzureBlobContentTask
 			if( -not (Test-Path $destinationPath ) )
 			{
 				$startTime = Get-Date
-				Write-TaskInfo -Message "$Url\$Container\$blob => $destinationPath" -Tag 'Download'
+				Write-Information -Message "$Url\$Container\$blob => $destinationPath" -Tag 'Download'
 
 				Add-Type -AssemblyName System.Web
 				$blobUrl = $blob -replace " ","%20"
@@ -121,7 +121,7 @@ function Invoke-DownloadAzureBlobContentTask
 			}
 			else
 			{
-				Write-TaskInfo -Message "$Destination already exists." -Tag 'Download'
+				Write-Information -Message "$Destination already exists." -Tag 'Download'
 			}
 		}
 	}

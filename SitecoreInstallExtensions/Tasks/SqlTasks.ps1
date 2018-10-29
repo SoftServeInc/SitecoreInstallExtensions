@@ -109,7 +109,7 @@ function Invoke-CreateSqlUserTask {
 		[string]$Password
 	)
 
-	Write-TaskInfo -Message "Create user $UserName on server $SQLServerName" -Tag 'MSSQL'
+	Write-Information -Message "Create user $UserName on server $SQLServerName" -Tag 'MSSQL'
 
 	$sqlServerSmo = Get-SqlServerSmo -SQLServerName $SQLServerName
 
@@ -154,7 +154,7 @@ function Invoke-DeleteSqlUserTask {
 		[string]$UserName
 	)
 
-	Write-TaskInfo -Message "Delete user $UserName on server $SQLServerName" -Tag 'MSSQL'
+	Write-Information -Message "Delete user $UserName on server $SQLServerName" -Tag 'MSSQL'
 
 	$sqlServerSmo = Get-SqlServerSmo -SQLServerName $SQLServerName
 
@@ -241,7 +241,7 @@ function Invoke-SetSqlDatabaseRolesTask   {
 		$dbUser = $database.Users | Where-Object {$_.Login -eq "$Login"}
 		if ($dbUser -eq $null)
 		{
-			Write-TaskInfo -Message "Adding user $Login in $($database.Name)" -Tag 'MSSQL'
+			Write-Information -Message "Adding user $Login in $($database.Name)" -Tag 'MSSQL'
 
 			$dbUser = New-Object -TypeName Microsoft.SqlServer.Management.Smo.User($database, $Login)
 			$dbUser.Login = $Login
@@ -251,7 +251,7 @@ function Invoke-SetSqlDatabaseRolesTask   {
 		# Assign database roles user
 		foreach ($roleName in $roles)
 		{
-			Write-TaskInfo -Message "Adding $roleName role for $($dbUser.Name) on $db" -Tag 'MSSQL'
+			Write-Information -Message "Adding $roleName role for $($dbUser.Name) on $db" -Tag 'MSSQL'
 
 			$dbrole = $database.Roles[$roleName]
 			$dbrole.AddMember($dbUser.Name)
@@ -309,8 +309,8 @@ function Invoke-AttachSqlDatabaseTask {
     {
 		if ($sqlServerSmo.databases[$DBName] -eq $null)
 		{
-			Write-TaskInfo -Message "Attaching $DBDataFilePath to $SQLServerName as $DBName" -Tag 'MSSQL'
-			Write-TaskInfo -Message "Attaching $DBLogFilePath to $SQLServerName as $DBName" -Tag 'MSSQL'
+			Write-Information -Message "Attaching $DBDataFilePath to $SQLServerName as $DBName" -Tag 'MSSQL'
+			Write-Information -Message "Attaching $DBLogFilePath to $SQLServerName as $DBName" -Tag 'MSSQL'
 
 			$files = New-Object System.Collections.Specialized.StringCollection 
 			$files.Add($DBDataFilePath) | Out-Null; 
@@ -381,7 +381,7 @@ function Invoke-SetSqlDatabasePermisionsTask {
 		$database.Alter();
 
 		$message = "Granted Execute permission to $UserName on $db" 
-		Write-TaskInfo -Message $message -Tag 'MSSQL'
+		Write-Information -Message $message -Tag 'MSSQL'
 	}
 }
 
@@ -435,7 +435,7 @@ Json task configuration for Sitecore Install Framework
 		{
 			if ($sqlServerSmo.databases[$database] -ne $null)
 			{
-				Write-TaskInfo -Message "Remove $database" -Tag 'MSSQL'
+				Write-Information -Message "Remove $database" -Tag 'MSSQL'
 
 				Invoke-SQLcmd -ServerInstance $SQLServerName -Query ("EXEC msdb.dbo.sp_delete_database_backuphistory @database_name = N'" + $database + "'")
 				Invoke-SQLcmd -ServerInstance $SQLServerName -Query ("DROP DATABASE [" + $database + "]")
@@ -511,7 +511,7 @@ function Invoke-SetSitecoreAdminPasswordTask {
 
 	if($pscmdlet.ShouldProcess($SqlServer, "Reset Sitecore admin password at database $SqlDb"))
     {
-		Write-TaskInfo -Message "Reset Sitecore admin password at database $SqlDb" -Tag 'MSSQL'
+		Write-Information -Message "Reset Sitecore admin password at database $SqlDb" -Tag 'MSSQL'
 
 		$query = $sql -replace 'passwordplaceholder',$SitecoreAdminPassword
 		Invoke-SQLcmd -ServerInstance $SqlServer -Query $Query -Database $SqlDb -Username $SqlAdminUser -Password $SqlAdminPassword

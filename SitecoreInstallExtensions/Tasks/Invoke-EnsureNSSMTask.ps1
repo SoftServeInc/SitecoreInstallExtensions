@@ -47,7 +47,7 @@ function Invoke-EnsureNSSMTask
         $targetFile = "$installFolder\nssm-$nssmVersion"
         $nssmZip = "$downloadFolder\nssm-$nssmVersion.zip"
 
-        Write-TaskInfo -Message "$nssmVersion" -Tag "Ensuring NSSM installed"
+        Write-Information -Message "$nssmVersion" -Tag "Ensuring NSSM installed"
 
         DownloadAndUnzipIfRequired "NSSM" $targetFile $nssmZip $nssmSourcePackage $installFolder
     }

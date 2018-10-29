@@ -51,7 +51,7 @@ function Invoke-EnsureSSLCertificateTask
             $existingCert = Get-ChildItem Cert:\LocalMachine\Root | where FriendlyName -eq "$solrName"
             if(!($existingCert))
             {
-                Write-TaskInfo -Message "$solrHost" -Tag "Creating and trusting an new SSL Cert"
+                Write-Information -Message "$solrHost" -Tag "Creating and trusting an new SSL Cert"
 
                 if($pscmdlet.ShouldProcess("$solrHost", "Generate new trusted SSL certificate"))
                 {
@@ -72,13 +72,13 @@ function Invoke-EnsureSSLCertificateTask
             }
             else
             {
-                Write-TaskInfo -Message "$solrHost" -Tag "Trusted SSL certificate already exists - skipping"
+                Write-Information -Message "$solrHost" -Tag "Trusted SSL certificate already exists - skipping"
             }
 
             # export the cert to pfx using solr's default password
             if(!(Test-Path -Path $certificateStore))
             {
-                Write-TaskInfo -Message "$certificateStore" -Tag "Exporting certificate to disk"
+                Write-Information -Message "$certificateStore" -Tag "Exporting certificate to disk"
 
                 $cert = Get-ChildItem Cert:\LocalMachine\Root | where FriendlyName -eq "$solrName"
     
@@ -91,7 +91,7 @@ function Invoke-EnsureSSLCertificateTask
             }
             else
             {
-                Write-TaskInfo -Message "$certificateStore" -Tag "Certificate file already exported - skipping"
+                Write-Information -Message "$certificateStore" -Tag "Certificate file already exported - skipping"
             }
         }
     }

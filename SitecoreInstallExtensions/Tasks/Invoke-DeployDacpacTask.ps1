@@ -44,13 +44,13 @@ Function Invoke-DeployDacpacTask {
 	
 	Add-Type -Path $DacDllPath
 
-	Write-TaskInfo -Message "$DacDllPath" -Tag "DeployDacpacTask"
+	Write-Information -Message "$DacDllPath" -Tag "DeployDacpacTask"
 	
 	$dacServices = new-object Microsoft.SqlServer.Dac.DacServices $ConnectionString
 
 	$dp = [Microsoft.SqlServer.Dac.DacPackage]::Load($DacpacPath) 
 
-	Write-TaskInfo -Message "Deploy $DacpacPath as $DatabaseName to $ConnectionString" -Tag "DeployDacpacTask"
+	Write-Information -Message "Deploy $DacpacPath as $DatabaseName to $ConnectionString" -Tag "DeployDacpacTask"
 
 	$dacServices.Deploy($dp, $DatabaseName, $true)
 }

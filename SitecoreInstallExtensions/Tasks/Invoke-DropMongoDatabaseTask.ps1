@@ -53,7 +53,7 @@ db.dropDatabase()
 
 	if($pscmdlet.ShouldProcess($DatabaseConnectionString, "Execute drop database"))
     {
-		Write-TaskInfo "Drop database $DatabaseConnectionString" -Tag "Info"
+		Write-Information "Drop database $DatabaseConnectionString" -Tag "Info"
 
 		Invoke-Expression '& "$mongoExe" $DatabaseConnectionString --eval $cmdDeleteDb --quiet'
 	}

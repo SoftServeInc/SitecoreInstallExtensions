@@ -40,7 +40,7 @@ function Invoke-NewPatchFileTask
 		[string]$Comment
 		)
 
-	Write-TaskInfo -Message "Create a patch file: $XmlPath" -Tag "NewPatchFileTask"
+	Write-Information -Message "Create a patch file: $XmlPath" -Tag "NewPatchFileTask"
 
 	if( (Test-Path -Path $XmlPath) )
 	{
@@ -110,7 +110,7 @@ function Invoke-AddPatchTask
 	$existingNode = $XmlDocument.SelectNodes("//configuration/sitecore/settings/setting") | Where-Object {$_ -ne $null -and $_.Name -eq $Name}
 	if( $existingNode -ne $null )
 	{
-		Write-TaskInfo "Patch for setting $Name already exist" -Tag "Patch"
+		Write-Information "Patch for setting $Name already exist" -Tag "Patch"
 		return
 	}
 
@@ -122,7 +122,7 @@ function Invoke-AddPatchTask
     }
 	$item.SetAttribute("name",  $Name)
     
-    Write-TaskInfo -Message "Create patch for setting $Name = $Value" -Tag "Patch"
+    Write-Information -Message "Create patch for setting $Name = $Value" -Tag "Patch"
 	if( $Value -eq $null -or $Value -eq '')
 	{
 		$patch = $XmlDocument.CreateElement("patch","delete","http://www.sitecore.net/xmlconfig/")

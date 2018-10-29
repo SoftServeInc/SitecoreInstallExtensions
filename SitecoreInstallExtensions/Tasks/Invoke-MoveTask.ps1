@@ -19,7 +19,7 @@ Function Invoke-MoveTask {
 		New-Item $destRoot -ItemType Directory
 	}
 
-	Write-TaskInfo -Message "$Source => $Destination" -Tag 'Moving'
+	Write-Information -Message "$Source => $Destination" -Tag 'Moving'
 	Write-Verbose "Moving '$Source' to '$Destination'"
 	Move-Item -Path $Source -Destination $Destination -Force
 }
@@ -32,7 +32,7 @@ Function Invoke-RemoveTask {
 		[string]$Source
 	)
 
-	Write-TaskInfo -Message "Remove $Source" -Tag 'Removing'
+	Write-Information -Message "Remove $Source" -Tag 'Removing'
 	Write-Verbose "Removing '$Source'"
 	if( Test-Path -Path $Source )
 	{

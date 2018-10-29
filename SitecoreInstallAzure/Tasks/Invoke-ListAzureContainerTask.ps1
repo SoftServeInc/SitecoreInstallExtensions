@@ -26,7 +26,7 @@ function Invoke-ListAzureContainerTask
 		$storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $ResourceGroupName -Name $StorageName -ev notPresent -ea SilentlyContinue
 
 
-		Get-AzureStorageContainer -Name $Container -Context $storageAccount.Context | Get-AzureStorageBlob | % { Write-TaskInfo -Message $_.Name -Tag $Container } 
+		Get-AzureStorageContainer -Name $Container -Context $storageAccount.Context | Get-AzureStorageBlob | % { Write-Information -Message $_.Name -Tag $Container } 
 
 	}
 }

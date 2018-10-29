@@ -39,7 +39,7 @@ Function Invoke-ManageWebsiteTaskEx {
         return $true
     }
 
-    Write-TaskInfo -Message $Name -Tag $Action
+    Write-Information -Message $Name -Tag $Action
 
     $commandName = "$Action-Website"
 

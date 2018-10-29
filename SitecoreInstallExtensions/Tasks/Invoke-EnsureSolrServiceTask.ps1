@@ -22,7 +22,7 @@ function Invoke-EnsureSolrServiceTask
         $svc = Get-Service "$solrName" -ErrorAction SilentlyContinue
         if(!($svc))
         {
-            Write-TaskInfo -Message "$solrName" -Tag "Installing Solr service"
+            Write-Information -Message "$solrName" -Tag "Installing Solr service"
 
             if($pscmdlet.ShouldProcess("$solrName", "Install Solr service using NSSM"))
             {
@@ -33,12 +33,12 @@ function Invoke-EnsureSolrServiceTask
         }
         else
         {
-            Write-TaskInfo -Message "$solrName" -Tag "Solr service already installed - skipping"
+            Write-Information -Message "$solrName" -Tag "Solr service already installed - skipping"
         }
 
         if($svc.Status -ne "Running")
         {
-            Write-TaskInfo -Message "$solrName" -Tag "Starting Solr service"
+            Write-Information -Message "$solrName" -Tag "Starting Solr service"
 
             if($pscmdlet.ShouldProcess("$solrName", "Starting Solr service"))
             {
@@ -47,7 +47,7 @@ function Invoke-EnsureSolrServiceTask
         }
         else
         {
-            Write-TaskInfo -Message "$solrName" -Tag "Solr service already started - skipping"
+            Write-Information -Message "$solrName" -Tag "Solr service already started - skipping"
         }
     }
 }

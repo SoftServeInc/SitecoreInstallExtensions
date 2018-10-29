@@ -16,7 +16,7 @@ Function Invoke-ScriptBlockTask {
 	"WriteMessage": {
       "Type": "ScriptBlock",
       "Params": {
-        "Script": "PARAM($Message,$Tag) Write-TaskInfo -Message $Message -Tag $Tag",
+        "Script": "PARAM($Message,$Tag) Write-Information -Message $Message -Tag $Tag",
         "Arguments": [ "message to display", "ScriptBlock" ]
       }
     },

@@ -51,16 +51,16 @@ function Invoke-ConfigureSolrTask
     {
         if($solrSSL)
         {
-            Write-TaskInfo -Message "HTTPS" -Tag "Configuring Solr for HTTPS access"
+            Write-Information -Message "HTTPS" -Tag "Configuring Solr for HTTPS access"
             Configure-HTTPS $solrHost $solrRoot $certificateStore
         }
         else
         {
-            Write-TaskInfo -Message "HTTP" -Tag "Configuring Solr for HTTP access"
+            Write-Information -Message "HTTP" -Tag "Configuring Solr for HTTP access"
             Configure-HTTP $solrHost $solrRoot
         }
 
-		Write-TaskInfo -Message "PORT-MEMORY" -Tag "Configuring Solr port & memory"
+		Write-Information -Message "PORT-MEMORY" -Tag "Configuring Solr port & memory"
 		Configure-Solr $solrRoot $solrHost $solrPort $solrMemory
     }
 }

@@ -121,7 +121,7 @@ function Remove-SolrService
             } 
             else 
             {
-                Write-TaskInfo -Message "Delete $ServiceName - $msg" -Tag "RemoveSolrService"
+                Write-Information -Message "Delete $ServiceName - $msg" -Tag "RemoveSolrService"
 
             }
 

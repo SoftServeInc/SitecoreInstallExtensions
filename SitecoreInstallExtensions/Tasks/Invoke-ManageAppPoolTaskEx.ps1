@@ -37,7 +37,7 @@ Function Invoke-ManageAppPoolTaskEx {
         return $true
     }
 
-    Write-TaskInfo -Message $Name -Tag $Action
+    Write-Information -Message $Name -Tag $Action
 
     $commandName = "$Action-WebAppPool"
 

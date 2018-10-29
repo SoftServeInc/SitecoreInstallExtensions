@@ -44,20 +44,20 @@ Function Invoke-InstallPackageTask {
 
 	if($pscmdlet.ShouldProcess($HostName, "Install package/update $PackagePath or $UpdatePath"))
     {
-		Write-TaskInfo -Message "packageinstaller expected http://$($HostName):$($Port)" -Tag Info 
+		Write-Information -Message "packageinstaller expected http://$($HostName):$($Port)" -Tag Info 
 
 		$proxy = New-WebServiceProxy -uri "http://$($HostName):$($Port)/packageinstaller.asmx?WSDL"
 		$proxy.Timeout = $Timeout
 
 		if( -not [string]::IsNullOrEmpty($UpdatePath) )
 		{
-			Write-TaskInfo -Message "Install update $UpdatePath on $HostName" -Tag Info 
+			Write-Information -Message "Install update $UpdatePath on $HostName" -Tag Info 
 			$proxy.InstallUpdatePackage($UpdatePath)
 		}
 
 		if( -not [string]::IsNullOrEmpty($PackagePath)  )
 		{
-			Write-TaskInfo -Message "Install package $PackagePath on $HostName" -Tag Info 
+			Write-Information -Message "Install package $PackagePath on $HostName" -Tag Info 
 			$proxy.InstallZipPackage($PackagePath)
 		}
 	}

@@ -16,7 +16,7 @@ Function Invoke-BackupFileTask {
     {
         if (![System.IO.File]::Exists($FilePath))
         {
-            Write-TaskInfo -Message "File $FilePath does not exist" -Tag Warning 
+            Write-Information -Message "File $FilePath does not exist" -Tag Warning 
             Return
         }
 
@@ -28,7 +28,7 @@ Function Invoke-BackupFileTask {
             $backupFilePath +="_$(get-date -f yyyyMMddHHmmss)"
         }
 
-        Write-TaskInfo "Creating backup of $FilePath as $backupFilePath.bak" -Tag "Info"
+        Write-Information "Creating backup of $FilePath as $backupFilePath.bak" -Tag "Info"
 
         Copy-Item $FilePath -Destination "$backupFilePath.bak" -Force
     }

@@ -19,7 +19,7 @@ function DownloadAndUnzipIfRequired
     {
         if(!(Test-Path -Path $toolZip))
         {
-            Write-TaskInfo -Message $toolSourceFile -Tag "Downloading $toolName"
+            Write-Information -Message $toolSourceFile -Tag "Downloading $toolName"
             if($pscmdlet.ShouldProcess("$toolSourceFile", "Download source file"))
             {
                 Start-BitsTransfer -Source $toolSourceFile -Destination $toolZip
@@ -27,10 +27,10 @@ function DownloadAndUnzipIfRequired
         }
         else
         {
-            Write-TaskInfo -Message $toolZip -Tag "$toolName already downloaded"
+            Write-Information -Message $toolZip -Tag "$toolName already downloaded"
         }
 
-        Write-TaskInfo -Message $targetFile -Tag "Extracting $toolName"
+        Write-Information -Message $targetFile -Tag "Extracting $toolName"
         if($pscmdlet.ShouldProcess("$toolZip", "Extract archive file"))
         {
             Expand-Archive $toolZip -DestinationPath $installRoot -Force
@@ -38,7 +38,7 @@ function DownloadAndUnzipIfRequired
     }
     else
     {
-        Write-TaskInfo -Message $toolFolder -Tag "$toolName folder already exists - skipping"
+        Write-Information -Message $toolFolder -Tag "$toolName folder already exists - skipping"
     }
 }
 
