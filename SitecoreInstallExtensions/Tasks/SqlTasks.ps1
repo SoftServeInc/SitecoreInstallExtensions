@@ -39,9 +39,15 @@ Function Invoke-SetSqlMixedModeTask {
     
     if( -not ([string]::IsNullOrEmpty($UserName)))
     {
+        Write-Verbose "Connect with MSSQL Authentication: ($UserName)"
         $sqlServerSmo.ConnectionContext.LoginSecure = $false
         $sqlServerSmo.ConnectionContext.Login = $UserName
         $sqlServerSmo.ConnectionContext.Password = $Password
+    }
+    else
+    {
+        Write-Verbose "Connect with Windows Authentication"
+        $sqlServerSmo.ConnectionContext.LoginSecure = $true
     }
 
 	[string]$nm = $sqlServerSmo.Name
@@ -126,7 +132,7 @@ function Invoke-CreateSqlUserTask {
 	}
 
 
-	if($pscmdlet.ShouldProcess($SQLServerName, "Create user $UserName"))
+	if($pscmdlet.ShouldProcess($SQLServerName, "Create user $UserName with sysadmin role"))
     {
 		$login = $sqlServerSmo.Logins[$UserName]
 		if($login -eq $null)
@@ -135,11 +141,13 @@ function Invoke-CreateSqlUserTask {
 			$login.LoginType = 'SqlLogin'
 			$login.PasswordPolicyEnforced = $false
 			$login.PasswordExpirationEnabled = $false
+			$login.AddToRole('sysadmin')
 			$login.Create($Password)
 			
 		}
 		else
 		{
+			$login.AddToRole('sysadmin')
 			Write-Warning "User exist: $UserName ..."
 		}
 	}
