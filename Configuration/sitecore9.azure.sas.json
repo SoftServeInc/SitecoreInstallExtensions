@@ -63,7 +63,7 @@
       }
     },
     "Sitecore90-Prerequisites": {
-      "Type": "GetBlobContent",
+      "Type": "DownloadBlobContent",
       "Skip": "[equal(parameter('SitecoreVersion'),'9.1')]",
       "Params": {
         "Url": "[parameter('StorageUrl')]",
@@ -77,7 +77,7 @@
       }
     },
     "Sitecore91-Prerequisites": {
-      "Type": "GetBlobContent",
+      "Type": "DownloadBlobContent",
       "Skip": "[not(equal(parameter('SitecoreVersion'),'9.1')))]",
       "Params": {
         "Url": "[parameter('StorageUrl')]",
@@ -130,7 +130,7 @@
       }
     },
     "Sitecore91-Download": {
-      "Type": "GetBlobContent",
+      "Type": "DownloadBlobContent",
       "Skip": "[not(equal(parameter('SitecoreVersion'),'9.1')))]",
       "Params": {
         "Url": "[parameter('StorageUrl')]",
