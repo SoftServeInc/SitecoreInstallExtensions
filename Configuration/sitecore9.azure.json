@@ -78,7 +78,7 @@
         ]
       }
     },
-    "Sitecore90-Prerequisites" : {
+    "Sitecore90-Prerequisites": {
       "Type": "GetBlobContent",
       "Skip": "[equal(parameter('SitecoreVersion'),'9.1')]",
       "Params": {
@@ -90,9 +90,9 @@
           "solr-6.6.2.zip",
           "NDP462-KB3151800-x86-x64-AllOS-ENU.exe"
         ]
-      }        
+      }
     },
-    "Sitecore91-Prerequisites" : {
+    "Sitecore91-Prerequisites": {
       "Type": "GetBlobContent",
       "Skip": "[not(equal(parameter('SitecoreVersion'),'9.1')))]",
       "Params": {
@@ -105,7 +105,7 @@
           "NDP472-KB4054530-x86-x64-AllOS-ENU.exe",
           "dotnet-hosting-win.exe"
         ]
-      }        
+      }
     },
     "Sitecore901-Download": {
       "Type": "GetBlobContent",
@@ -163,7 +163,7 @@
           "Sitecore 9.1.0-xxx-XP0\\xconnect-xp0.json",
           "Sitecore 9.1.0-xxx-XP0\\XP0-SingleDeveloper.json",
           "Sitecore 9.1.0-xxx-XP0\\IdentityServer.json",
-		  "Sitecore 9.1.0-xxx-XP0\\createcert.json"
+          "Sitecore 9.1.0-xxx-XP0\\createcert.json"
         ]
       }
     }
