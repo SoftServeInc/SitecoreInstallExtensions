@@ -33,6 +33,7 @@ function Invoke-ListAzureContainerTask
 
 Export-ModuleMember Invoke-ListAzureContainerTask
 Register-SitecoreInstallExtension -Command Invoke-ListAzureContainerTask -As ListContainerContent -Type Task
+
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR

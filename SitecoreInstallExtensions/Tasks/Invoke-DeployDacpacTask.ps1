@@ -57,6 +57,7 @@ Function Invoke-DeployDacpacTask {
 
 Export-ModuleMember Invoke-DeployDacpacTask
 Register-SitecoreInstallExtension -Command Invoke-DeployDacpacTask -As Six-DeployDacpac -Type Task
+
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR

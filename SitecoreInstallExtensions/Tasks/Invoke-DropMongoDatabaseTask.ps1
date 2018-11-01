@@ -60,6 +60,7 @@ db.dropDatabase()
 }
 
 Export-ModuleMember Invoke-DropMongoDatabaseTask
+
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR

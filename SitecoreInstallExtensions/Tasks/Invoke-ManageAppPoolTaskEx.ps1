@@ -96,6 +96,7 @@ Function Invoke-ManageAppPoolTaskEx {
 }
 
 Export-ModuleMember Invoke-ManageAppPoolTaskEx
+
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR

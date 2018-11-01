@@ -23,6 +23,7 @@ function Invoke-RandomHexConfigFunction
 
 Export-ModuleMember Invoke-RandomHexConfigFunction
 Register-SitecoreInstallExtension -Command Invoke-RandomHexConfigFunction -As RandomHex -Type ConfigFunction
+
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR

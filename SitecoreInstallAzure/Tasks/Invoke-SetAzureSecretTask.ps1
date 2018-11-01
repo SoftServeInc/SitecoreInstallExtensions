@@ -38,6 +38,7 @@ Function Invoke-SetAzureSecretTask {
 
 Export-ModuleMember Invoke-SetAzureSecretTask
 Register-SitecoreInstallExtension -Command Invoke-SetAzureSecretTask -As SetSecret -Type Task
+
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
