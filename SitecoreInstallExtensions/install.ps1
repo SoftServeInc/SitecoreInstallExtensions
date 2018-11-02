@@ -41,6 +41,10 @@ if( $invalidSignatures -ne $null )
 		Write-Warning "Invalid signature: $($invalidSignature.Path)"
 	}
 }
+else
+{
+	Write-Output "############## All signatures OK ###################"
+}
 
 
 

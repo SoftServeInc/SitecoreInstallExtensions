@@ -41,7 +41,6 @@ Function Invoke-AzureLoginTask {
 
 
 Export-ModuleMember Invoke-AzureLoginTask
-
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR

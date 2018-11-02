@@ -29,6 +29,7 @@ md "$userModules\tasks" -Force
 md "$userModules\configfunctions" -Force
 $filesToExclude = @( "install.ps1", "*.tests.ps1" )
 
+Write-Output "############## Verify Script Signatures ###################"
 # Verify Script Signatures 
 $invalidSignatures = Get-ChildItem -Path $modulePath -Recurse -Include *.psd1, *.psm1, *.ps1  -Exclude $filesToExclude | ForEach-Object {Get-AuthenticodeSignature $_} | where {$_.status -ne "Valid"}
 
@@ -38,6 +39,10 @@ if( $invalidSignatures -ne $null )
 	{
 		Write-Warning "Invalid signature: $($invalidSignature.Path)"
 	}
+}
+else
+{
+	Write-Output "############## All signatures OK ###################"
 }
 
 

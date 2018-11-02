@@ -13,7 +13,6 @@ else
 	Register-SitecoreInstallExtension -Command Invoke-AzureLoginTask -As AzureLogin -Type Task
 	Register-SitecoreInstallExtension -Command Invoke-GetAzureBlobContentTask -As GetBlobContent -Type Task
 }
-
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR

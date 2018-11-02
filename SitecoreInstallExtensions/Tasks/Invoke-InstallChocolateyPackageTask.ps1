@@ -49,7 +49,6 @@ Function Invoke-InstallChocolateyPackageTask {
 }
 
 Export-ModuleMember Invoke-InstallChocolateyPackageTask
-
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR

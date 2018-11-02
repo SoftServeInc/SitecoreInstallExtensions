@@ -23,7 +23,6 @@ function Invoke-TestPackageConfigFunction
 
 Export-ModuleMember Invoke-TestPackageConfigFunction
 Register-SitecoreInstallExtension -Command Invoke-TestPackageConfigFunction -As TestPackage -Type ConfigFunction
-
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
