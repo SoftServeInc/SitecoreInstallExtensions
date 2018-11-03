@@ -23,11 +23,11 @@ function Configure-HTTP
             $newCfg | Set-Content $solrConfig
         }
 
-        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config updated for HTTP access"
+        Write-Information -Message "$solrConfig" -Tag "Solr config updated for HTTP access"
     }
     else
     {
-        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config already updated for HTTP access - skipping"
+        Write-Information -Message "$solrConfig" -Tag "Solr config already updated for HTTP access - skipping"
     }
 }
 
@@ -58,11 +58,11 @@ function Configure-HTTPS
             $newCfg | Set-Content $solrConfig
         }
 
-        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config updated for HTTPS access"
+        Write-Information -Message "$solrConfig" -Tag "Solr config updated for HTTPS access"
     }
     else
     {
-        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config already updated for HTTPS access - skipping"
+        Write-Information -Message "$solrConfig" -Tag "Solr config already updated for HTTPS access - skipping"
     }
 }
 
@@ -97,18 +97,18 @@ function Configure-Solr
 			$newCfg | Set-Content $solrConfig
         }
 
-        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config updated: $solrHost, $solrPort, $solrMemory"
+        Write-Information -Message "$solrConfig" -Tag "Solr config updated: $solrHost, $solrPort, $solrMemory"
     }
     else
     {
-        Write-TaskInfo -Message "$solrConfig" -Tag "Solr config already updated - skipping"
+        Write-Information -Message "$solrConfig" -Tag "Solr config already updated - skipping"
     }
-}
+
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUNQ21cbJLRlj8XTY2lumCQL+I
-# qiSgggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU5wNoLJ0ohD7I4mQiNceKs97G
+# XuKgggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -174,11 +174,11 @@ function Configure-Solr
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBTfbHvAHTLCs80UfO9WjyKvhb3b+jANBgkqhkiG9w0B
-# AQEFAASCAQBlhGaltRa6mQOwjGWyJDGn5wk5rxg2U0YwIRDhbnXa8NDdFcEukOT6
-# iG7DlqTNxn+PW7HW/lagQbsLcGEWva3/JlG0FRDkVqjcY7KfgUsCNmTz+0+C2P8O
-# lQZ5JXpdirBJ1bOOu69DS1diT6iEERNINlGfZ4jSYSU8fnj3lOsg+bY7LCR1Cryu
-# t0PeBTko9wHJ/Mm6v7ZSJ1oA9jx85+PSd8pMU/NsgNA3utvbJaaqHp7HaCrwwoA3
-# 6x6EbHuTRcSuRxB2zUxXUpyxkVv1sORepi0jmifKJeyIPl2F5AWj6L4+HNQnKnD5
-# kKWh6waix7UX/seyoIZ2MiF/fzKb6JFJ
+# MCMGCSqGSIb3DQEJBDEWBBTe++59z/tP/pTNOrhDFgDuimow+zANBgkqhkiG9w0B
+# AQEFAASCAQCb2Y/dw1GiPkIRLNud6LQPb2yFDfI+Y+Xt2gMguamUlsyupyyWdts8
+# 0L4pdNGhE8L8s0yXyVXO5EgeNP+MrQLeAKKn9vzg2p8oXe9pq7QjUHO4Da44lgXP
+# PcNQpfPi2ExOy/FFQUZUNyS04D75WlI7BSZbhIGjjAjifZLRDGbRGkVi31lmNMIT
+# PEdfOR+x1HzyLEeT5+NUsjY69zxThw1isNAqjqsMkOhASBQYEed8rLvo9OyP7aE8
+# Cfe5PVMz7jtWMEUrxtXb/uEt8Xb8Tkbf8/UKWpmfLM4KKjVe+rAD59Np04arZBiB
+# yDNQcn3LGTHVeD8enWZZZ6o8LOBOSXEn
 # SIG # End signature block

@@ -22,7 +22,7 @@ function Invoke-EnsureSolrServiceTask
         $svc = Get-Service "$solrName" -ErrorAction SilentlyContinue
         if(!($svc))
         {
-            Write-TaskInfo -Message "$solrName" -Tag "Installing Solr service"
+            Write-Information -Message "$solrName" -Tag "Installing Solr service"
 
             if($pscmdlet.ShouldProcess("$solrName", "Install Solr service using NSSM"))
             {
@@ -33,12 +33,12 @@ function Invoke-EnsureSolrServiceTask
         }
         else
         {
-            Write-TaskInfo -Message "$solrName" -Tag "Solr service already installed - skipping"
+            Write-Information -Message "$solrName" -Tag "Solr service already installed - skipping"
         }
 
         if($svc.Status -ne "Running")
         {
-            Write-TaskInfo -Message "$solrName" -Tag "Starting Solr service"
+            Write-Information -Message "$solrName" -Tag "Starting Solr service"
 
             if($pscmdlet.ShouldProcess("$solrName", "Starting Solr service"))
             {
@@ -47,7 +47,7 @@ function Invoke-EnsureSolrServiceTask
         }
         else
         {
-            Write-TaskInfo -Message "$solrName" -Tag "Solr service already started - skipping"
+            Write-Information -Message "$solrName" -Tag "Solr service already started - skipping"
         }
     }
 }
@@ -55,12 +55,11 @@ function Invoke-EnsureSolrServiceTask
 
 Export-ModuleMember Invoke-EnsureSolrServiceTask
 Register-SitecoreInstallExtension -Command Invoke-EnsureSolrServiceTask -As EnsureSolrService -Type Task
-
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUXUOvdhVewijFwLG78WPTctnG
-# 9sSgggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU2baPhicE9XBfeJvgYRu1cDF8
+# Wl2gggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -126,11 +125,11 @@ Register-SitecoreInstallExtension -Command Invoke-EnsureSolrServiceTask -As Ensu
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBTKH0Tw1GGukJgOyO4WRwKNz5wI3zANBgkqhkiG9w0B
-# AQEFAASCAQAQDGPFyk7l/nOET1vi5JsEG/9ugdhAt+VW57AV8wFjki5qqoxD2j7L
-# W0FcBUABQiunyUUkIUaVy/w3+iz4ay1VhKSESd7hw3n73IcEymWasL+4ZuRYMbUt
-# CBUbnD8cQBUwNnWlHAmEJZrslGk7z6F3vELiRw9utI55s6yi9egLNkYKLRaq/lyf
-# J1RvwvXrVOnfXKewsa//aHHskNUjmZMlHt2/rinvxqgcj7v6VuOiSUgmvq2d+SHg
-# 3ZvdM1BfOBubp63hlzYQeyyw1qsa9PHGOUKmO3PY0wAQAF5ZxmpWVo4s2/K2EZLA
-# RtOdWK/nOqZ1Cri2yojGkCBdwXHVFWx7
+# MCMGCSqGSIb3DQEJBDEWBBQM+AyAtav3fCRrEULAyccG49AhGzANBgkqhkiG9w0B
+# AQEFAASCAQCyZQd8MTzmEVio7nPnJJN95ofNEZcwDr9qQIBMtWfIhv1keHCvn+2P
+# Jm4MVgHNt8TkTujLSi++h93dS2DzzazkNJyzHtt0+KwsFkO7VjT9C933uZSpJzYD
+# YUFHBxaqRojzipGrsUx4fkvGytQW3ps8vVKN5mROLx9KDhxN/B20CiNXdB3G3g7x
+# doxxb80MJonHngmVkHUTo+swq2ySbgAAjMDzEXNy/wTuOGhPvd+RRPLj+g+0to+w
+# fIqMHWkX6Gm5m/kH1r8Y15BEnlUcscShQyvqxMYbipotUOU9EE9KrbnU5AOBoGIp
+# vK8L8739o6rEcTwo5CQ1tQYZay9gZdgY
 # SIG # End signature block

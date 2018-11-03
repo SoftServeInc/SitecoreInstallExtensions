@@ -19,7 +19,7 @@ function DownloadAndUnzipIfRequired
     {
         if(!(Test-Path -Path $toolZip))
         {
-            Write-TaskInfo -Message $toolSourceFile -Tag "Downloading $toolName"
+            Write-Information -Message $toolSourceFile -Tag "Downloading $toolName"
             if($pscmdlet.ShouldProcess("$toolSourceFile", "Download source file"))
             {
                 Start-BitsTransfer -Source $toolSourceFile -Destination $toolZip
@@ -27,10 +27,10 @@ function DownloadAndUnzipIfRequired
         }
         else
         {
-            Write-TaskInfo -Message $toolZip -Tag "$toolName already downloaded"
+            Write-Information -Message $toolZip -Tag "$toolName already downloaded"
         }
 
-        Write-TaskInfo -Message $targetFile -Tag "Extracting $toolName"
+        Write-Information -Message $targetFile -Tag "Extracting $toolName"
         if($pscmdlet.ShouldProcess("$toolZip", "Extract archive file"))
         {
             Expand-Archive $toolZip -DestinationPath $installRoot -Force
@@ -38,7 +38,7 @@ function DownloadAndUnzipIfRequired
     }
     else
     {
-        Write-TaskInfo -Message $toolFolder -Tag "$toolName folder already exists - skipping"
+        Write-Information -Message $toolFolder -Tag "$toolName folder already exists - skipping"
     }
 }
 
@@ -74,12 +74,12 @@ Function PackageAbsent ($Name){
 
 Function RepositoryAbsent ($Name) {
     return $null -eq (Get-PSRepository -Name $Name -ErrorAction SilentlyContinue)
-}
+
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUXR9190k2TOC8nUrO4YWVvxW5
-# AzOgggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUs1AOU/mLchlmCVeR05zHr7WW
+# XV6gggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -145,11 +145,11 @@ Function RepositoryAbsent ($Name) {
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBR4fcqOa2ybUNqkbJNGYGtqiWkfCTANBgkqhkiG9w0B
-# AQEFAASCAQA1jm6Fn1o8VLW8/aub63QC0Ae9egvDws4ySxWNkKh15vLRXk4xYOkz
-# fquQ39PfMkxpI/cV6yCNkWE+Z/kK1JohF+T2fyt3kz2kenlK8ElFIWomBloiAxQs
-# r3yZ03/moE0L2gm+Kqtt/hINQHjDcnLATFxxF4ATpO57737NfMbIVs43/P+XkJVS
-# FOiP3SKkyZQ3XetYWMu9AliPIgNlUxlPGfuaV8VWGiXMbPr15x1ha0P8+i1706eO
-# PW7ymz5yFOM5aUNsQSt3t4+4jEHBs65b4W622XfbrTvWsdnZVj4QhKV9KFLCay+6
-# oMQysH/76EHu+xyh5b+jGbeL0qt1i0xf
+# MCMGCSqGSIb3DQEJBDEWBBRnkOc6eQ0ODwSQhFG2tougjLCx4jANBgkqhkiG9w0B
+# AQEFAASCAQAOFmAcB06sOAM8iRhO+w4on8cJw5xR+osoDxumPPTzo0mWaJXrgIAV
+# nmnjnEwFTKNdmldOsqxFcUIR5PlvHr3ct5ns0KNC8A/kBmo3iu9mY3hNoZbnIzQN
+# Wu4vbLzf1a8cpS9q8a6EzE9rJO3NAG2PtgfejwQFRRm5owzncxjfNtaPVJ5dTDeb
+# zCBsHtJVzFATNWslVleeJukMQ34BqiV3fldSK/4tB7sbwkZwpZ9InqtaIO3/Cr2k
+# w2Qk9DbEa2QvyU9nkrpdWGICKSewMBf6EZqte+kH4c4zxRy02BWH1w5uzv0e0UES
+# vUQoQ6N475KhKUE+wbszPtmH0NB4EjO6
 # SIG # End signature block

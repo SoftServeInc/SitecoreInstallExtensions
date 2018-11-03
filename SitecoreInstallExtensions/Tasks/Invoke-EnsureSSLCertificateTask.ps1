@@ -51,7 +51,7 @@ function Invoke-EnsureSSLCertificateTask
             $existingCert = Get-ChildItem Cert:\LocalMachine\Root | where FriendlyName -eq "$solrName"
             if(!($existingCert))
             {
-                Write-TaskInfo -Message "$solrHost" -Tag "Creating and trusting an new SSL Cert"
+                Write-Information -Message "$solrHost" -Tag "Creating and trusting an new SSL Cert"
 
                 if($pscmdlet.ShouldProcess("$solrHost", "Generate new trusted SSL certificate"))
                 {
@@ -72,13 +72,13 @@ function Invoke-EnsureSSLCertificateTask
             }
             else
             {
-                Write-TaskInfo -Message "$solrHost" -Tag "Trusted SSL certificate already exists - skipping"
+                Write-Information -Message "$solrHost" -Tag "Trusted SSL certificate already exists - skipping"
             }
 
             # export the cert to pfx using solr's default password
             if(!(Test-Path -Path $certificateStore))
             {
-                Write-TaskInfo -Message "$certificateStore" -Tag "Exporting certificate to disk"
+                Write-Information -Message "$certificateStore" -Tag "Exporting certificate to disk"
 
                 $cert = Get-ChildItem Cert:\LocalMachine\Root | where FriendlyName -eq "$solrName"
     
@@ -91,7 +91,7 @@ function Invoke-EnsureSSLCertificateTask
             }
             else
             {
-                Write-TaskInfo -Message "$certificateStore" -Tag "Certificate file already exported - skipping"
+                Write-Information -Message "$certificateStore" -Tag "Certificate file already exported - skipping"
             }
         }
     }
@@ -99,12 +99,11 @@ function Invoke-EnsureSSLCertificateTask
 
 Export-ModuleMember Invoke-EnsureSSLCertificateTask
 Register-SitecoreInstallExtension -Command Invoke-EnsureSSLCertificateTask -As EnsureSSLCertificate -Type Task
-
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUNEWhOD/LZXUQQ3+1J2OJajIs
-# 5qygggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU8IsZCBZ0oMTqCSzz/QqWrnAA
+# H0qgggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -170,11 +169,11 @@ Register-SitecoreInstallExtension -Command Invoke-EnsureSSLCertificateTask -As E
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBRBSmFlY//V13xCH8XbcdwQ2gmCXDANBgkqhkiG9w0B
-# AQEFAASCAQB1frJoBQ5KA6Phc0ftjSIMJmgarq2DJNOHNUwG0EJ2v6IK1Dassi0V
-# KB43iC+mq+ac8WJJRkejEMUwpWPNyNLkdCaAdnNgNBBwC4/y58YdgUmAv2I0h3Zo
-# 9OYPA6oen2CZ0Qvgw3VAUBfANfeijzQfalyjwCnrBFxDfe3zdLnVCSGzgUyVJvqO
-# hlUGcQ1WlC+4uvNvP//bSfGpcMOVqifvZ2t+1iyzmUuGYN70ybF1m4bcz+MSetgU
-# yvlNBABZeZf6i2duA1xblkeoaufwuGk1Vlix7Q4HmR9eZeAKQGq/rNy6s6rsFOo/
-# V54Tu6p2y1EUb69FmmG5v5dXYGBlnLDN
+# MCMGCSqGSIb3DQEJBDEWBBT2mwd+pcTWqm5sCYfd/hBnqtLogjANBgkqhkiG9w0B
+# AQEFAASCAQCEgPkiq5K2tfFN0K7Qr05uf1WR2P5T91VBhtpVqLkF5GfNPc1wf+2S
+# MpBUr3i6c1YE7dAiquocn6MAwh4IUUpUVS16eK6N0LQDkcjON0a/FDvDwiuu73Fp
+# jVECPlA4fpC6C88slEpKALKhjM/yVIg0wSDghOaPAKCXokpYo1J2AdLuMM8PV+hK
+# HkkoHW0/3ctXMSSSSTKh2wlHwt3SX7RDGGJB4lY0Ueog4M8Wslp3j7IcD/jr54hc
+# 10scz/1In7H8E942DXWprtg0aXqzg8uVpxFlR56qYZ5LAO5SBxWL2pzt+xw1+EDT
+# u8CFq4MRz6HmRuelSQnYjXdUkIVd10Aq
 # SIG # End signature block

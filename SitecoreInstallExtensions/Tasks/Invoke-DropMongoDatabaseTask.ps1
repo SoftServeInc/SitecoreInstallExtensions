@@ -53,7 +53,7 @@ db.dropDatabase()
 
 	if($pscmdlet.ShouldProcess($DatabaseConnectionString, "Execute drop database"))
     {
-		Write-TaskInfo "Drop database $DatabaseConnectionString" -Tag "Info"
+		Write-Information "Drop database $DatabaseConnectionString" -Tag "Info"
 
 		Invoke-Expression '& "$mongoExe" $DatabaseConnectionString --eval $cmdDeleteDb --quiet'
 	}
@@ -63,8 +63,8 @@ Export-ModuleMember Invoke-DropMongoDatabaseTask
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUIeryatj5ucuwqmjIYHkINcr/
-# unGgggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUgl17MqAIbLxLntiB93JVOxiH
+# m+KgggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -130,11 +130,11 @@ Export-ModuleMember Invoke-DropMongoDatabaseTask
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBR7e2EORbQ+3U9LhtjPqk7v4IwJGjANBgkqhkiG9w0B
-# AQEFAASCAQBGq7bmkQUoE8zj7B4IFZisyuxJlt6U2z/4qd8jz7mwB/3BXHx2zKDp
-# MQPgSNBdZw+xzVr+8KVmcSTaDoVsRfTrBcDmiQIvh6gLEn8TWvAhzFBo0iCYfI/G
-# zgjZFEhhnwFcW3NZpRy692CFzLhtmVh7f2Pva3adht95yCyJdQRhEoTqBcxJbxFY
-# K/II0sbfH+1ENYxqcmG0yvVTpTxG+ID/QuiFfDw4B3np0OdEGtYvpMoi6HzpF+Wb
-# hp/HI+gMR2VR682LCQopzq40DO/sXlcfrySR2UsfP9tIaHK7fShYefjtZQTv+0GB
-# FbB8kRz5oeQ4USZc+M7IUC9jTtk2bvxh
+# MCMGCSqGSIb3DQEJBDEWBBRvNMRD3JJObsXlcj7hLCstUExYTTANBgkqhkiG9w0B
+# AQEFAASCAQAoB7a/kokeHWFT69sBPIN0KJ4BHdDTkehtKTEdc7Bdk3Ke50sQdo9u
+# 6wgWOj34Q8E9sitWBT7BuieXk027t8PpiQ7J1DS1neDuI9eqwLsHoAnVbU2jb3bi
+# Xd7sVWWTtIS3hByvQWGgRlnh+4dVjUHsg+VnmykiUFElW3UfDvx82g3+ctwGh5qx
+# Z0veH4LBXU2um1x8C2xboD13fyfIc0ngAreD1l8tc59tdONXDlKr/8eWsNtMdN/F
+# guxvfEwvxWaRN11MQE3GUBVdmOMx3PCQ0VVx74D1YDhw4mn6jHQnqzh1iOLL+/Cw
+# o33jiGi5CaHoSrmfdIRRFnyEJwkYmhEq
 # SIG # End signature block

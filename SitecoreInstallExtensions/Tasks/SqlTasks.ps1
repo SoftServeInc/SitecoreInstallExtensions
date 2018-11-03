@@ -39,9 +39,15 @@ Function Invoke-SetSqlMixedModeTask {
     
     if( -not ([string]::IsNullOrEmpty($UserName)))
     {
+        Write-Verbose "Connect with MSSQL Authentication: ($UserName)"
         $sqlServerSmo.ConnectionContext.LoginSecure = $false
         $sqlServerSmo.ConnectionContext.Login = $UserName
         $sqlServerSmo.ConnectionContext.Password = $Password
+    }
+    else
+    {
+        Write-Verbose "Connect with Windows Authentication"
+        $sqlServerSmo.ConnectionContext.LoginSecure = $true
     }
 
 	[string]$nm = $sqlServerSmo.Name
@@ -109,7 +115,7 @@ function Invoke-CreateSqlUserTask {
 		[string]$Password
 	)
 
-	Write-TaskInfo -Message "Create user $UserName on server $SQLServerName" -Tag 'MSSQL'
+	Write-Information -Message "Create user $UserName on server $SQLServerName" -Tag 'MSSQL'
 
 	$sqlServerSmo = Get-SqlServerSmo -SQLServerName $SQLServerName
 
@@ -126,7 +132,7 @@ function Invoke-CreateSqlUserTask {
 	}
 
 
-	if($pscmdlet.ShouldProcess($SQLServerName, "Create user $UserName"))
+	if($pscmdlet.ShouldProcess($SQLServerName, "Create user $UserName with sysadmin role"))
     {
 		$login = $sqlServerSmo.Logins[$UserName]
 		if($login -eq $null)
@@ -135,11 +141,13 @@ function Invoke-CreateSqlUserTask {
 			$login.LoginType = 'SqlLogin'
 			$login.PasswordPolicyEnforced = $false
 			$login.PasswordExpirationEnabled = $false
+			$login.AddToRole('sysadmin')
 			$login.Create($Password)
 			
 		}
 		else
 		{
+			$login.AddToRole('sysadmin')
 			Write-Warning "User exist: $UserName ..."
 		}
 	}
@@ -154,7 +162,7 @@ function Invoke-DeleteSqlUserTask {
 		[string]$UserName
 	)
 
-	Write-TaskInfo -Message "Delete user $UserName on server $SQLServerName" -Tag 'MSSQL'
+	Write-Information -Message "Delete user $UserName on server $SQLServerName" -Tag 'MSSQL'
 
 	$sqlServerSmo = Get-SqlServerSmo -SQLServerName $SQLServerName
 
@@ -241,7 +249,7 @@ function Invoke-SetSqlDatabaseRolesTask   {
 		$dbUser = $database.Users | Where-Object {$_.Login -eq "$Login"}
 		if ($dbUser -eq $null)
 		{
-			Write-TaskInfo -Message "Adding user $Login in $($database.Name)" -Tag 'MSSQL'
+			Write-Information -Message "Adding user $Login in $($database.Name)" -Tag 'MSSQL'
 
 			$dbUser = New-Object -TypeName Microsoft.SqlServer.Management.Smo.User($database, $Login)
 			$dbUser.Login = $Login
@@ -251,7 +259,7 @@ function Invoke-SetSqlDatabaseRolesTask   {
 		# Assign database roles user
 		foreach ($roleName in $roles)
 		{
-			Write-TaskInfo -Message "Adding $roleName role for $($dbUser.Name) on $db" -Tag 'MSSQL'
+			Write-Information -Message "Adding $roleName role for $($dbUser.Name) on $db" -Tag 'MSSQL'
 
 			$dbrole = $database.Roles[$roleName]
 			$dbrole.AddMember($dbUser.Name)
@@ -309,8 +317,8 @@ function Invoke-AttachSqlDatabaseTask {
     {
 		if ($sqlServerSmo.databases[$DBName] -eq $null)
 		{
-			Write-TaskInfo -Message "Attaching $DBDataFilePath to $SQLServerName as $DBName" -Tag 'MSSQL'
-			Write-TaskInfo -Message "Attaching $DBLogFilePath to $SQLServerName as $DBName" -Tag 'MSSQL'
+			Write-Information -Message "Attaching $DBDataFilePath to $SQLServerName as $DBName" -Tag 'MSSQL'
+			Write-Information -Message "Attaching $DBLogFilePath to $SQLServerName as $DBName" -Tag 'MSSQL'
 
 			$files = New-Object System.Collections.Specialized.StringCollection 
 			$files.Add($DBDataFilePath) | Out-Null; 
@@ -381,7 +389,7 @@ function Invoke-SetSqlDatabasePermisionsTask {
 		$database.Alter();
 
 		$message = "Granted Execute permission to $UserName on $db" 
-		Write-TaskInfo -Message $message -Tag 'MSSQL'
+		Write-Information -Message $message -Tag 'MSSQL'
 	}
 }
 
@@ -435,7 +443,7 @@ Json task configuration for Sitecore Install Framework
 		{
 			if ($sqlServerSmo.databases[$database] -ne $null)
 			{
-				Write-TaskInfo -Message "Remove $database" -Tag 'MSSQL'
+				Write-Information -Message "Remove $database" -Tag 'MSSQL'
 
 				Invoke-SQLcmd -ServerInstance $SQLServerName -Query ("EXEC msdb.dbo.sp_delete_database_backuphistory @database_name = N'" + $database + "'")
 				Invoke-SQLcmd -ServerInstance $SQLServerName -Query ("DROP DATABASE [" + $database + "]")
@@ -511,7 +519,7 @@ function Invoke-SetSitecoreAdminPasswordTask {
 
 	if($pscmdlet.ShouldProcess($SqlServer, "Reset Sitecore admin password at database $SqlDb"))
     {
-		Write-TaskInfo -Message "Reset Sitecore admin password at database $SqlDb" -Tag 'MSSQL'
+		Write-Information -Message "Reset Sitecore admin password at database $SqlDb" -Tag 'MSSQL'
 
 		$query = $sql -replace 'passwordplaceholder',$SitecoreAdminPassword
 		Invoke-SQLcmd -ServerInstance $SqlServer -Query $Query -Database $SqlDb -Username $SqlAdminUser -Password $SqlAdminPassword
@@ -533,12 +541,11 @@ Register-SitecoreInstallExtension -Command Invoke-SetSitecoreAdminPasswordTask -
 
 
 
-
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUi6baPzHQvRwJsoSQKuk/tX5d
-# CGugggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU0/8ogJ0F81f8VNWMiajC1XUf
+# lTegggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -604,11 +611,11 @@ Register-SitecoreInstallExtension -Command Invoke-SetSitecoreAdminPasswordTask -
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBRDIjxwNqFYVXsv1XFGEt3rQ7GRNDANBgkqhkiG9w0B
-# AQEFAASCAQABlWVxyi/psoIdT5Jg09oAP6ionUeP/4X4tmB9aAisZ+KtNg4fmN1F
-# /33zAgwEzuHlUP+VV7OdXCtOx959oKKa1Hq2/qqN9Q+v8Lu9ok1Pk9wtBi7oHdhm
-# oZZhbNPWVveyVdEbdnTGi+ly5Wpo0aRbpC3UypyoTV7all569qUIfQy0wgxXLYZP
-# exetOiWiTfhtktVJB4lmTzLskCXAitZyXefria+YUFb0i3Sbozm2liXNq18So844
-# bhV76pikGd/BVG4QANt//SMQU+mNkYgE339abEqWcaI8E6D8NRSafKA0zHzQcfof
-# 3IvQSRocwCcI94PtrW4XfVdtM6IpX4fH
+# MCMGCSqGSIb3DQEJBDEWBBTQZxtg7Ha8qQG9VLMWbYnxGsaUyzANBgkqhkiG9w0B
+# AQEFAASCAQCijdRpr/Y3zUs2tLFFL+N5A5aRhPxUEQdT3QMo1NKFveqLZhIXhUH2
+# 8Chh/4pQp7a6cq6LmS+czXMvaA3KIZURyBWyyJ9/xqum2NgNCMFhlZEcX2TRY6Ua
+# QSo2B68oh0tYatN5TOwV0mADSc/vH+kBS2WLcaAOt+mGiwIBNomvy1b9try2pbo1
+# zxf/BRUUm1QfgPKA1dUvjrTZFF8hU+1SuE0SdqJgVbIQDtLIyrqPyDmFLYf4up8h
+# ezlpScP4TNUOh9u7w1pojkMrnvLYuQt/PHKjKYafmivCpb1xOndoLUA8o4OnA+L9
+# HZ5es/3O73J/VufMr6kvQWl3D4WEFnbU
 # SIG # End signature block

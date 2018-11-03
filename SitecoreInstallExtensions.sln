@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configura
 		Configuration\sifology-demo.json = Configuration\sifology-demo.json
 		Configuration\sitecore-packages.json = Configuration\sitecore-packages.json
 		Configuration\sitecore-prerequisites.json = Configuration\sitecore-prerequisites.json
+		sitecore.performance.json = sitecore.performance.json
 		Configuration\sitecore8-xp0.json = Configuration\sitecore8-xp0.json
 		Configuration\sitecore9.azure.json = Configuration\sitecore9.azure.json
 		Configuration\sitecore9.azure.sas.json = Configuration\sitecore9.azure.sas.json

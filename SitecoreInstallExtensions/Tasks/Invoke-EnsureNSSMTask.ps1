@@ -47,7 +47,7 @@ function Invoke-EnsureNSSMTask
         $targetFile = "$installFolder\nssm-$nssmVersion"
         $nssmZip = "$downloadFolder\nssm-$nssmVersion.zip"
 
-        Write-TaskInfo -Message "$nssmVersion" -Tag "Ensuring NSSM installed"
+        Write-Information -Message "$nssmVersion" -Tag "Ensuring NSSM installed"
 
         DownloadAndUnzipIfRequired "NSSM" $targetFile $nssmZip $nssmSourcePackage $installFolder
     }
@@ -56,12 +56,11 @@ function Invoke-EnsureNSSMTask
 Export-ModuleMember Invoke-EnsureNSSMTask
 Register-SitecoreInstallExtension -Command Invoke-EnsureNSSMTask -As EnsureNssm -Type Task
 
-
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU4UZPTn98ebRNUyQ80dfOV5ql
-# hjigggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUt6jvXkU315dr7i4gUCZTIT9x
+# xc6gggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -127,11 +126,11 @@ Register-SitecoreInstallExtension -Command Invoke-EnsureNSSMTask -As EnsureNssm 
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBSqCbR30+01kpAXHVndlQdtSWCITzANBgkqhkiG9w0B
-# AQEFAASCAQBys+DtDUw+Zhagoe5RMryIidJgIZJuEdgPrlVl9gGRi5REFjqgES1i
-# YnEsDSM5c7BdwrRCPIcLHc7WSw7943uZ+7kjlL/RhRmatH2eBTZTh9B5ELHKl8FN
-# rfLzFjJMRlzx80IMIWvUgNmc+48ypYY5JqeH6Iyh5i4i/3z4y7cHc8qTQIygkMLg
-# +nO21CSqsB25JRS2mzHd3knk7L27qwySuZJk6B90EaUm5LbqDrxYl+smv5zFmP8z
-# CBEebLG59++quJ5DZ18s8oFeubDp1nOCTnHwif7xJCsDsEjhRRjXPXQqJ+BPxlhp
-# FLorKKsiuqhLSu9xeTnJi5kXdBW/d9mX
+# MCMGCSqGSIb3DQEJBDEWBBTdvFYGYqLptq7byU3mAKihncIG9jANBgkqhkiG9w0B
+# AQEFAASCAQAxy3AlYyEJlzU6ipe2ktt2CfQvvILeEPX4rW42o2/AYN66j2RBES0T
+# VA4dGP6eE2qcNtEawerw7EE62K8a7Wy59afGmHXwl+2RBJSVnvaCE4R3AWDogoD3
+# PcSR4iVqUcf4tmOirsJEsh36NiKzd/mmsIaib0SZrmd5LjUbKMOAkXUFsMlJIQvd
+# eQcjQ/vXICLXwm2DUwN6qfkMPRTPIn9u3EEljD9LOp4IF1uXE2VR31DQ3lzZNOT2
+# 1c29Ip/HXfdxkSxtopyMM2p0RSmnZUYu/8WMLZVrxGhdul3/4zEsyju11tSel9Id
+# EH0LVeMQY4c8HnB5AsL9ssTuqxR2ZhZp
 # SIG # End signature block

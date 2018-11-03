@@ -26,7 +26,7 @@ function Invoke-ListAzureContainerTask
 		$storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $ResourceGroupName -Name $StorageName -ev notPresent -ea SilentlyContinue
 
 
-		Get-AzureStorageContainer -Name $Container -Context $storageAccount.Context | Get-AzureStorageBlob | % { Write-TaskInfo -Message $_.Name -Tag $Container } 
+		Get-AzureStorageContainer -Name $Container -Context $storageAccount.Context | Get-AzureStorageBlob | % { Write-Information -Message $_.Name -Tag $Container } 
 
 	}
 }
@@ -36,8 +36,8 @@ Register-SitecoreInstallExtension -Command Invoke-ListAzureContainerTask -As Lis
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU9zQPNoUMigTnvD6mxzzmOudy
-# 16ygggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUNHmM7sXA4ieKLDDJsrbSuten
+# YrCgggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -103,11 +103,11 @@ Register-SitecoreInstallExtension -Command Invoke-ListAzureContainerTask -As Lis
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBRjnygPG58ML8kgf5Ck5QFhrhvSKDANBgkqhkiG9w0B
-# AQEFAASCAQApVyuBXPOyls+U4AIPSu7WwmxBYeLXs2Kg/lH+/NsQD6Gzt4NlOcQZ
-# S8I+c7dyBq7vVt+02mME/LrQ26m4TnYXk5uRl0PhK/t62aGpE8szrzJOngqh9YrM
-# B2Awo6nNijx5j3RU1aGtaOxuHJdTx6U0/f3yTis9YBNA513cH/Su/98Vdz2LXZMZ
-# rQkO1Evh6I9roGEO3vXKdSc7Q6xz4XstrCExxxHd3CgOz/EM3VSycWRJEY3SU9Q9
-# jcVMC+9AtW8LM5eyTT6/3sFFl3n4DsjsM/dlNGKge+DN+hLORDIB2fvE8Oe76HyE
-# KgW6nno8qBIQQ0s9C9MkNnuGyCkVZmnn
+# MCMGCSqGSIb3DQEJBDEWBBTIsgCmtb+4kr1bUNsyvs4qHbubvTANBgkqhkiG9w0B
+# AQEFAASCAQAeqJg5IqTg+g9uz/GIhQ7dKoSaY02IKPo2GkRsQIso+AtHGwC46HC7
+# uxEA5kaQXlrR2dEbu5NkcFWQtBMsucu/fH06A7OJYZk4Wv4xfNNiPdxp7WtegLm4
+# fs6k023HW3hUp9qOUOvx7rYpCN5OmEpSqu8c+8pmLZGEnOm035wdJTltkgx8iEwy
+# EmzBG4hSWHZcQM1hKqlCcoz7F97WEd5puWv+HhigJGLsqzGiu+8LXOuAMFY+TWN1
+# 6h4eds56+GrEXSq7M1iz1TbSQyA9idAsP9kHLJRcmKwvNJentPsNLfSTVd3Po5kQ
+# zEUHHiLZhca2kXmYjH3iSWLzuEI2C617
 # SIG # End signature block

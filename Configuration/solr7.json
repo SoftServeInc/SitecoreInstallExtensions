@@ -1,0 +1,222 @@
+{
+  "Parameters": {
+    "LocalStorage": {
+      "Type": "string",
+      "Description": "The root folder for packages"
+    },
+    "JREDownloadUrl": {
+      "Type": "string",
+      "DefaultValue": "http://javadl.oracle.com/webapps/download/AutoDL?BundleId=233172_512cd62ec5174c3487ac17c61aaa89e8",
+      "Description": "Link to JRE 8u171"
+    },
+    "JREInstaller": {
+      "Type": "string",
+      "Description": "The path to the Java SE Runtime Environment installer.",
+      "DefaultValue": "jre-8u171-windows-x64.exe"
+    },
+    "SolrPackage": {
+      "Type": "string",
+      "Description": "The path to the SOLR zip package.",
+      "DefaultValue": "solr-7.2.1.zip"
+    },
+    "SolrDownloadUrl": {
+      "Type": "string",
+      "DefaultValue": "http://archive.apache.org/dist/lucene/solr/7.2.1/solr-7.2.1.zip"
+    },
+    "SolrVersion": {
+      "Type": "string",
+      "DefaultValue": "7.2.1",
+      "Description": "What version of Solr should be downloaded for install"
+    },
+    "InstallFolder": {
+      "Type": "string",
+      "Description": "Where should Solr be installed to"
+    },
+    "SolrUseSSL": {
+      "Type": "boolean",
+      "DefaultValue": true,
+      "Description": "Should Solr require HTTPS for access?"
+    },
+    "SolrHost": {
+      "Type": "string",
+      "Description": "What host name should the Solr service use"
+    },
+    "SolrPort": {
+      "Type": "string",
+      "DefaultValue": "8983",
+      "Description": "The port the Solr service should use"
+    },
+    "SolrMemory": {
+      "Type": "string",
+      "DefaultValue": "512m"
+    },
+    "SolrServiceName": {
+      "Type": "string"
+    },
+    "UseLocalFiles": {
+      "Type": "boolean",
+      "DefaultValue": true,
+      "Description": "Should use local Solr and JRE files or download from Internet?"
+    },
+    "CertificateName": {
+      "Type": "string",
+      "Description": "The name of the certificate to be created."
+    },
+    "CertPath": {
+      "Type": "string",
+      "Description": "The physical path on disk where certificates will be stored.",
+      "DefaultValue": "c:\\certificates"
+    },
+    "RootCertFileName": {
+      "Type": "string",
+      "Description": "The file name of the root certificate to be created.",
+      "DefaultValue": "SitecoreRootCert"
+    },
+    "ExportPassword": {
+      "Type": "String",
+      "Description": "Password to export certificates with.",
+      "DefaultValue": "secret"
+    }
+  },
+  "Modules": [
+    "SitecoreInstallExtensions"
+  ],
+  "Register": {
+    "Tasks": {
+      "WriteOutput": "Write-Output"
+    },
+    "ConfigFunction": {
+      "ConvertToSecureString": "ConvertTo-SecureString"
+    }
+  },
+  "Variables": {
+    "Source.JRE": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]",
+    "Source.Solr": "[joinpath(parameter('LocalStorage'), parameter('SolrPackage'))]",
+    "SolrFolder": "[concat('\\solr-', parameter('SolrVersion'))]",
+    "SolrInstallFolder": "[joinpath(parameter('InstallFolder'), variable('SolrFolder'))]",
+    "CertStoreFile": "[joinpath(variable('SolrInstallFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]",
+    "SolrProtocol": "[if ( parameter('SolrUseSSL'), 'https', 'http')]",
+    "SolrUrl": "[concat(variable('SolrProtocol'), '://', parameter('SolrHost'), ':', parameter('SolrPort'), '/solr/')]",
+    "Root.Cert.DnsName": "[concat('DO_NOT_TRUST_', parameter('RootCertFileName'))]",
+    "Root.Cert.Store": "cert:\\LocalMachine\\Root",
+    "Client.Cert.Store": "cert:\\LocalMachine\\My",
+    "ExportedCertificate": "[joinpath(parameter('CertPath'), parameter('CertificateName'))]",
+    "Export.Password": "[if(variable('User.Supplied.Password'),variable('Secure.Password'),variable('Convert.User.Password'))]",
+    "User.Supplied.Password": "[equal(parameter('ExportPassword'),'SIF-Default')]",
+    "Secure.Password": "[ConvertToSecureString(String:variable('Password.String'),AsPlainText:true,Force:true)]",
+    "Password.String": "[RandomString(Length:20,EnforceComplexity:True)]",
+    "Convert.User.Password": "[ConvertToSecureString(String:parameter('ExportPassword'),AsPlainText:true,Force:true)]"
+  },
+  "Tasks": {
+    "CreatePaths": {
+      "Description": "Create the physical disk path",
+      "Type": "EnsurePath",
+      "Params": {
+        "Exists": [
+          "[parameter('CertPath')]",
+          "[parameter('LocalStorage')]"
+        ]
+      }
+    },
+    "CreateRootCert": {
+      "Description": "Create the root certificate.",
+      "Type": "NewRootCertificate",
+      "Params": {
+        "Path": "[parameter('CertPath')]",
+        "Name": "[parameter('RootCertFileName')]",
+        "DnsName": [
+          "[variable('Root.Cert.DnsName')]",
+          "127.0.0.1"
+        ],
+        "IncludePrivateKey": true,
+        "Password": "[variable('Export.Password')]"
+      }
+    },
+    "CreateSignedCert": {
+      "Description": "Create a certificate signed by the root authority.",
+      "Type": "NewSignedCertificate",
+      "Params": {
+        "Signer": "[GetCertificate(variable('Root.Cert.DnsName'), variable('Root.Cert.Store'))]",
+        "Path": "[parameter('CertPath')]",
+        "CertStoreLocation": "[variable('Client.Cert.Store')]",
+        "Name": "[parameter('CertificateName')]",
+        "DnsName": [
+          "[parameter('CertificateName')]",
+          "127.0.0.1"
+        ],
+        "IncludePrivateKey": true,
+        "Password": "[variable('Export.Password')]"
+      }
+    },
+    "DownloadJRE": {
+      "Type": "DownloadFile",
+      "Skip": "[parameter('UseLocalFiles')]",
+      "Params": {
+        "SourceUri": "[parameter('JREDownloadUrl')]",
+        "DestinationPath": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]"
+      }
+    },
+    "DownloadSolr": {
+      "Type": "DownloadFile",
+      "Skip": "[parameter('UseLocalFiles')]",
+      "Params": {
+        "SourceUri": "[parameter('SolrDownloadUrl')]",
+        "DestinationPath": "[joinpath(parameter('LocalStorage'), parameter('SolrPackage'))]"
+      }
+    },
+    "InstallJRE": {
+      "Type": "EnsureJRE",
+      "Params": {
+        "JavaPackagePath": "[variable('Source.JRE')]"
+      }
+    },
+    "InstallSolr": {
+      "Type": "EnsureSolr",
+      "Params": {
+        "SolrPackage": "[variable('Source.Solr')]",
+        "InstallLocation": "[variable('SolrInstallFolder')]"
+      }
+    },
+    "Ensure host name exists": {
+      "Type": "HostHeader",
+      "Params": {
+        "Hostname": "[parameter('SolrHost')]"
+      }
+    },
+    "Copy-Certificate": {
+      "Type": "Copy",
+      "Params": {
+        "Source": "[concat(variable('ExportedCertificate') , '.pfx')]",
+        "Destination": "[variable('CertStoreFile')]"
+      }
+    },
+    "Rewrite Solr config file": {
+      "Type": "ConfigureSolr",
+      "Params": {
+        "solrSSL": "[parameter('SolrUseSSL')]",
+        "solrHost": "[parameter('SolrHost')]",
+        "solrRoot": "[variable('SolrInstallFolder')]",
+        "solrPort": "[parameter('SolrPort')]",
+        "solrMemory" : "[parameter('SolrMemory')]",
+        "certificateStore": "[variable('CertStoreFile')]"
+      }
+    },
+    "RunSolrAsService": {
+      "Type": "SolrAsService",
+      "Params": {
+        "SolrPort": "[parameter('SolrPort')]",
+        "SolrRoot": "[variable('SolrInstallFolder')]",
+        "ServiceName": "[parameter('SolrServiceName')]"
+      }
+    },
+    "Ensure Solr is running": {
+      "Type": "WebRequest",
+      "Params": {
+        "Uri": "[variable('SolrUrl')]",
+        "RetryCount": "3",
+        "RetryDelay": "5000",
+        "RequestTimeout": "5000"
+      }
+    }
+  }
+}

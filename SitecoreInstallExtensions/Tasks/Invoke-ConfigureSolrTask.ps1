@@ -51,16 +51,16 @@ function Invoke-ConfigureSolrTask
     {
         if($solrSSL)
         {
-            Write-TaskInfo -Message "HTTPS" -Tag "Configuring Solr for HTTPS access"
+            Write-Information -Message "HTTPS" -Tag "Configuring Solr for HTTPS access"
             Configure-HTTPS $solrHost $solrRoot $certificateStore
         }
         else
         {
-            Write-TaskInfo -Message "HTTP" -Tag "Configuring Solr for HTTP access"
+            Write-Information -Message "HTTP" -Tag "Configuring Solr for HTTP access"
             Configure-HTTP $solrHost $solrRoot
         }
 
-		Write-TaskInfo -Message "PORT-MEMORY" -Tag "Configuring Solr port & memory"
+		Write-Information -Message "PORT-MEMORY" -Tag "Configuring Solr port & memory"
 		Configure-Solr $solrRoot $solrHost $solrPort $solrMemory
     }
 }
@@ -68,12 +68,11 @@ function Invoke-ConfigureSolrTask
 Export-ModuleMember Invoke-ConfigureSolrTask
 Register-SitecoreInstallExtension -Command Invoke-ConfigureSolrTask -As ConfigureSolr -Type Task
 
-
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUdiHewBMGHrGchNG4BxELiIbh
-# 47ygggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUkn7yvIcdrhf4qNK75c8nFLf/
+# JpWgggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -139,11 +138,11 @@ Register-SitecoreInstallExtension -Command Invoke-ConfigureSolrTask -As Configur
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBTCM1o2IleZmWwvMUWY+XHLL5FjmDANBgkqhkiG9w0B
-# AQEFAASCAQANcL1r9f39v2EUHzJLAqHT4Bx5deog1C60gLsfSQ+5izqEKqwIcrLd
-# RxMaf9qQt9M79pC5bIS5wgFDvpG4UNHTx9l+KjXlihXsqgfNj3jg4QjR2J5L/2HK
-# ltUHmiPzogH0/MnWdROaOtozmWuWzAhy7QlXepX5R7gAxv44bM1DlRPRYNK9lsG8
-# 8rcPKGVXIh29tSdMQmrNczyvQJ2TySo8NaDt+EHKtqimdU9LBYmG5RL8xJkqX7CA
-# aEJqCacD4kK2Du0SlABAjQ/Iv1HpeU/4MJMHN5G2kZBosPCLemvEsiuA9JyHbfzi
-# Tx5xWYU7zaugaUGFhWuQHVJOxiUTfT1c
+# MCMGCSqGSIb3DQEJBDEWBBTyREl6kYVxlZISnEv76D78h77m3DANBgkqhkiG9w0B
+# AQEFAASCAQBBfIJdbFKbrg3Z8gcZHYElX/OwsH0atKmUrYi8Y/U6dnRqOvzd9mhu
+# e4bR5bQnH39qK4RH5T4eO33Cjyf1lv3qf9DrgioMGpBMZXCMCgw00y+dlBQL95xz
+# uAEYzqvSqeDLI0kYZBI3Pnkwq722qxFfvSXqzETduiUzUMG1LDS3WlL5kSUJlxm5
+# USIbV/43nrI8Vp+wbPXqUlBKOKa7J26GQ1+pZxAJNBi+FGufaiIkFbuCZmybnaPq
+# AXTn2O4xzy1YS0o0BMWOGa4iIkrezOR9V0OheVytJZI4J4F8rMnNLRLuwZX+Hil/
+# 1xbB3Ae2116xTLhcLOSxOKAUUz6HUY0L
 # SIG # End signature block

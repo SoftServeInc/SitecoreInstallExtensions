@@ -44,32 +44,31 @@ Function Invoke-InstallPackageTask {
 
 	if($pscmdlet.ShouldProcess($HostName, "Install package/update $PackagePath or $UpdatePath"))
     {
-		Write-TaskInfo -Message "packageinstaller expected http://$($HostName):$($Port)" -Tag Info 
+		Write-Information -Message "packageinstaller expected http://$($HostName):$($Port)" -Tag Info 
 
 		$proxy = New-WebServiceProxy -uri "http://$($HostName):$($Port)/packageinstaller.asmx?WSDL"
 		$proxy.Timeout = $Timeout
 
 		if( -not [string]::IsNullOrEmpty($UpdatePath) )
 		{
-			Write-TaskInfo -Message "Install update $UpdatePath on $HostName" -Tag Info 
+			Write-Information -Message "Install update $UpdatePath on $HostName" -Tag Info 
 			$proxy.InstallUpdatePackage($UpdatePath)
 		}
 
 		if( -not [string]::IsNullOrEmpty($PackagePath)  )
 		{
-			Write-TaskInfo -Message "Install package $PackagePath on $HostName" -Tag Info 
+			Write-Information -Message "Install package $PackagePath on $HostName" -Tag Info 
 			$proxy.InstallZipPackage($PackagePath)
 		}
 	}
 }
 
 Export-ModuleMember Invoke-InstallPackageTask
-
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUqLcixmye0zcdk9noxXqrEhAg
-# 2k+gggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUMONPZQ828lnK3TIbp5RamAPs
+# 78CgggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -135,11 +134,11 @@ Export-ModuleMember Invoke-InstallPackageTask
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBRKsrCKzoWKkZltUv2sMxrdhb8QgzANBgkqhkiG9w0B
-# AQEFAASCAQAKE7vry1jh4OmuLcvtBmrOEyXpBzA5t60thR5WiAVlneP3g49Lx+BD
-# 5ZkSV6sXxwllIpasnEmnlWmf3c0npNMbElRbkCRucEz0AYzeohJjCqLw9W5+qPhH
-# mS4g6y7bUUaBWGwyu+UonTxtmBdwDR4J64rHdx5z4J2ja20QnDjePDgUET/53yVG
-# SEvq4CEOHWqAHDEADRU4Lv/qYUknhWqnwPgFlD8G/682O6kmV2xf5ihKe5epYLXd
-# qA+4I+MZXq5C2vk+Ez3SmrG6Li9ngMNfdHxnvQDJuD9adBYoo1jm3n4YZor0WFUN
-# pJlJDyTaqhHru1P36Emow3AwdcuvOCK/
+# MCMGCSqGSIb3DQEJBDEWBBQIeUAF8pSsClUdLfp4e5wiEPRNXzANBgkqhkiG9w0B
+# AQEFAASCAQAZ6vAldQLN+RkkYe1GhCb+TM64m8b/K87iMmnIJMZ4p1YFrQMdYiV7
+# r6zBUwVRpqYHeP6X/CbLsLtFOgzM6Jl0VeQQGXnqzQiTHSFv7Diy9/jp6K5Jbbfy
+# CR+mymASaXXuEuv3I13/IJJBTq6IzyKxDWdYtwph0Fk382eYbupzyqx2IGV7QE97
+# tdkIv4EQZakIibHgRW5/Hi2qH1jmbsTSebVnPGoffzucZNQPgSWzsfNFKFPNJTe4
+# W6F5X+yE7Mxse4KEO8qZekCdUqwAkTTYyoQNgTWfm0svlAi0MRRIy0kI8jhqAz8T
+# y8S64+FEOZ2D3W2Ge8PjAflk9uW96s9z
 # SIG # End signature block

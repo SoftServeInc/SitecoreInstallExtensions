@@ -40,7 +40,7 @@ function Invoke-NewPatchFileTask
 		[string]$Comment
 		)
 
-	Write-TaskInfo -Message "Create a patch file: $XmlPath" -Tag "NewPatchFileTask"
+	Write-Information -Message "Create a patch file: $XmlPath" -Tag "NewPatchFileTask"
 
 	if( (Test-Path -Path $XmlPath) )
 	{
@@ -110,7 +110,7 @@ function Invoke-AddPatchTask
 	$existingNode = $XmlDocument.SelectNodes("//configuration/sitecore/settings/setting") | Where-Object {$_ -ne $null -and $_.Name -eq $Name}
 	if( $existingNode -ne $null )
 	{
-		Write-TaskInfo "Patch for setting $Name already exist" -Tag "Patch"
+		Write-Information "Patch for setting $Name already exist" -Tag "Patch"
 		return
 	}
 
@@ -122,7 +122,7 @@ function Invoke-AddPatchTask
     }
 	$item.SetAttribute("name",  $Name)
     
-    Write-TaskInfo -Message "Create patch for setting $Name = $Value" -Tag "Patch"
+    Write-Information -Message "Create patch for setting $Name = $Value" -Tag "Patch"
 	if( $Value -eq $null -or $Value -eq '')
 	{
 		$patch = $XmlDocument.CreateElement("patch","delete","http://www.sitecore.net/xmlconfig/")
@@ -157,12 +157,11 @@ Register-SitecoreInstallExtension -Command Invoke-AddPatchTask -As Six-AddPatch 
 
 Export-ModuleMember Invoke-NewPatchFileTask
 Register-SitecoreInstallExtension -Command Invoke-NewPatchFileTask -As Six-CreatePatchFile -Type Task
-
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUKyuc0W7wpjBkZyned/vEJfoE
-# SqagggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUnDe7JreS/vs/4GsMO6avVnmd
+# 0+SgggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -228,11 +227,11 @@ Register-SitecoreInstallExtension -Command Invoke-NewPatchFileTask -As Six-Creat
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBQ97SP5zO/buKtSuFjPwswOKUxQTjANBgkqhkiG9w0B
-# AQEFAASCAQAnyVi7T1YCRtm7YhVv1wXBhiiu8cb1y+YaoxMGtXbUPvJWgThqtq1I
-# Hel8uN3o6/oQye2teuwOPOUb4fUq/9q08jScqVn53axvsl4tKdHJujXWTUaqyn/8
-# T+V/0C3cj1TWG4iy7cvy2T3lmj1PtaeKoIggD4B7oDO1oxUDxCYcFFtaIrdJq1/t
-# vMS18DDxv25VrdZv6+7H1JpKujYHGsfA5/4bNLWCcVJzJplo5sGsLoUbLe5Xy3wW
-# jHk5xbnTbNYE3LW+P3VRrXZjaScimGDn631r7sKSwgB7xTE3tgwo3MJDJMaQO4mg
-# N7vu4zFeOGAusUwPUA7R0cKfFBD5ywcG
+# MCMGCSqGSIb3DQEJBDEWBBTETf+R/NW/7k6QePpPLplHGW1RMjANBgkqhkiG9w0B
+# AQEFAASCAQAXTtSobVQIrRc2An7IR1VEPcJHS3KID3Q+R4ZRlWB+BqSCmfIJFYem
+# mnBhhlZSWFVzdUxNSerndqV7m6GB+j9URxCqtZtPXhg4DfKsX2MrqmSp99/2RXLC
+# ApZQPyu7D5GCjGvAYTKlR0kvfalQAB5r9WzZ/esDRMliqYVYxn6xczOiYOU8wy17
+# WpPIVWp3FVEFK12seR+JHRGEOU74H8iitulnB34NV0R5+0sEQkzwv7wBJOk4o/vo
+# uOqVVc+unSD4uXHMup/P7/r5uZH4JqIa9EG4J9bIHN/quowilflQ61Hp8inza3X4
+# 9G4gvQpaSXUUTLvmFllzRnDdBp92luMB
 # SIG # End signature block

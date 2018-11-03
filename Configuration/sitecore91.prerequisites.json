@@ -1,0 +1,224 @@
+{
+  "Parameters": {
+    "PSRepositoryPSGallery": {
+      "Type": "String",
+      "Description": "Default PS Repository",
+      "DefaultValue": "PSGallery"
+    },
+    "SQLServerModule": {
+      "Type": "String",
+      "Description": "SQLServer Module Name",
+      "DefaultValue": "SQLServer"
+    },
+    "SQLServerModuleVersion": {
+      "Type": "String",
+      "Description": "SQLServer Module Version",
+      "DefaultValue": "21.0.17240"
+    },
+    "LocalStorage": {
+      "Type": "string",
+      "Description": "The root folder for packages"
+    },
+    "SqlServer": {
+      "Type": "string",
+      "Description": "The Sql Server where databases will be installed."
+    },
+    "SqlAdminPassword": {
+      "Type": "string",
+      "Description": "The admin password for the Sitecore instance."
+    },
+    "SqlAdminUser": {
+      "Type": "string",
+      "Description": "The Sql admin user account to use when installing databases."
+    }
+  },
+  "Register": {
+    "Tasks": {
+      "InstallModule": "Install-Module",
+      "EnableWindowsOptionalFeature": "Enable-WindowsOptionalFeature",
+      "StartProcess": "Start-Process",
+      "WriteOutput": "Write-Output"
+    },
+    "ConfigFunction": {
+      "GetModule": "Get-Module",
+      "GetPackage": "Get-Package",
+      "GetItemPropertyValue": "Get-ItemPropertyValue",
+      "TestPath": "Test-Path"
+    }
+  },
+  "Modules": [
+    "SitecoreInstallExtensions"
+  ],
+  "Variables": {
+    "Check.SQLServer.Module": "[GetModule(ListAvailable:True,Name:parameter('SQLServerModule'))]",
+    // Watch out - ugly hack is here. # must be replaced with ' . Look at SqlCommand task.
+    "ContainedQuery": "[converttoherestring('sp_configure #contained database authentication#, 1;', 'GO', 'RECONFIGURE;', 'GO')]",
+    "SqlVersion": "SELECT @@VERSION AS 'SQL Server Version';"
+  },
+  "Tasks": {
+    "SQLServerModule": {
+      "Type": "InstallModule",
+      "Params": {
+        "Name": "[parameter('SQLServerModule')]",
+        "Repository": "[parameter('PSRepositoryPSGallery')]",
+        "MinimumVersion": "[parameter('SQLServerModuleVersion')]",
+        "AllowClobber": true,
+        "Force": true
+      },
+      "Skip": "[variable('Check.SQLServer.Module')]"
+    },
+    "WindowsFeatures": {
+      "Type": "EnableWindowsOptionalFeature",
+      "Params": {
+        "Online": true,
+        "FeatureName": [
+          "IIS-WebServer",
+          "IIS-WebServerManagementTools",
+          "IIS-ASPNET",
+          "IIS-ASPNET45",
+          "NetFx4Extended-ASPNET45",
+          "WAS-NetFxEnvironment",
+          "WAS-ProcessModel",
+          "WAS-WindowsActivationService"
+        ],
+        "All": true
+      }
+    },
+    "InstallVC2015Redistribuable": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft Visual C++ 2015 Redistributable (x64) - 14.0.24215'))]",
+      "Params": {
+        "ExePath": "[joinpath(parameter('LocalStorage'), 'vc_redist.x64.exe'))]",
+        "Arguments": "/q"
+      }
+    },
+    "NET-Framework": {
+      "Type": "Exe",
+      "Params": {
+        "ExePath": "[joinpath(parameter('LocalStorage'), 'NDP472-KB4054530-x86-x64-AllOS-ENU.exe'))]",
+        "Arguments": "/q /norestart"
+      }
+    },
+    "InstallDotNetMultiTargeting": {
+      "Type": "Exe",
+      "Params": {
+        "ExePath": "[joinpath(parameter('LocalStorage'), 'dotnet-hosting-win.exe'))]",
+        "Arguments": "/q /passive /norestart"
+      }
+    },
+    "Install-WPI": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft Web Platform Installer 5.0'))]",
+      "Params": {
+        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
+        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'WebPlatformInstaller_amd64_en-US.msi') ,' /quiet')]"
+      }
+    },
+    "Install-WebDeploy": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft Web Deploy 3.6'))]",
+      "Params": {
+        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
+        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'WebDeploy_amd64_en-US.msi') ,' /quiet')]"
+      }
+    },
+    "Install-UrlRewrite": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('IIS URL Rewrite Module 2'))]",
+      "Params": {
+        "ExePath": "C:\\Program Files\\Microsoft\\Web Platform Installer\\WebpiCmd-x64.exe",
+        "Arguments": "/Install /Products:'UrlRewrite2' /AcceptEULA"
+      }
+    },
+    "Install-SQLSysClrTypes-x86": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft System CLR Types for SQL Server 2016 (x86)'))]",
+      "Params": {
+        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
+        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'SQLSysClrTypes.msi') ,' /quiet')]"
+      }
+    },
+    "Install-DAC-x86": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft SQL Server Data-Tier Application Framework (x86)'))]",
+      "Params": {
+        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
+        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'DacFramework.msi') ,' /quiet')]"
+      }
+    },
+    "Install-SQLSysClrTypes-x64": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft System CLR Types for SQL Server 2016'))]",
+      "Params": {
+        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
+        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'SQLSysClrTypes(x64).msi') ,' /quiet')]"
+      }
+    },
+    "Install-DAC-x64": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft SQL Server Data-Tier Application Framework (x64)'))]",
+      "Params": {
+        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
+        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'DacFramework(x64).msi') ,' /quiet')]"
+      }
+    },
+    "Install-ODBC-Driver": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft ODBC Driver 13 for SQL Server'))]",
+      "Params": {
+        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
+        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'msodbcsql.msi') ,' /passive /norestart IACCEPTMSODBCSQLLICENSETERMS=YES')]"
+      }
+    },
+    "InstallSQLCMDLineUtilities": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft Command Line Utilities 13 for SQL Server'))]",
+      "Params": {
+        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
+        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'MsSqlCmdLnUtils.msi') ,' /passive /norestart IACCEPTMSSQLCMDLNUTILSLICENSETERMS=YES')]"
+      }
+    },
+    "SetDbMixedMode": {
+      "Type": "SetSqlMixedMode",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServer')]",
+        "UserName": "[parameter('SqlAdminUser')]",
+        "Password": "[parameter('SqlAdminPassword')]"
+      }
+    },
+    "CreateDatabaseUser": {
+      "Type": "CreateSqlUser",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServer')]",
+        "UserName": "[parameter('SqlAdminUser')]",
+        "Password": "[parameter('SqlAdminPassword')]"
+      }
+    },
+    "Set-Contained-Database-Authentication": {
+      "Description": "Enable Contained Database Authentication, see chapter 2.3.3 Installation Guide",
+      "Type": "ScriptBlock",
+      "Params": {
+        "Script": "PARAM($Query,$ServerInstance,$SqlAdminUser,$SqlAdminPassword) Invoke-SqlCmd -Query $Query.Replace('#','''') -ServerInstance $ServerInstance -Username $SqlAdminUser -Password $SqlAdminPassword",
+        "Arguments": [
+          "[variable('ContainedQuery')]",
+          "[parameter('SqlServer')]",
+          "[parameter('SqlAdminUser')]",
+          "[parameter('SqlAdminPassword')]"
+        ]
+      }
+    },
+    "Check-MSSQL-Password": {
+      "Description": "This task will check if user is able to login to MSSQL server.",
+      "Type": "ScriptBlock",
+      "Params": {
+        "Script": "PARAM($Query,$ServerInstance,$SqlAdminUser,$SqlAdminPassword) Invoke-SqlCmd -Query $Query.Replace('#','''') -ServerInstance $ServerInstance -Username $SqlAdminUser -Password $SqlAdminPassword",
+        "Arguments": [
+          "[variable('SqlVersion')]",
+          "[parameter('SqlServer')]",
+          "[parameter('SqlAdminUser')]",
+          "[parameter('SqlAdminPassword')]"
+        ]
+      }
+    }
+  }
+}

@@ -54,7 +54,7 @@ function Invoke-GetAzureBlobContentTask
 			if( -not (Test-Path $destinationPath ) )
 			{
 				$startTime = Get-Date
-				Write-TaskInfo -Message "$Container\$blob => $destinationPath" -Tag 'Download'
+				Write-Information -Message "$Container\$blob => $destinationPath" -Tag 'Download'
 				Get-AzureStorageBlobContent -Context $StorageContext -Container $Container -Blob $blob -Destination $destinationPath -Force | Out-Null
 				$endTime = Get-Date
 				$timeTaken = $endTime.Subtract($startTime)
@@ -107,7 +107,7 @@ function Invoke-DownloadAzureBlobContentTask
 			if( -not (Test-Path $destinationPath ) )
 			{
 				$startTime = Get-Date
-				Write-TaskInfo -Message "$Url\$Container\$blob => $destinationPath" -Tag 'Download'
+				Write-Information -Message "$Url\$Container\$blob => $destinationPath" -Tag 'Download'
 
 				Add-Type -AssemblyName System.Web
 				$blobUrl = $blob -replace " ","%20"
@@ -121,7 +121,7 @@ function Invoke-DownloadAzureBlobContentTask
 			}
 			else
 			{
-				Write-TaskInfo -Message "$Destination already exists." -Tag 'Download'
+				Write-Information -Message "$Destination already exists." -Tag 'Download'
 			}
 		}
 	}
@@ -135,12 +135,11 @@ Export-ModuleMember Invoke-DownloadAzureBlobContentTask
 Register-SitecoreInstallExtension -Command Invoke-DownloadAzureBlobContentTask -As DownloadBlobContent -Type Task
 
 
-
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQULDa3BKOHKfg2XtJwr0OkoVjk
-# UkCgggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUR0itntsAoAdkj34D9UQhjymE
+# DX+gggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -206,11 +205,11 @@ Register-SitecoreInstallExtension -Command Invoke-DownloadAzureBlobContentTask -
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBSePGojtZsBrhwyYqO+rgt7MNuLHTANBgkqhkiG9w0B
-# AQEFAASCAQB7RB0eSeT3qW5jAKvPUUzroVrxEzP6dLa0te7KouFS23HbFArCZUnB
-# qs+Xl/fCYY/+f35/a4+C1SfGT9EP+XykSmOp2UloQKt+qlGXjm7FDaahJTznrmpA
-# 5SZjHSTVQ6WjlB1Z9aBKIMEJlIAuhxfeND19DwLRClPyzjByItMhW3njxKph+WiC
-# 6dDpyJPQ6RV8XWeT+P7IRqluIQ0KEdQBRwe9WJjN2nfW4BZZ8y85Mzo6yX99GBgT
-# +UTU+NTW6hfSlaDwRjojtrj44iwqwv3oC9SCGsBbGlE8xbbSw1Gk4USrAX+9+zJJ
-# XLhK4cSqneBXOtmZ5nqxw8Hh/3ah9c3E
+# MCMGCSqGSIb3DQEJBDEWBBQrWyzOoepqa+FcDgWi/e8AbOb2kjANBgkqhkiG9w0B
+# AQEFAASCAQBThftQWyTNaRbzp50WjOwbHIoCkNgwEl3eVwRl9m0sJXcbLWQQ5UkQ
+# AkHk3P4wiEVrh41X6NCG9Z1jaa6v5eeCZo2S3BgNXi4APJi/dZy1y+TM/VHISepS
+# /gSQp/m4xauxlVIsdnW6oT29B1f3yHeN9OR570MgQbFZy4H2MBzRQ8X0fTN8wDZN
+# 5PpH/cF2oL0DtRTxEEpvThgyWSYWXck/x16zSW/xJ2qwlc65QZosxZJcw3vBhssU
+# KXRBpDu6lECz7JdAJoDe7MtolQtON9MnhRYCus4+OUJ1ms7GYMqbhu7C1JXhUp0c
+# uEmLe0xN2qlUWmqAe/KiBoVsnWquCBA+
 # SIG # End signature block

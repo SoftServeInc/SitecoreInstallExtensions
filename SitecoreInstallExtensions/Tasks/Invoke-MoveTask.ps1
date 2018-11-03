@@ -19,7 +19,7 @@ Function Invoke-MoveTask {
 		New-Item $destRoot -ItemType Directory
 	}
 
-	Write-TaskInfo -Message "$Source => $Destination" -Tag 'Moving'
+	Write-Information -Message "$Source => $Destination" -Tag 'Moving'
 	Write-Verbose "Moving '$Source' to '$Destination'"
 	Move-Item -Path $Source -Destination $Destination -Force
 }
@@ -32,7 +32,7 @@ Function Invoke-RemoveTask {
 		[string]$Source
 	)
 
-	Write-TaskInfo -Message "Remove $Source" -Tag 'Removing'
+	Write-Information -Message "Remove $Source" -Tag 'Removing'
 	Write-Verbose "Removing '$Source'"
 	if( Test-Path -Path $Source )
 	{
@@ -46,8 +46,8 @@ Export-ModuleMember Invoke-RemoveTask
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUWgW15CtTlbotA/fK5BtX9HSW
-# SZugggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU0nlU+okxWeSFpIfCiKHJ+QYL
+# CNigggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -113,11 +113,11 @@ Export-ModuleMember Invoke-RemoveTask
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBSlW1LG7xm6OuH4xkSAEJqw5eIQczANBgkqhkiG9w0B
-# AQEFAASCAQAT1gLNr0Rx3D1WsduNDVzYqeDGYIQAqHrkG3HchL2s5PVlHDcJ+IgO
-# +AVuVxapXPJULDSVEZBEYX9zF9F1Smot4uJUSOMqbiHH2eOHgAuIEO3Sp6Fg8qd3
-# HS0f7ZD6uviaErF4d4uu3aQ+ywPBZGAtwCtLP6QmzKo696c5Q0N9oU/DvswzOpRu
-# 1PfH5m/vCMNxRNl0VyNyg+LJmvHctiHLkn31Vh1k/RiMEHnLM/A4tH+nIbYo+ZiR
-# pP0ylNNsp0dKSTIC4MNqy2kJD6Eqoozkf6XQghf9DVBQOlAPIN6Aj+da5CZ/PZtd
-# 9jBMVtSdR/+C061OxizMXiFPgNeDq4RQ
+# MCMGCSqGSIb3DQEJBDEWBBSqgruOCB9grDXhhcF06Ladm5j87zANBgkqhkiG9w0B
+# AQEFAASCAQBtAmetJYFSERbPGm2IxLhVpaIUfxBW80/oBmOgah2kmiK6fxFOwxVw
+# hKzb8KL/lZDsgk06LjnWO2TBgrwD7fCNeuqKkmctxgL7siguQSXmmWg03NFwigK5
+# avGVcg5E1sOxrFJ6KGQeWxqc4lPiWfPp7YObj/oIoFeMTRmBymn/S6XJ6bkpE/YP
+# zczOpR3WNT+Ygvk80KsEngCLIhAN/r7NLL/6PQ7elJTp/SrXMjYuIvZIbICm219b
+# Po6KfJaoimvGPKdco2mVYSBj/L6fMhcPxOmrTyi4ZuOBoT1Qvi+4FdKBup9ZgaFj
+# RG5AvPsy3q7rYqqgEkVyUhJD1w7XtOHR
 # SIG # End signature block

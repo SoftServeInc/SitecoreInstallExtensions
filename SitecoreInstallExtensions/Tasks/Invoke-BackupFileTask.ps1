@@ -16,7 +16,7 @@ Function Invoke-BackupFileTask {
     {
         if (![System.IO.File]::Exists($FilePath))
         {
-            Write-TaskInfo -Message "File $FilePath does not exist" -Tag Warning 
+            Write-Information -Message "File $FilePath does not exist" -Tag Warning 
             Return
         }
 
@@ -28,19 +28,18 @@ Function Invoke-BackupFileTask {
             $backupFilePath +="_$(get-date -f yyyyMMddHHmmss)"
         }
 
-        Write-TaskInfo "Creating backup of $FilePath as $backupFilePath.bak" -Tag "Info"
+        Write-Information "Creating backup of $FilePath as $backupFilePath.bak" -Tag "Info"
 
         Copy-Item $FilePath -Destination "$backupFilePath.bak" -Force
     }
 }
 
 Export-ModuleMember Invoke-BackupFileTask
-
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUlB7TXpaOhf3sz+s0nLPz8qOn
-# ddegggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUcbDbC99uGmlUeGDS9A7LtT57
+# l+ygggtbMIIFczCCBFugAwIBAgIQUSxkhQ/4RLIK3tXEKSPpmzANBgkqhkiG9w0B
 # AQsFADB9MQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 # MRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDEj
 # MCEGA1UEAxMaQ09NT0RPIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTgwNTI4MDAw
@@ -106,11 +105,11 @@ Export-ModuleMember Invoke-BackupFileTask
 # BAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhBRLGSFD/hEsgre1cQpI+mb
 # MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3
 # DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEV
-# MCMGCSqGSIb3DQEJBDEWBBSYYCmuBuhG0q11ECKun3pGO2GBfDANBgkqhkiG9w0B
-# AQEFAASCAQCx8yTL2utJFZ91c7XSQuydjL/h3CGfdNfBaTIA3FOT9gNu0OUTHoBA
-# 7fHUnfGT2e4ugVJ1fdgOHZbYv8VSsPv0GXgWLforgYAyIWEDr7fBZICiTwFhLtgX
-# HavgbLt92E9i3kC5wzyuj+0VKcFr1D59kvRfPLF9lt4rmm7WeWs/KyjV6KO5g0xl
-# xDHiq3pjjuOmtDu0ynBgedcZ9DttATtDTqErCw1B/Xsn3LlENE4j86LQTfE+IUf0
-# v5PY2N89mTQoLe/qH1MDU7bM0LJSHzvj8bxG7gqPDqa+cEiX9mT+aa96A0a/pjLn
-# 18adPFnf4fNEZdFXdrD/5KCnxRupIS/a
+# MCMGCSqGSIb3DQEJBDEWBBSZc7j5JDntAG6SBWqXnqX0nVNpjzANBgkqhkiG9w0B
+# AQEFAASCAQBmdFzVt1mxtRQF79vjXrREktFbxGTpaiFVeRiylmOB1fD7lzbnaZ4s
+# eBbD6z4QG5qWRjUo3+mCzbZGMm7e1Dap0NOEcLtQgIameX+Ok72t6TpD8zQTf32M
+# ux3Bz4Xf+iCadKOU6pIzU8qH0kNzOm2DhCo2MJUXB+ohus//cimx5Lsjey3AWUPA
+# yfTaw0qlaG2bDMfZi2uXVNmyye3Vft77J7nLi67Sj6xM+0XRAHvbzBzFJlekcLZa
+# RDlsW1Z7zNNl3QcGF5yb5QACb1NuRhZctJdIV6cTJuDBaXnWKaPX9BzGMR4dmcmu
+# DvZ2Fu1qo8yUPjpuec1KgAeY21uCGRI4
 # SIG # End signature block
