@@ -1,4 +1,6 @@
-﻿Write-Host "SQL" -ForegroundColor Green
+#requires -RunAsAdministrator 
+
+Write-Host "SQL" -ForegroundColor Green
 Get-Service *SQL*
 
 Write-Host "SOLR" -ForegroundColor Green
