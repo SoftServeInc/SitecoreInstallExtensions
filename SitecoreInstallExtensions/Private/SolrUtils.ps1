@@ -19,7 +19,7 @@ function Configure-HTTP
         {
             $cfg = Get-Content $solrConfig
             Rename-Item $solrConfig "$solrConfig.old"
-            $newCfg = $newCfg | % { $_ -replace "REM set SOLR_HOST=192.168.1.1", "set SOLR_HOST=$solrHost" }
+            $newCfg = $cfg | % { $_ -replace "REM set SOLR_HOST=192.168.1.1", "set SOLR_HOST=$solrHost" }
             $newCfg | Set-Content $solrConfig
         }
 
