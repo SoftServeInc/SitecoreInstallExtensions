@@ -82,7 +82,7 @@ function Configure-Solr
     $solrConfig = "$solrRoot\bin\solr.in.cmd"
     if(!(Test-Path -Path "$solrConfig.config.old"))
     {
-        if($pscmdlet.ShouldProcess("$solrConfig", "Rewriting Solr config file"))
+        if($pscmdlet.ShouldProcess("$solrConfig", "Rewriting Solr config file ($solrHost, $solrPort, $solrMemory)"))
         {
             $cfg = Get-Content $solrConfig
             Rename-Item $solrConfig "$solrConfig.config.old"

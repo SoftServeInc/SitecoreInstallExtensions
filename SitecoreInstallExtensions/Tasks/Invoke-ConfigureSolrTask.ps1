@@ -60,13 +60,14 @@ function Invoke-ConfigureSolrTask
             Configure-HTTP $solrHost $solrRoot
         }
 
-		Write-Information -Message "PORT-MEMORY" -Tag "Configuring Solr port & memory"
-		Configure-Solr $solrRoot $solrHost $solrPort $solrMemory
+		Write-Information -Message "PORT-MEMORY" -Tag "Configuring Solr $solrHost port:$solrPort ,memory:$solrMemory"
+		Configure-Solr -solrRoot $solrRoot -solrHost $solrHost -solrPort $solrPort -solrMemory $solrMemory
     }
 }
 
 Export-ModuleMember Invoke-ConfigureSolrTask
 Register-SitecoreInstallExtension -Command Invoke-ConfigureSolrTask -As ConfigureSolr -Type Task
+
 
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
