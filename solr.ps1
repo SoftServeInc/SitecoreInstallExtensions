@@ -13,7 +13,7 @@ param (
     [string]$SolrVersion = "6.6.2", 
     [string]$SolrHost = "solr.local",    
     [string]$SolrPort = "8983",
-    [switch]$SSL = $true
+    [boolean]$SSL = $true
 )
 
 
