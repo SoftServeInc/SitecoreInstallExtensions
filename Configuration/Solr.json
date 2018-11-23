@@ -14,14 +14,9 @@
       "Description": "The path to the Java SE Runtime Environment installer.",
       "DefaultValue": "jre-8u171-windows-x64.exe"
     },
-    "SolrPackage": {
+    "SolrBaseDownloadUrl": {
       "Type": "string",
-      "Description": "The path to the SOLR zip package.",
-      "DefaultValue": "solr-6.6.2.zip"
-    },
-    "SolrDownloadUrl": {
-      "Type": "string",
-      "DefaultValue": "http://archive.apache.org/dist/lucene/solr/6.6.2/solr-6.6.2.zip"
+      "DefaultValue": "http://archive.apache.org/dist/lucene/solr/"
     },
     "SolrVersion": {
       "Type": "string",
@@ -46,6 +41,11 @@
       "DefaultValue": "8983",
       "Description": "The port the Solr service should use"
     },
+    "SolrMemory" : {
+      "Type": "string",
+      "DefaultValue": "1024m",
+      "Description": "Default value is 512m"
+    },
     "SolrServiceName" : {
       "Type": "string"
     },
@@ -58,12 +58,10 @@
       "Type": "String",
       "Description": "Specifies the path of the store from which certificates will be exported."
     },
-    // Property and value are used to choose certificate from CertStoreLocation
-    // By defaul FriendlyName is used to find certificate to export,
-    // but you can specify other property available in certificate ex. Subject
     "Property": {
       "Type": "String",
-      "DefaultValue": "FriendlyName"
+      "DefaultValue": "FriendlyName",
+      "Description" : "Property and value are used to choose certificate from CertStoreLocation, By defaul FriendlyName is used to find certificate to export,but you can specify other property available in certificate ex. Subject"
     },
     "Value": {
       "Type": "String"
@@ -96,28 +94,27 @@
     
     "Source.JRE": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]",
     
-    "Source.Solr": "[joinpath(parameter('LocalStorage'), parameter('SolrPackage'))]",
+    "SolrPackage" : "[concat('solr-', parameter('SolrVersion') , '.zip')]",
+    "SolrUrl": "[concat(variable('SolrProtocol'), '://', parameter('SolrHost'), ':', parameter('SolrPort'), '/solr/')]",
+
+    "SolrDownloadUrl" : "[concat( parameter('SolrBaseDownloadUrl'), '/',  parameter('SolrVersion'), '/' , variable('SolrPackage')]",
+
+    "Source.Solr": "[joinpath(parameter('LocalStorage'), variable('SolrPackage'))]",
 
     "SolrFolder": "[concat('\\solr-', parameter('SolrVersion'))]",
 
     "SolrInstallFolder": "[joinpath(parameter('InstallFolder'), variable('SolrFolder'))]",
-    
-    "CertStoreFile": "[joinpath(variable('SolrInstallFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]",
-
     "SolrProtocol": "[if ( parameter('SolrUseSSL'), 'https', 'http')]",
-    "SolrUrl": "[concat(variable('SolrProtocol'), '://', parameter('SolrHost'), ':', parameter('SolrPort'), '/solr/')]",
 
-  
+    "CertStoreFile": "[joinpath(variable('SolrInstallFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]",
     "Root.Cert.DnsName": "[concat('DO_NOT_TRUST_', parameter('RootCertFileName'))]",
-   
     "Root.Cert.Store": "cert:\\LocalMachine\\Root",
-   
     "Client.Cert.Store": "cert:\\LocalMachine\\My"
   },
 
   "Tasks": {
     "CreatePaths": {
-      // Create the physical disk path.
+      "Description" : "Create the physical disk path.",
       "Type": "EnsurePath",
       "Params": {
         "Exists": [
@@ -127,7 +124,7 @@
       }
     },
     "CreateRootCert": {
-      // Create the root certificate.
+      "Description" : "Create the root certificate.",
       "Type": "NewRootCertificate",
       "Skip": "[not(parameter('SolrUseSSL'))]",
       "Params": {
@@ -147,7 +144,7 @@
       }
     },
     "CreateSignedCert": {
-      // Create a certificate signed by the root authority.
+      "Description" : "Create a certificate signed by the root authority.",
       "Type": "NewSignedCertificate",
       "Skip": "[not(parameter('SolrUseSSL'))]",
       "Params": {
@@ -170,8 +167,8 @@
       "Type": "DownloadFile",
       "Skip": "[parameter('UseLocalFiles')]",
       "Params": {
-        "SourceUri": "[parameter('SolrDownloadUrl')]",
-        "DestinationPath": "[joinpath(parameter('LocalStorage'), parameter('SolrPackage'))]"
+        "SourceUri": "[variable('SolrDownloadUrl')]",
+        "DestinationPath": "[joinpath(parameter('LocalStorage'), variable('SolrPackage'))]"
       }
     },
     "InstallJRE": {
@@ -208,6 +205,7 @@
         "solrHost": "[parameter('SolrHost')]",
         "solrRoot": "[variable('SolrInstallFolder')]",
         "solrPort": "[parameter('SolrPort')]",
+        "solrMemory" : "[parameter('SolrMemory')]",
         "certificateStore": "[variable('CertStoreFile')]"
       }
     },

@@ -9,6 +9,12 @@
    - setup SSL for Solr
    - install Solr as a Windows Service
 #>
+param (
+    [string]$SolrVersion = "6.6.2", 
+    [string]$SolrHost = "solr.local",    
+    [string]$SolrPort = "8983",
+    [switch]$SSL = $true
+)
 
 
 $LocalStorage = "$PSScriptRoot\Storage"
@@ -17,19 +23,26 @@ $GitHubRoot = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExt
 
 
 #for Solr installation
-$SolrHost = "solr.local"
-$SolrPort = "8983"
+#$SolrHost = "solr.local"
+#$SolrPort = "8983"
 # internally in 'solr.json', installation path is build like $SolrInstallFolder\solr-parameter('SolrVersion')
 $SolrInstallFolder = "C:\solr"
-$SolrService = "PSSolrService"
+$SolrService = "PSSolrService-$SolrHost"
 
-Invoke-WebRequest -Uri "$GitHubRoot/Solr.json" -OutFile "$PSScriptRoot\Solr.json"
+if( -not (Test-Path "$PSScriptRoot\Solr.json" ) )
+{
+    Invoke-WebRequest -Uri "$GitHubRoot/Solr.json" -OutFile "$PSScriptRoot\Solr.json"
+}
+
 $installSolr =@{
     Path = "$PSScriptRoot\Solr.json"   
     LocalStorage = "$LocalStorage"
     
+    SolrVersion = $SolrVersion
 	SolrHost = $SolrHost
     SolrPort = $SolrPort
+    SolrUseSSL = $SSL
+
     SolrServiceName = $SolrService
     InstallFolder = $SolrInstallFolder
 
