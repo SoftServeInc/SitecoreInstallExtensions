@@ -30,7 +30,7 @@ $GitHubRoot = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExt
 #$SolrPort = "8983"
 # internally in 'solr.json', installation path is build like $SolrInstallFolder\solr-parameter('SolrVersion')
 $SolrInstallFolder = "C:\solr"
-$SolrService = "PSSolrService-$SolrHost"
+$SolrService = "PSSolrService$SolrVersion"
 
 if( -not (Test-Path "$PSScriptRoot\Solr.json" ) )
 {
