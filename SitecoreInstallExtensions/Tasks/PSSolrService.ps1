@@ -229,7 +229,12 @@ $installDir = "$solrRoot\$serviceName" # Where to install the service files
 #$installDir = "${ENV:windir}\System32"  # Where to install the service files
 
 $scriptCopy = "$installDir\$scriptName"
-$exeName = "$serviceName.exe"
+
+$serviceClassName = ($serviceName -replace '\.','') -replace "-",""
+$serviceExeName = ($serviceName -replace '\.','') -replace "-",""
+
+$exeName = "$serviceExeName.exe"
+
 $exeFullName = "$installDir\$exeName"
 $logDir = "$installDir\ServiceLogs"          # Where to log the service messages
 $logFile = "$logDir\$serviceName.log"
@@ -390,11 +395,11 @@ $source = @"
     ERROR_PROCESS_ABORTED = 1067,
   };
 
-  public class Service_$serviceName : ServiceBase { // $serviceName may begin with a digit; The class name must begin with a letter
+  public class Service_$serviceClassName : ServiceBase { // $serviceClassName may begin with a digit; The class name must begin with a letter
     private System.Diagnostics.EventLog eventLog;                       // EVENT LOG
     private ServiceStatus serviceStatus;                                // SET STATUS
 
-    public Service_$serviceName() {
+    public Service_$serviceClassName() {
       ServiceName = "$serviceName";
       CanStop = true;
       CanPauseAndContinue = false;
@@ -478,7 +483,7 @@ $source = @"
     }
 
     public static void Main() {
-      System.ServiceProcess.ServiceBase.Run(new Service_$serviceName());
+      System.ServiceProcess.ServiceBase.Run(new Service_$serviceClassName());
     }
   }
 "@
