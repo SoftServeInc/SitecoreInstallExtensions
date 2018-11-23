@@ -16,7 +16,7 @@
     },
     "SolrBaseDownloadUrl": {
       "Type": "string",
-      "DefaultValue": "http://archive.apache.org/dist/lucene/solr/"
+      "DefaultValue": "http://archive.apache.org/dist/lucene/solr"
     },
     "SolrVersion": {
       "Type": "string",
@@ -95,6 +95,7 @@
     "Source.JRE": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]",
     
     "SolrPackage" : "[concat('solr-', parameter('SolrVersion') , '.zip')]",
+    "SolrProtocol": "[if ( parameter('SolrUseSSL'), 'https', 'http')]",
     "SolrUrl": "[concat(variable('SolrProtocol'), '://', parameter('SolrHost'), ':', parameter('SolrPort'), '/solr/')]",
 
     "SolrDownloadUrl" : "[concat( parameter('SolrBaseDownloadUrl'), '/',  parameter('SolrVersion'), '/' , variable('SolrPackage')]",
@@ -104,11 +105,13 @@
     "SolrFolder": "[concat('\\solr-', parameter('SolrVersion'))]",
 
     "SolrInstallFolder": "[joinpath(parameter('InstallFolder'), variable('SolrFolder'))]",
-    "SolrProtocol": "[if ( parameter('SolrUseSSL'), 'https', 'http')]",
 
     "CertStoreFile": "[joinpath(variable('SolrInstallFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]",
+
     "Root.Cert.DnsName": "[concat('DO_NOT_TRUST_', parameter('RootCertFileName'))]",
+
     "Root.Cert.Store": "cert:\\LocalMachine\\Root",
+    
     "Client.Cert.Store": "cert:\\LocalMachine\\My"
   },
 
