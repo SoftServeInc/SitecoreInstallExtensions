@@ -72,5 +72,8 @@ $installSolr =@{
 Install-SitecoreConfiguration @installSolr
 
 
-
+# When you install Solr on VM in a AWS, Azure or GCP probably you have to create a firewall 
+# rule to get access from remote computer.
+#
+# New-NetFirewallRule -LocalPort $SolrPort -DisplayName "Allow-Solr" -Direction Inbound -Protocol TCP -Action Allow
 
