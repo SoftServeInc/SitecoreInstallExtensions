@@ -103,7 +103,7 @@ function Configure-Solr
     {
         Write-Information -Message "$solrConfig" -Tag "Solr config already updated - skipping"
     }
-
+}
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
