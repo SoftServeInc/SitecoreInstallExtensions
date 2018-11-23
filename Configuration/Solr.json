@@ -16,7 +16,8 @@
     },
     "SolrBaseDownloadUrl": {
       "Type": "string",
-      "DefaultValue": "http://archive.apache.org/dist/lucene/solr"
+      "DefaultValue": "http://archive.apache.org/dist/lucene/solr",
+      "Description": "Base address to the Solr archive"
     },
     "SolrVersion": {
       "Type": "string",
@@ -30,7 +31,7 @@
     "SolrUseSSL": {
       "Type": "boolean",
       "DefaultValue": true,
-      "Description": "Should Solr require HTTPS for access?"
+      "Description": "Should Solr require HTTPS for access"
     },
     "SolrHost": {
       "Type": "string",
@@ -41,12 +42,12 @@
       "DefaultValue": "8983",
       "Description": "The port the Solr service should use"
     },
-    "SolrMemory" : {
+    "SolrMemory": {
       "Type": "string",
       "DefaultValue": "1024m",
       "Description": "Default value is 512m"
     },
-    "SolrServiceName" : {
+    "SolrServiceName": {
       "Type": "string"
     },
     "UseLocalFiles": {
@@ -61,14 +62,14 @@
     "Property": {
       "Type": "String",
       "DefaultValue": "FriendlyName",
-      "Description" : "Property and value are used to choose certificate from CertStoreLocation, By defaul FriendlyName is used to find certificate to export,but you can specify other property available in certificate ex. Subject"
+      "Description": "Property and value are used to choose certificate from CertStoreLocation, By defaul FriendlyName is used to find certificate to export,but you can specify other property available in certificate ex. Subject"
     },
     "Value": {
       "Type": "String"
     },
     "CertPassword": {
       "Type": "String",
-      "DefaultValue" :  "secret",
+      "DefaultValue": "secret",
       "Description": "Specifies the password for the exported PFX file."
     },
     "CertificateName": {
@@ -89,35 +90,23 @@
   "Modules": [
     "SitecoreInstallExtensions"
   ],
-
   "Variables": {
-    
     "Source.JRE": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]",
-    
-    "SolrPackage" : "[concat('solr-', parameter('SolrVersion') , '.zip')]",
+    "SolrPackage": "[concat('solr-', parameter('SolrVersion') , '.zip')]",
     "SolrProtocol": "[if ( parameter('SolrUseSSL'), 'https', 'http')]",
     "SolrUrl": "[concat(variable('SolrProtocol'), '://', parameter('SolrHost'), ':', parameter('SolrPort'), '/solr/')]",
-
-    "SolrDownloadUrl" : "[concat( parameter('SolrBaseDownloadUrl'), '/',  parameter('SolrVersion'), '/' , variable('SolrPackage')]",
-
+    "SolrDownloadUrl": "[concat(parameter('SolrBaseDownloadUrl'), '/',  parameter('SolrVersion'), '/' , variable('SolrPackage'))]",
     "Source.Solr": "[joinpath(parameter('LocalStorage'), variable('SolrPackage'))]",
-
     "SolrFolder": "[concat('\\solr-', parameter('SolrVersion'))]",
-
     "SolrInstallFolder": "[joinpath(parameter('InstallFolder'), variable('SolrFolder'))]",
-
     "CertStoreFile": "[joinpath(variable('SolrInstallFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]",
-
     "Root.Cert.DnsName": "[concat('DO_NOT_TRUST_', parameter('RootCertFileName'))]",
-
     "Root.Cert.Store": "cert:\\LocalMachine\\Root",
-    
     "Client.Cert.Store": "cert:\\LocalMachine\\My"
   },
-
   "Tasks": {
     "CreatePaths": {
-      "Description" : "Create the physical disk path.",
+      "Description": "Create the physical disk path.",
       "Type": "EnsurePath",
       "Params": {
         "Exists": [
@@ -127,7 +116,7 @@
       }
     },
     "CreateRootCert": {
-      "Description" : "Create the root certificate.",
+      "Description": "Create the root certificate.",
       "Type": "NewRootCertificate",
       "Skip": "[not(parameter('SolrUseSSL'))]",
       "Params": {
@@ -147,7 +136,7 @@
       }
     },
     "CreateSignedCert": {
-      "Description" : "Create a certificate signed by the root authority.",
+      "Description": "Create a certificate signed by the root authority.",
       "Type": "NewSignedCertificate",
       "Skip": "[not(parameter('SolrUseSSL'))]",
       "Params": {
@@ -198,7 +187,13 @@
       "Skip": "[not(parameter('SolrUseSSL'))]",
       "Params": {
         "Script": "PARAM($CertStoreLocation,$Property,$Value,$PfxFile,$CertPassword) Get-ChildItem $CertStoreLocation | where $Property -eq $Value | Export-PfxCertificate -FilePath $PfxFile -Password (ConvertTo-SecureString -String $CertPassword -Force -AsPlainText) | Out-Null",
-        "Arguments": [ "[parameter('CertStoreLocation')]", "[parameter('Property')]", "[parameter('Value')]", "[variable('CertStoreFile')]", "[parameter('CertPassword')]" ]
+        "Arguments": [
+          "[parameter('CertStoreLocation')]",
+          "[parameter('Property')]",
+          "[parameter('Value')]",
+          "[variable('CertStoreFile')]",
+          "[parameter('CertPassword')]"
+        ]
       }
     },
     "Rewrite Solr config file": {
@@ -208,7 +203,7 @@
         "solrHost": "[parameter('SolrHost')]",
         "solrRoot": "[variable('SolrInstallFolder')]",
         "solrPort": "[parameter('SolrPort')]",
-        "solrMemory" : "[parameter('SolrMemory')]",
+        "solrMemory": "[parameter('SolrMemory')]",
         "certificateStore": "[variable('CertStoreFile')]"
       }
     },
@@ -217,7 +212,7 @@
       "Params": {
         "SolrPort": "[parameter('SolrPort')]",
         "SolrRoot": "[variable('SolrInstallFolder')]",
-        "ServiceName" : "[parameter('SolrServiceName')]"
+        "ServiceName": "[parameter('SolrServiceName')]"
       }
     },
     "Ensure Solr is running": {
@@ -226,7 +221,7 @@
         "Uri": "[variable('SolrUrl')]",
         "RetryCount": "3",
         "RetryDelay": "5000",
-        "RequestTimeout" :  "5000"
+        "RequestTimeout": "5000"
       }
     }
   }

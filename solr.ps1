@@ -16,6 +16,9 @@ param (
     [boolean]$SSL = $true
 )
 
+# Do not display progress (performance improvement)
+$global:ProgressPreference = 'silentlyContinue'
+
 
 $LocalStorage = "$PSScriptRoot\Storage"
 # Comment out this if you have own solr.json
@@ -33,6 +36,12 @@ if( -not (Test-Path "$PSScriptRoot\Solr.json" ) )
 {
     Invoke-WebRequest -Uri "$GitHubRoot/Solr.json" -OutFile "$PSScriptRoot\Solr.json"
 }
+else
+{
+    Write-Information "File $PSScriptRoot\Solr.json already exists."
+}
+
+
 
 $installSolr =@{
     Path = "$PSScriptRoot\Solr.json"   
@@ -60,7 +69,8 @@ $installSolr =@{
     UseLocalFiles = $false
 }
 
-Install-SitecoreConfiguration @installSolr -Verbose
+Install-SitecoreConfiguration @installSolr
+
 
 
 
