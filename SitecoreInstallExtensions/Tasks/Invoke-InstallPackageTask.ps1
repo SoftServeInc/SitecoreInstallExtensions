@@ -10,7 +10,7 @@ Function Invoke-InstallPackageTask {
 .DESCRIPTION
 	The Invoke-InstallPackageTask function installs Sitecore package (.zip) or update (.update). 
 	This function requires PackageInstaller.asmx on host where package will be installed.
-	The URI is build in the following way: "http://$($HostName):$($Port)/packageinstaller.asmx?WSDL"
+	The URI is build in the following way: "$($HostName)/packageinstaller.asmx?WSDL"
 	
 	The Invoke-InstallPackageTask is registered as InstallSitecorePackage type.
 
@@ -44,9 +44,9 @@ Function Invoke-InstallPackageTask {
 
 	if($pscmdlet.ShouldProcess($HostName, "Install package/update $PackagePath or $UpdatePath"))
     {
-		Write-Information -Message "packageinstaller expected http://$($HostName):$($Port)" -Tag Info 
+		Write-Information -Message "packageinstaller expected at $($HostName)" -Tag Info 
 
-		$proxy = New-WebServiceProxy -uri "http://$($HostName):$($Port)/packageinstaller.asmx?WSDL"
+		$proxy = New-WebServiceProxy -uri "$($HostName)/packageinstaller.asmx?WSDL"
 		$proxy.Timeout = $Timeout
 
 		if( -not [string]::IsNullOrEmpty($UpdatePath) )
