@@ -55,6 +55,7 @@
     <Compile Include="Tasks\Invoke-InstallPackageTask.ps1" />
     <Compile Include="Tasks\Invoke-ManageAppPoolTaskEx.ps1" />
     <Compile Include="Tasks\Invoke-ManageWebsiteTaskEx.ps1" />
+    <Compile Include="Tasks\Invoke-RemoteScriptTask.ps1" />
     <Compile Include="Tasks\Invoke-ScriptBlockTask.ps1" />
     <Compile Include="Tasks\Invoke-CreatePatchFileTask.ps1" />
     <Compile Include="Tasks\Invoke-WindowsOptionalFeatureTask.ps1" />
