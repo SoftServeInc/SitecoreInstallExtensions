@@ -12,5 +12,5 @@ function Get-SqlServerSmo {
     $sqlServerSmo = New-Object -TypeName Microsoft.SqlServer.Management.Smo.Server $SQLServerName
 
     return $sqlServerSmo
-
+}
 

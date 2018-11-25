@@ -10,6 +10,11 @@
 *.md text eol=crlf
 *.pssproj text eol=crlf
 
+
+*.md text
+*.psm1 text
+*.psd1
+
 # Denote all files that are truly binary and should not be modified.
 *.png binary
 *.jpg binary

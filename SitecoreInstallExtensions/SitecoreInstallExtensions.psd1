@@ -12,7 +12,7 @@
 RootModule = 'SitecoreInstallExtensions.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.2.0.2'
+ModuleVersion = '1.2.0.0'
 
 # ID used to uniquely identify this module
 GUID = '1ba9c2c9-e2fc-4926-bf20-3cca1c8a125c'
@@ -95,6 +95,7 @@ NestedModules = @(
 	,'ConfigFunctions\Invoke-GetPhysicalPathConfigFunction.ps1'
 	,'Tasks\Invoke-WindowsOptionalFeatureTask.ps1'
 	,'ConfigFunctions\Invoke-GetModulePathConfigFunction.ps1'
+	,'Tasks\Invoke-DownloadSitecoreFile.ps1'
 	)
 
 # Functions to export from this module
@@ -138,7 +139,8 @@ FunctionsToExport = 'Invoke-EnsureJRETask',
 	'Invoke-GetPhysicalPathConfigFunction',
 	'Invoke-WindowsOptionalFeatureTask',
 	'Invoke-GetModulePathConfigFunction',
-	'Invoke-SetSitecoreAdminPasswordTask'
+	'Invoke-SetSitecoreAdminPasswordTask',
+	'Invoke-DownloadSitecoreFile'
 
 
 # Cmdlets to export from this module
@@ -175,6 +177,7 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = @'
+1.2.0.2 Added Invoke-DownloadSitecoreFile task
 1.2.0.2 Fix SOLR installation without SSL, Fix packages/updates installation over HTTPS, Generic SOLR installation
 1.2.0.1 Fix SQL login issues
 1.2.0.0 Add script signature, add login parameters to Invoke-SetSqlMixedModeTask

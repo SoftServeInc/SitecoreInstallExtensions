@@ -74,5 +74,6 @@ Function PackageAbsent ($Name){
 
 Function RepositoryAbsent ($Name) {
     return $null -eq (Get-PSRepository -Name $Name -ErrorAction SilentlyContinue)
+}
 
 
