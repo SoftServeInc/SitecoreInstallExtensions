@@ -44,7 +44,7 @@ Function Invoke-WindowsOptionalFeatureTask {
 	}
 }
 
-Export-ModuleMember Invoke-WindowsOptionalFeature
+Export-ModuleMember Invoke-WindowsOptionalFeatureTask
 Register-SitecoreInstallExtension -Command Invoke-WindowsOptionalFeatureTask -As WindowsOptionalFeature -Type Task
 
 
