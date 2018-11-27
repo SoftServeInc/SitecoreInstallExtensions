@@ -1,20 +1,6 @@
 #
 # InvokeCreate_PatchFileTask.ps1
 #
-<#.Synopsis
-	Creates a new empty patch file.
-.DESCRIPTION
-	New-SettingsFile creates a new empty XML file with the following structure
-<!--The CMS-only mode configuration settings-->
-<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
-  <sitecore>
-    <settings />
-  </sitecore>
-</configuration>
-
-.EXAMPLE
-	Invoke-NewPatchFileTask -XmlPath "C:\sitecore\website\App_Config\Include\Z.CmsOnlyMode\cmsonly.config" -Comment "The CMS-only mode configuration settings"
-#>
 function Invoke-NewPatchFileTask
 {
 <#.Synopsis
@@ -29,7 +15,7 @@ function Invoke-NewPatchFileTask
 </configuration>
 
 .EXAMPLE
-	Invoke-NewPatchFileTask -XmlPath "C:\sitecore\website\App_Config\Include\Z.CmsOnlyMode\cmsonly.config" -Comment "The CMS-only mode configuration settings"
+	Invoke-NewPatchFileTask -XmlPath "C:\Sitecore\App_Config\Include\Z.Custom\cmsonly.config" -Comment "The CMS-only mode configuration settings"
 #>
 	[CmdletBinding(SupportsShouldProcess=$true)]
 	Param(
@@ -76,9 +62,7 @@ function Invoke-NewPatchFileTask
 	$XmlDocument.Save($XmlPath);
 }
 
-<#
 
-#>
 function Invoke-AddPatchTask
 {
 	[CmdletBinding(SupportsShouldProcess=$true)]
@@ -86,6 +70,12 @@ function Invoke-AddPatchTask
 		[Parameter(Mandatory=$true)]
 		[ValidateScript ({Test-Path $_})]
 		[string]$XmlPath,
+
+		[ValidateNotNullOrEmpty()]
+		[string]$XPath = "//configuration/sitecore/settings",
+	
+		[ValidateNotNullOrEmpty()]
+		[string]$Element = "setting",
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
@@ -98,31 +88,31 @@ function Invoke-AddPatchTask
 
 	[xml]$XmlDocument = Get-Content -Path $XmlPath
 
-	$sitecoreSettings = "//configuration/sitecore/settings"
- 
-	$appSettingsNode = $XmlDocument.SelectSingleNode($sitecoreSettings)
+	$appSettingsNode = $XmlDocument.SelectSingleNode($XPath)
  
 	if($appSettingsNode -eq $null)
 	{
-		$(throw "Sitecore Settings Does not Exists! Invalid Configuration File.")
+		$(throw "Node does not exists! Invalid configuration file.")
 	}
 
-	$existingNode = $XmlDocument.SelectNodes("//configuration/sitecore/settings/setting") | Where-Object {$_ -ne $null -and $_.Name -eq $Name}
+	$existingNode = $XmlDocument.SelectNodes("$XPath/$Element") | Where-Object {$_ -ne $null -and $_.Name -eq $Name}
 	if( $existingNode -ne $null )
 	{
-		Write-Information "Patch for setting $Name already exist" -Tag "Patch"
+		Write-Verbose "Patch for element $Element with name=$Name already exist"
 		return
 	}
 
-	[System.Xml.XmlElement]$item = $XmlDocument.CreateElement("setting")
+	[System.Xml.XmlElement]$item = $XmlDocument.CreateElement($Element)
     if( $item -eq $null )
     {
-        Write-Verbose "Cannot create element setting"
+        Write-Verbose "Cannot create an element $Element"
         return
     }
+
+
 	$item.SetAttribute("name",  $Name)
     
-    Write-Information -Message "Create patch for setting $Name = $Value" -Tag "Patch"
+    Write-Information -Message "Create patch for elemeny $Element, name $Name = $Value" -Tag "Patch"
 	if( $Value -eq $null -or $Value -eq '')
 	{
 		$patch = $XmlDocument.CreateElement("patch","delete","http://www.sitecore.net/xmlconfig/")
@@ -136,7 +126,6 @@ function Invoke-AddPatchTask
 		$item.AppendChild($patch)
 	}
 	
-
 	$appSettingsNode.AppendChild($item);
 	
 	if( [String]::IsNullOrWhiteSpace($Comment) -eq $false )
@@ -146,15 +135,18 @@ function Invoke-AddPatchTask
 	}
 
 	if ($pscmdlet.ShouldProcess($XmlPath))
-	{
-		
+	{		
 		$XmlDocument.Save($XmlPath);
 	}
 }
+
+
 
 Export-ModuleMember Invoke-AddPatchTask
 Register-SitecoreInstallExtension -Command Invoke-AddPatchTask -As Six-AddPatch -Type Task
 
 Export-ModuleMember Invoke-NewPatchFileTask
 Register-SitecoreInstallExtension -Command Invoke-NewPatchFileTask -As Six-CreatePatchFile -Type Task
+
+
 
