@@ -77,5 +77,8 @@ http://bit.ly/git-six redirect to https://github.com/SoftServeInc/SitecoreInstal
 
 http://bit.ly/installmodules redirect to https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/install-modules.ps1
 
+http://bit.ly/install-solr redirects to 
+https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/solr.ps1
+
 http://bit.ly/six-wiki redirects to https://github.com/SoftServeInc/SitecoreInstallExtensions/wiki
 
