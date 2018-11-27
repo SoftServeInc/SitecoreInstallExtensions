@@ -47,6 +47,11 @@
       "DefaultValue": "1024m",
       "Description": "Default value is 512m"
     },
+    "UnInstall": {
+      "Type": "boolean",
+      "DefaultValue": "false",
+      "Description": "Set to true if you want to unsintall Solr"
+    },
     "SolrServiceName": {
       "Type": "string"
     },
@@ -57,6 +62,7 @@
     },
     "CertStoreLocation": {
       "Type": "String",
+      "DefaultValue": "Cert:\\LocalMachine\\My",
       "Description": "Specifies the path of the store from which certificates will be exported."
     },
     "Property": {
@@ -149,7 +155,7 @@
     },
     "DownloadJRE": {
       "Type": "DownloadFile",
-      "Skip": "[parameter('UseLocalFiles')]",
+      "Skip": "[or(parameter('UseLocalFiles'), parameter('UnInstall'))]",
       "Params": {
         "SourceUri": "[parameter('JREDownloadUrl')]",
         "DestinationPath": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]"
@@ -157,7 +163,7 @@
     },
     "DownloadSolr": {
       "Type": "DownloadFile",
-      "Skip": "[parameter('UseLocalFiles')]",
+      "Skip": "[or(parameter('UseLocalFiles'), parameter('UnInstall'))]",
       "Params": {
         "SourceUri": "[variable('SolrDownloadUrl')]",
         "DestinationPath": "[joinpath(parameter('LocalStorage'), variable('SolrPackage'))]"
@@ -165,12 +171,14 @@
     },
     "InstallJRE": {
       "Type": "EnsureJRE",
+      "Skip": "[parameter('UnInstall')]",
       "Params": {
         "JavaPackagePath": "[variable('Source.JRE')]"
       }
     },
     "InstallSolr": {
       "Type": "EnsureSolr",
+      "Skip": "[parameter('UnInstall')]",
       "Params": {
         "SolrPackage": "[variable('Source.Solr')]",
         "InstallLocation": "[variable('SolrInstallFolder')]"
@@ -178,6 +186,7 @@
     },
     "Ensure host name exists": {
       "Type": "HostHeader",
+      "Skip": "[parameter('UnInstall')]",
       "Params": {
         "Hostname": "[parameter('SolrHost')]"
       }
@@ -198,6 +207,7 @@
     },
     "Rewrite Solr config file": {
       "Type": "ConfigureSolr",
+      "Skip": "[parameter('UnInstall')]",
       "Params": {
         "solrSSL": "[parameter('SolrUseSSL')]",
         "solrHost": "[parameter('SolrHost')]",
@@ -209,6 +219,7 @@
     },
     "RunSolrAsService": {
       "Type": "SolrAsService",
+      "Skip": "[parameter('UnInstall')]",
       "Params": {
         "SolrPort": "[parameter('SolrPort')]",
         "SolrRoot": "[variable('SolrInstallFolder')]",
@@ -217,11 +228,40 @@
     },
     "Ensure Solr is running": {
       "Type": "WebRequest",
+      "Skip": "[parameter('UnInstall')]",
       "Params": {
         "Uri": "[variable('SolrUrl')]",
         "RetryCount": "3",
         "RetryDelay": "5000",
         "RequestTimeout": "5000"
+      }
+    },
+    "Remove-JRE-Package": {
+      "Type": "Remove",
+      "Skip": "[parameter('UnInstall')]",
+      "Params": {
+        "Source": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]"
+      }
+    },
+    "Remove-Solr-Package": {
+      "Type": "Remove",
+      "Skip": "[parameter('UnInstall')]",
+      "Params": {
+        "Source": "[joinpath(parameter('LocalStorage'), variable('SolrPackage'))]"
+      }
+    },
+    "Remove-Solr-Service": {
+      "Type": "RemoveSolrService",
+      "Skip": "[not(parameter('UnInstall'))]",
+      "Params": {
+        "ServiceName": "[parameter('SolrServiceName')]"
+      }
+    },
+    "Remove-Solr-Folder": {
+      "Type": "Remove",
+      "Skip": "[not(parameter('UnInstall'))]",
+      "Params": {
+        "Source": "[variable('SolrInstallFolder')]"
       }
     }
   }
