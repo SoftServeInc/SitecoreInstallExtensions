@@ -93,7 +93,7 @@ Install-SitecoreConfiguration @installSolr -Verbose
 
 if( -not $UnInstall )
 {
-    $installSolr | ConvertTo-JSON | Set-Content -Path "$SolrInstallFolder\$SolrHost-$SolrVersion.installation.params" -Value 
+    $installSolr | ConvertTo-JSON | Set-Content -Path "$SolrInstallFolder\$SolrHost-$SolrVersion.installation.params"
 }
 
 # When you install Solr on VM in a AWS, Azure or GCP probably you have to create a firewall 
