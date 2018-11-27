@@ -9,28 +9,49 @@
    - setup SSL for Solr
    - install Solr as a Windows Service
 #>
-param (
+param (  
     [string]$SolrVersion = "6.6.2", 
     [string]$SolrHost = "solr.local",    
     [string]$SolrPort = "8983",
-    [boolean]$SSL = $true
+    [string]$SolrMemory = "1024m",
+    [string]$SolrService = "SolrService-$SolrHost-$SolrPort",
+    [boolean]$SSL = $true,
+    [boolean]$UnInstall = $false
 )
+
+if( -not $UnInstall )
+{ 
+    # verify if port and host are free
+    $service = Get-Service -Name $SolrService -ErrorAction SilentlyContinue
+    if( $service -ne $null )
+    {
+        Write-Error "Service $SolrService is already running."
+    }
+
+
+    try
+    {
+        $uri = "http://$($SolrHost):$SolrPort/solr/" 
+        $response = Invoke-WebRequest -Uri $uri  -ErrorAction SilentlyContinue
+
+        Write-Error "Host and port $uri is already used."
+    }
+    catch{}  
+
+}
 
 # Do not display progress (performance improvement)
 $global:ProgressPreference = 'silentlyContinue'
 
-
 $LocalStorage = "$PSScriptRoot\Storage"
+
 # Comment out this if you have own solr.json
 $GitHubRoot = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/Configuration/"
 
 
-#for Solr installation
-#$SolrHost = "solr.local"
-#$SolrPort = "8983"
 # internally in 'solr.json', installation path is build like $SolrInstallFolder\solr-parameter('SolrVersion')
 $SolrInstallFolder = "C:\solr"
-$SolrService = "PSSolrService"
+
 
 if( -not (Test-Path "$PSScriptRoot\Solr.json" ) )
 {
@@ -38,9 +59,8 @@ if( -not (Test-Path "$PSScriptRoot\Solr.json" ) )
 }
 else
 {
-    Write-Information "File $PSScriptRoot\Solr.json already exists."
+    Write-Verbose "File $PSScriptRoot\Solr.json already exists."
 }
-
 
 
 $installSolr =@{
@@ -50,14 +70,13 @@ $installSolr =@{
     SolrVersion = $SolrVersion
 	SolrHost = $SolrHost
     SolrPort = $SolrPort
+    SolrMemory = $SolrMemory
     SolrUseSSL = $SSL
 
     SolrServiceName = $SolrService
     InstallFolder = $SolrInstallFolder
 
 	# For SSL certificate generation
-    CertPassword = "secret"
-    CertStoreLocation = "Cert:\LocalMachine\My"
     CertificateName = $SolrHost
     
     # For SSL certificate export
@@ -67,10 +86,15 @@ $installSolr =@{
 	# if you want to download JRE and Solr check JREDownloadUrl and SolrDownloadUrl in solr.json
 	# and switch to $false
     UseLocalFiles = $false
+    UnInstall = $UnInstall
 }
 
-Install-SitecoreConfiguration @installSolr
+Install-SitecoreConfiguration @installSolr -Verbose
 
+if( -not $UnInstall )
+{
+    $installSolr | ConvertTo-JSON | Set-Content -Path "$SolrInstallFolder\$SolrHost-$SolrVersion.installation.params" -Value 
+}
 
 # When you install Solr on VM in a AWS, Azure or GCP probably you have to create a firewall 
 # rule to get access from remote computer.
