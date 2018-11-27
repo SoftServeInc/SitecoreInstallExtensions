@@ -1,4 +1,6 @@
-﻿Write-Host "SQL" -ForegroundColor Green
+#requires -RunAsAdministrator 
+
+Write-Host "SQL" -ForegroundColor Green
 Get-Service *SQL*
 
 Write-Host "SOLR" -ForegroundColor Green
@@ -29,7 +31,6 @@ Get-WebSite | ForEach-Object {
 Write-Host "Environment Variables" -ForegroundColor Green
 [environment]::GetEnvironmentVariable("JAVA_HOME")
 [environment]::GetEnvironmentVariable("SOLR_HOME")
-
 
 
 
