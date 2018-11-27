@@ -9,6 +9,15 @@
    - setup SSL for Solr
    - install Solr as a Windows Service
 #>
+param (
+    [string]$SolrVersion = "6.6.2", 
+    [string]$SolrHost = "solr.local",    
+    [string]$SolrPort = "8983",
+    [boolean]$SSL = $true
+)
+
+# Do not display progress (performance improvement)
+$global:ProgressPreference = 'silentlyContinue'
 
 
 $LocalStorage = "$PSScriptRoot\Storage"
@@ -17,19 +26,32 @@ $GitHubRoot = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExt
 
 
 #for Solr installation
-$SolrHost = "solr.local"
-$SolrPort = "8983"
+#$SolrHost = "solr.local"
+#$SolrPort = "8983"
 # internally in 'solr.json', installation path is build like $SolrInstallFolder\solr-parameter('SolrVersion')
 $SolrInstallFolder = "C:\solr"
 $SolrService = "PSSolrService"
 
-Invoke-WebRequest -Uri "$GitHubRoot/Solr.json" -OutFile "$PSScriptRoot\Solr.json"
+if( -not (Test-Path "$PSScriptRoot\Solr.json" ) )
+{
+    Invoke-WebRequest -Uri "$GitHubRoot/Solr.json" -OutFile "$PSScriptRoot\Solr.json"
+}
+else
+{
+    Write-Information "File $PSScriptRoot\Solr.json already exists."
+}
+
+
+
 $installSolr =@{
     Path = "$PSScriptRoot\Solr.json"   
     LocalStorage = "$LocalStorage"
     
+    SolrVersion = $SolrVersion
 	SolrHost = $SolrHost
     SolrPort = $SolrPort
+    SolrUseSSL = $SSL
+
     SolrServiceName = $SolrService
     InstallFolder = $SolrInstallFolder
 
@@ -47,7 +69,11 @@ $installSolr =@{
     UseLocalFiles = $false
 }
 
-Install-SitecoreConfiguration @installSolr -Verbose
+Install-SitecoreConfiguration @installSolr
 
 
+# When you install Solr on VM in a AWS, Azure or GCP probably you have to create a firewall 
+# rule to get access from remote computer.
+#
+# New-NetFirewallRule -LocalPort $SolrPort -DisplayName "Allow-Solr" -Direction Inbound -Protocol TCP -Action Allow
 

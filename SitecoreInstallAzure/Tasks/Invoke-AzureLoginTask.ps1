@@ -8,7 +8,7 @@ Function Invoke-AzureLoginTask {
 		[Parameter(Mandatory=$true)]
 		[string]$AzureSubscription,
 		# Force login, useful when you change password
-		[switch]$Force
+		[boolean]$Force
 	)
 
 	#region Login
@@ -22,25 +22,35 @@ Function Invoke-AzureLoginTask {
 			{
 				Remove-Item -Path $profileFilePath
 			}
-			Import-AzureRmContext -Path $profileFilePath | Out-Null
+			Import-AzureRmContext -Path $profileFilePath
+            Set-AzureRmContext -Subscription $AzureSubscription
 		}
+        else
+        {
+            Remove-AzureRmAccount
+        }
 	}
 
 	if($pscmdlet.ShouldProcess($AzureSubscription, "Login to Azure account with subscription"))
     {
 		$azureContext = Get-AzureRmContext
-		if( $azureContext.Subscription -eq $null )
+		if( $azureContext.Subscription -eq $null)
 		{
 			Add-AzureRmAccount 
 			Set-AzureRmContext -Subscription $AzureSubscription
 			Save-AzureRmContext -Path $profileFilePath
 		}
+        else
+        {
+            Write-Verbose "User already logged to $($azureContext.Subscription.Name)"
+        }
 	}
 	#endregion
 }
 
 
 Export-ModuleMember Invoke-AzureLoginTask
+
 # SIG # Begin signature block
 # MIIOJAYJKoZIhvcNAQcCoIIOFTCCDhECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
