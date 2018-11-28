@@ -134,9 +134,7 @@
     "SetDbMixedMode": {
       "Type": "SetSqlMixedMode",
       "Params": {
-        "SQLServerName": "[parameter('SqlServer')]",
-		"UserName": "[parameter('SqlAdminUser')]",
-        "Password": "[parameter('SqlAdminPassword')]"
+        "SQLServerName": "[parameter('SqlServer')]"
       }
     },
     "CreateDatabaseUser": {
