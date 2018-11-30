@@ -23,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configura
 		Configuration\sitecore9.azure.sas.json = Configuration\sitecore9.azure.sas.json
 		Configuration\sitecore9.prerequisites.json = Configuration\sitecore9.prerequisites.json
 		Configuration\Solr.json = Configuration\Solr.json
+		Configuration\solr7.json = Configuration\solr7.json
 		Configuration\SolrServerNSSM.json = Configuration\SolrServerNSSM.json
 		Configuration\xcommerce9.azure.json = Configuration\xcommerce9.azure.json
 		Configuration\xcommerce9.azure.sas.json = Configuration\xcommerce9.azure.sas.json

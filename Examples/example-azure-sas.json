@@ -1,0 +1,78 @@
+{
+  "Parameters": {
+    "StorageSas": {
+      "Type": "string",
+      "Description": ""
+    },
+    "StorageUrl": {
+      "Type": "string",
+      "Description": ""
+    },
+    "ToolsContainer": {
+      "Type": "string",
+      "DefaultValue": "tools"
+    },
+    "Sitecore8Container": {
+      "Type": "string",
+      "DefaultValue": "sitecore8"
+    },
+    "Sitecore9Container": {
+      "Type": "string",
+      "DefaultValue": "sitecore9"
+    },
+    "SitecoreCommerce": {
+        "Type": "string",
+        "DefaultValue": "commerce"
+      },
+    "Destination": {
+      "Type": "string"
+    }
+  },
+  "Modules": [
+    "SitecoreInstallAzure"
+  ],
+  "Variables": {
+
+  },
+  "Tasks": {
+    "CreatePaths": {
+      "Description" : "Ensure the destination path for the site exists.",
+      "Type": "EnsurePath",
+      "Params": {
+        "Exists": [
+          "[parameter('Destination')]"
+        ]
+      }
+    },
+    "DownloadPrerequisitesFiles": {
+      "Type": "DownloadBlobContent",
+      "Params": {
+        "Url": "[parameter('StorageUrl')]",
+        "Token": "[parameter('StorageSasToken')]",
+        "Container": "[parameter('ToolsContainer')]",
+        "Destination": "[parameter('Destination')]",
+        "Blobs": [
+          "jre-8u151-windows-x64.exe",
+          "mongodb-win32-x86_64-2008plus-ssl-3.4.10-signed.msi",
+          "solr-6.6.2.zip",
+          "vc_redist.x64.exe",
+          "license.xml"
+        ]
+      }
+    },
+    "DownloadSitecoreFiles": {
+      "Type": "DownloadBlobContent",
+      "Params": {
+        "Url": "[parameter('StorageUrl')]",
+        "Token": "[parameter('StorageSasToken')]",
+        "Container": "[parameter('Sitecore8Container')]",
+        "Destination": "[parameter('Destination')]",
+        "Blobs": [
+          "Sitecore PowerShell Extensions-4.7 for Sitecore 8.zip",
+          "Sitecore Experience Accelerator 1.6 rev. 180103 for 8.2.zip"
+        ]
+      }
+    }
+  }
+}
+
