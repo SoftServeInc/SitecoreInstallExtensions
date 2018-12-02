@@ -7,14 +7,6 @@ Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "SitecoreInstallExtensions",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{8501A592-0ACB-470D-8971-DFA2123A90B9}"
 	ProjectSection(SolutionItems) = preProject
-		Configuration\empty.json = Configuration\empty.json
-		Configuration\example-azure-sas.json = Configuration\example-azure-sas.json
-		Configuration\example-azure.json = Configuration\example-azure.json
-		Configuration\remove-sitecore8-xp0.json = Configuration\remove-sitecore8-xp0.json
-		Configuration\Remove-Solr.json = Configuration\Remove-Solr.json
-		Configuration\secrets-example.json = Configuration\secrets-example.json
-		Configuration\security-hardening.json = Configuration\security-hardening.json
-		Configuration\sifology-demo.json = Configuration\sifology-demo.json
 		Configuration\sitecore-packages.json = Configuration\sitecore-packages.json
 		Configuration\sitecore-prerequisites.json = Configuration\sitecore-prerequisites.json
 		sitecore.performance.json = sitecore.performance.json
@@ -23,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configura
 		Configuration\sitecore9.azure.sas.json = Configuration\sitecore9.azure.sas.json
 		Configuration\sitecore9.prerequisites.json = Configuration\sitecore9.prerequisites.json
 		Configuration\Solr.json = Configuration\Solr.json
-		Configuration\SolrServerNSSM.json = Configuration\SolrServerNSSM.json
+		Configuration\solr7.json = Configuration\solr7.json
 		Configuration\xcommerce9.azure.json = Configuration\xcommerce9.azure.json
 		Configuration\xcommerce9.azure.sas.json = Configuration\xcommerce9.azure.sas.json
 		Configuration\xcommerce9.prerequisites.json = Configuration\xcommerce9.prerequisites.json
@@ -37,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		generatehelp.ps1 = generatehelp.ps1
 		install-all-example.ps1 = install-all-example.ps1
 		install-modules.ps1 = install-modules.ps1
+		sitecore8.2.azure.ps1 = sitecore8.2.azure.ps1
 		sitecore9.commerce.azure.ps1 = sitecore9.commerce.azure.ps1
 		sitecore9.commerce.azure.sas.ps1 = sitecore9.commerce.azure.sas.ps1
 		sitecore9.xp0.azure.ps1 = sitecore9.xp0.azure.ps1
@@ -53,6 +46,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{D618C349
 	ProjectSection(SolutionItems) = preProject
 		tools\list-sitecore-stuff.ps1 = tools\list-sitecore-stuff.ps1
 		remove-signature.ps1 = remove-signature.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{492326E3-70AF-4A64-BB7D-79B2B571AFB5}"
+	ProjectSection(SolutionItems) = preProject
+		Examples\create-patch-file.example.json = Examples\create-patch-file.example.json
+		Examples\empty.json = Examples\empty.json
+		Examples\example-azure-sas.json = Examples\example-azure-sas.json
+		Examples\example-azure.json = Examples\example-azure.json
+		Examples\export-pfxcertificate.json = Examples\export-pfxcertificate.json
+		Examples\get-physical-path.example.json = Examples\get-physical-path.example.json
+		Examples\install-packages-with-commerce.json = Examples\install-packages-with-commerce.json
+		Examples\remove-sitecore8-xp0.json = Examples\remove-sitecore8-xp0.json
+		Examples\Remove-Solr.json = Examples\Remove-Solr.json
+		Examples\secrets-example.json = Examples\secrets-example.json
+		Examples\security-hardening.json = Examples\security-hardening.json
+		Examples\sifology-demo.json = Examples\sifology-demo.json
+		Examples\sitecore.performance.json = Examples\sitecore.performance.json
+		Examples\SolrServerNSSM.json = Examples\SolrServerNSSM.json
 	EndProjectSection
 EndProject
 Global

@@ -4,6 +4,12 @@
       "Type": "string",
       "Description": "The root folder for packages"
     },
+    "InstallMongoDb" : {
+      "Type" : "boolean"
+    },
+    "InstallSolr" : {
+      "Type" : "boolean"
+    },
     "JREInstaller": {
       "Type": "string",
       "Description": "The path to the Java SE Runtime Environment installer.",
@@ -53,9 +59,6 @@
     "SitecoreInstallExtensions"
   ],
   "Variables": {
-    // Variables are values calculated in a configuration.
-    // They can reference Parameters, other Variables, and config functions.
-
     "Source.JRE": "[joinpath(parameter('LocalStorage'), parameter('JREInstaller'))]",
     "Source.MongoDB": "[joinpath(parameter('LocalStorage'), parameter('MongoDbInstaller'))]",
     "Source.Solr": "[joinpath(parameter('LocalStorage'), parameter('SolrPackage'))]",
@@ -64,28 +67,48 @@
     "Destination.Solr": "[joinpath(environment('ProgramFiles'), 'Solr')]",
     "Destination.MongoDB": "[joinpath(environment('ProgramFiles'), 'Mongo')]",
 
-    // The sites full path on disk
     "Site.PhysicalPath": "[joinpath(environment('SystemDrive'), 'inetpub', 'wwwroot', parameter('SiteName'))]",
-    // The sites data folder
+
     "Site.DataFolder": "[joinpath(variable('Site.PhysicalPath'), 'App_Data')]",
     "CertStoreFile": "[joinpath(variable('Destination.Solr'), parameter('SolrVersionedFolder'), '\\server\\etc\\solr-ssl.keystore.pfx')]"
   },
   "Tasks": {
+    "WindowsFeatures" : {
+      "Type": "WindowsOptionalFeature",
+      "Params": {
+        "FeaturesToInstall": [
+          "Application-Server",
+          "Application-Server-WebServer-Support",
+          "IIS-WebServer",
+          "IIS-WebServerManagementTools",
+          "IIS-ApplicationDevelopment",
+          "IIS-ASPNET",
+          "IIS-ASPNET45",
+          "IIS-NetFxExtensibility",
+          "IIS-NetFxExtensibility45",
+          "IIS-ApplicationInit"
+        
+        ]
+      }
+    },
     "InstallJRE": {
       "Type": "EnsureJRE",
+      "Skip" : "[not(or( parameter('InstallMongoDb'), parameter('InstallSolr') ))]",
       "Params": {
         "JavaPackagePath": "[variable('Source.JRE')]"
       }
     },
     "InstallVC2015Redistribuable": {
       "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft Visual C++ 2015 Redistributable (x64) - 14.0.24215'))]",
       "Params": {
         "ExePath": "[variable('Source.VC2015Redist')]",
         "Arguments": "/q"
       }
-    },
+    }, 
     "InstallRoboMongo": {
       "Type": "Exe",
+      "Skip": "[not(testpackage('Robo 3T 1.1.1'))]",
       "Params": {
         "ExePath": "[variable('Source.RoboT')]",
         "Arguments": "/S"
@@ -93,6 +116,7 @@
     },
     "InstallMongoDB": {
       "Type": "EnsureMongoDb",
+      "Skip" : "[not(parameter('InstallMongoDb'))]",
       "Params": {
         "MongoPackage": "[variable('Source.MongoDB')]",
         "InstallLocation": "[variable('Destination.MongoDB')]",
@@ -101,6 +125,7 @@
     },
     "InstallSolr": {
       "Type": "EnsureSolr",
+      "Skip" : "[not(parameter('InstallSolr'))]",
       "Params": {
         "SolrPackage": "[variable('Source.Solr')]",
         "InstallLocation": "[variable('Destination.Solr')]"
@@ -108,6 +133,7 @@
     },
     "RunSolrAsService": {
       "Type": "SolrAsService",
+      "Skip" : "[not(parameter('InstallSolr'))]",
         "Params": {
           "Port": "",
           "Memory": ""

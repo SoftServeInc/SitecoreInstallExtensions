@@ -34,26 +34,32 @@
       "Type": "string",
       "DefaultValue": "sitecore",
       "Description": "The name of the site to be deployed."
+    },
+    "MongoServerName" : {
+      "Type" : "string",
+      "DefaultValue" : "localhost"
+    },
+    "MongoServerPort" : {
+      "Type" : "string",
+      "DefaultValue" : "27017"
     }
   },
   "Modules": [
     "SitecoreInstallExtensions"
   ],
   "Variables": {
-    // Variables are values calculated in a configuration.
-    // They can reference Parameters, other Variables, and config functions.
-    // Database names.
     "Sql.Database.Core":                "[concat(parameter('SqlDbPrefix'), '_Core')]",
     "Sql.Database.Master":              "[concat(parameter('SqlDbPrefix'), '_Master')]",
     "Sql.Database.Web":                 "[concat(parameter('SqlDbPrefix'), '_Web')]",
     "Sql.Database.Sessions":            "[concat(parameter('SqlDbPrefix'), '_Sessions')]",
     "Sql.Database.Analytics":           "[concat(parameter('SqlDbPrefix'), '_Analytics')]",
 
-    // The sites full path on disk
+   
+
     "Site.PhysicalPath": "[joinpath(environment('SystemDrive'), 'inetpub', 'wwwroot', parameter('SiteName'))]",
 	  "SitecoreUnzipped": "[joinpath(variable('Site.PhysicalPath'), parameter('SitecoreZipFileName'))]",
 	
-	// The sites data folder
+
     "Site.DataFolder": "[joinpath(variable('Site.PhysicalPath'), 'Data')]",
     "Site.WebsiteFolder": "[joinpath(variable('Site.PhysicalPath'), 'Website')]",
     "Site.DatabasesFolder": "[joinpath(variable('Site.PhysicalPath'), 'Databases')]",
@@ -72,14 +78,21 @@
     "Sql.ConnectionString.Master": "[sqlconnectionstring(parameter('SqlServerName'),variable('Sql.Database.Master'),parameter('SqlUser'),parameter('SqlPassword'))]",
     "Sql.ConnectionString.Core": "[sqlconnectionstring(parameter('SqlServerName'),variable('Sql.Database.Core'),parameter('SqlUser'),parameter('SqlPassword'))]",
     "Sql.ConnectionString.Reporting": "[sqlconnectionstring(parameter('SqlServerName'),variable('Sql.Database.Analytics'),parameter('SqlUser'),parameter('SqlPassword'))]"
+    
+
+    ,"Mongo.Analytics" : "[concat(parameter('SqlDbPrefix'), '_analytics')]"
+    ,"Mongo.Tracking.Live" : "[concat(parameter('SqlDbPrefix'), '_tracking_live')]"
+    ,"Mongo.Tracking.History" : "[concat(parameter('SqlDbPrefix'), '_tracking_history')]"
+    ,"Mongo.Tracking.Contact" : "[concat(parameter('SqlDbPrefix'), '_tracking_contact')]"
+    ,"MongoDb.Connection.analytics" : "[MongoConnectionString(parameter('MongoServerName'),parameter('MongoServerPort'),variable('Mongo.Analytics'))]"
+    ,"MongoDb.Connection.tracking.live" : "[MongoConnectionString(parameter('MongoServerName'),parameter('MongoServerPort'),variable('Mongo.Tracking.Live'))]"
+    ,"MongoDb.Connection.tracking.history" : "[MongoConnectionString(parameter('MongoServerName'),parameter('MongoServerPort'),variable('Mongo.Tracking.History'))]"
+    ,"MongoDb.Connection.tracking.contact" : "[MongoConnectionString(parameter('MongoServerName'),parameter('MongoServerPort'),variable('Mongo.Tracking.Contact'))]"
   },
   "Tasks": {
-    // Tasks are separate units of work in a configuration.
-    // Each task is an action that will be completed when Install-SitecoreConfiguration is called.
-    // By default, tasks are applied in the order they are declared.
-    // Tasks may reference Parameters, Variables, and config functions.
+    
     "CreatePaths": {
-      // Ensure the destination path for the site exists.
+      "Description" : "Ensure the destination path for the site exists.",
       "Type": "EnsurePath",
       "Params": {
         "Exists": [
@@ -349,6 +362,46 @@
       "Params": {
         "Source": "[resolvepath(parameter('LicenseFile'))]",
         "Destination": "[joinpath(variable('Site.WebsiteFolder'),'data')]"
+      }
+    },
+    "UpdateAnalyticsConnectionString": {
+      "Type": "SetXml",
+      "Params": {
+        "FilePath": "[joinpath(variable('Site.WebsiteFolder'), 'App_Config', 'ConnectionStrings.config')]",
+        "XPath": "//connectionStrings/add[@name='analytics']",
+        "Attributes": [
+          { "connectionString": "[variable('MongoDb.Connection.analytics')]" }
+        ]
+      }
+    },
+    "Update-tracking.live-ConnectionString": {
+      "Type": "SetXml",
+      "Params": {
+        "FilePath": "[joinpath(variable('Site.WebsiteFolder'), 'App_Config', 'ConnectionStrings.config')]",
+        "XPath": "//connectionStrings/add[@name='tracking.live']",
+        "Attributes": [
+          { "connectionString": "[variable('MongoDb.Connection.tracking.live')]" }
+        ]
+      }
+    },
+    "Update-tracking.history-ConnectionString": {
+      "Type": "SetXml",
+      "Params": {
+        "FilePath": "[joinpath(variable('Site.WebsiteFolder'), 'App_Config', 'ConnectionStrings.config')]",
+        "XPath": "//connectionStrings/add[@name='tracking.history']",
+        "Attributes": [
+          { "connectionString": "[variable('MongoDb.Connection.tracking.history')]" }
+        ]
+      }
+    },
+    "Update-tracking.contact-ConnectionString": {
+      "Type": "SetXml",
+      "Params": {
+        "FilePath": "[joinpath(variable('Site.WebsiteFolder'), 'App_Config', 'ConnectionStrings.config')]",
+        "XPath": "//connectionStrings/add[@name='tracking.contact']",
+        "Attributes": [
+          { "connectionString": "[variable('MongoDb.Connection.tracking.contact')]" }
+        ]
       }
     },
     "StartAppPool": {

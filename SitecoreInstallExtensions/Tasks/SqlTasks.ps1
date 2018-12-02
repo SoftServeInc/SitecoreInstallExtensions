@@ -141,9 +141,9 @@ function Invoke-CreateSqlUserTask {
 			$login.LoginType = 'SqlLogin'
 			$login.PasswordPolicyEnforced = $false
 			$login.PasswordExpirationEnabled = $false
-			$login.AddToRole('sysadmin')
 			$login.Create($Password)
-			
+
+			$login.AddToRole('sysadmin')
 		}
 		else
 		{
