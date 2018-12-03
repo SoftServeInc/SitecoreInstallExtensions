@@ -124,7 +124,7 @@ $downloadSitecorePrerequisites = @{
 
 try
 {
-	if( ( $null -ne $AzureSubscription ) -and  ( $null -ne $AzureResourceGroup ) )
+	if( ( $null -ne $AzureStorageUrl ) -and  ( $null -ne $AzureStorageToken ) )
 	{
 		if( $steps.IsNotExecuted("downloadSitecorePrerequisites") )
 		{
