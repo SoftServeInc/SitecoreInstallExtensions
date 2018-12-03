@@ -110,6 +110,7 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = @'
+1.0.0.8 Fix in login function
 1.0.0.7 Remove obsolete function WriteTask-Info call
 1.0.0.6 Add Invoke-DownloadAzureBlobContentTask (use SAS token to download files from Azure storage)
 1.0.0.5 Fix Invoke-ListAzureContainerTask, fix required modules
