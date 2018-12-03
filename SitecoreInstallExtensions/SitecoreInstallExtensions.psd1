@@ -12,7 +12,7 @@
 RootModule = 'SitecoreInstallExtensions.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.2.0.0'
+ModuleVersion = '1.2.0.2'
 
 # ID used to uniquely identify this module
 GUID = '1ba9c2c9-e2fc-4926-bf20-3cca1c8a125c'

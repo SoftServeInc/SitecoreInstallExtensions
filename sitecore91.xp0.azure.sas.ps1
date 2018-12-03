@@ -167,7 +167,7 @@ catch
 
 
 #region "Install Solr with SSL"
-Invoke-WebRequest -Uri "$GitHubRoot/Solr7.json" -OutFile "$PSScriptRoot\Solr.json"
+Invoke-WebRequest -Uri "$GitHubRoot/solr7.json" -OutFile "$PSScriptRoot\Solr.json"
 
 $installSolr =@{
     Path = "$PSScriptRoot\Solr.json"   
