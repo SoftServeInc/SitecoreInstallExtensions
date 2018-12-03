@@ -13,7 +13,7 @@
 
 *.md text
 *.psm1 text
-*.psd1
+*.psd1 text
 
 # Denote all files that are truly binary and should not be modified.
 *.png binary
