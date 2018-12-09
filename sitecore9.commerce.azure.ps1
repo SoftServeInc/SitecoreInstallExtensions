@@ -4,7 +4,7 @@
 #requires -module AzureRm.Profile
 #requires -module AzureRm.Storage
 #requires -module AzureRm.KeyVault
-#requires -module SitecoreInstallFramework
+#requires -modules @{ ModuleName="SitecoreInstallFramework"; ModuleVersion="1.2.1" } 
 #requires -module SitecoreInstallExtensions
 #requires -module SitecoreInstallAzure
 
