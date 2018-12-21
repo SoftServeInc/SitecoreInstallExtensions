@@ -49,7 +49,7 @@
     },
     "UnInstall": {
       "Type": "boolean",
-      "DefaultValue": "false",
+      "DefaultValue": false,
       "Description": "Set to true if you want to unsintall Solr"
     },
     "SolrServiceName": {
