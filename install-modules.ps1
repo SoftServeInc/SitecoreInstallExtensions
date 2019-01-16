@@ -5,6 +5,10 @@ param(
     [switch] $Azure	= $true
 )
 
+# Do not display progress (performance improvement)
+$global:ProgressPreference = 'silentlyContinue'
+
+
 Get-PackageProvider -Name Nuget -ForceBootstrap
 
 #region "WebAdministration module"
@@ -43,7 +47,7 @@ if( (Get-PSRepository -Name SitecoreGallery -ErrorAction SilentlyContinue) -eq $
 }
 #endregion
  
-#region "SitecoreInstallFramework"
+#region "SitecoreInstallFramework for Sitecore 9.1 and later"
 if( (Get-Module -Name SitecoreInstallFramework -ListAvailable) -eq $null )
 {
     #If install-module is not available check https://www.microsoft.com/en-us/download/details.aspx?id=49186
@@ -53,6 +57,15 @@ else
 {
     Write-Verbose "SIF module already installed, update then"
 	Update-Module SitecoreInstallFramework -Force
+}
+#endregion
+
+#region "SitecoreInstallFramework for Sitecore 9.0.x"
+$sifModule = Get-Module -Name SitecoreInstallFramework -ListAvailable
+if(  $sifModule -eq $null -or $sifModule.Version -ne '1.2.1'  )
+{
+    #If install-module is not available check https://www.microsoft.com/en-us/download/details.aspx?id=49186
+    Install-Module SitecoreInstallFramework -Scope AllUsers -Repository SitecoreGallery -RequiredVersion 1.2.1 -AllowClobber
 }
 #endregion
 
@@ -101,4 +114,3 @@ if( $Azure -eq $true)
 Set-PSRepository PSGallery -InstallationPolicy $defaultPolicy
 
 Get-Module Sitecore* -ListAvailable | Format-List
-
