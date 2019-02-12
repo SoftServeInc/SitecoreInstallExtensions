@@ -10,7 +10,7 @@ function Invoke-TestXmlValueConfigFunction
 		.EXAMPLE
 			This sample command:
 			
-			Test-XmlValueConfigFunction -XmlPath $webConfigPath -XPath "//appSettings/add[@key='search:define']" -ExpectedValue "Solr"
+			Invoke-TestXmlValueConfigFunction -XmlPath $webConfigPath -XPath "//appSettings/add[@key='search:define']" -ExpectedValue "Solr"
 
 	#>
     [CmdletBinding(SupportsShouldProcess=$true)]

@@ -63,7 +63,7 @@ function Invoke-SetSitecoreConfigFileTask
 	    } 
         elseif (Test-Path $configFilePath) 
         {
-		    Rename-Item -Path $configFileName  -NewName $disabledFilePath;
+		    Rename-Item -Path $configFilePath  -NewName $disabledFilePath;
 		    Write-Verbose "  successfully disabled $disabledFilePath";
 	    }
         else
