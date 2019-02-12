@@ -12,7 +12,7 @@
 RootModule = 'SitecoreInstallExtensions.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.2.0.2'
+ModuleVersion = '1.2.0.3'
 
 # ID used to uniquely identify this module
 GUID = '1ba9c2c9-e2fc-4926-bf20-3cca1c8a125c'
@@ -24,7 +24,7 @@ Author = 'Robert Senktas'
 CompanyName = 'SoftServe'
 
 # Copyright statement for this module
-Copyright = '(c) SoftServe 2018 . All rights reserved.'
+Copyright = '(c) SoftServe 2018 - 2019 . All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'Module with extensions for Sitecore Install Framework'
@@ -96,6 +96,9 @@ NestedModules = @(
 	,'Tasks\Invoke-WindowsOptionalFeatureTask.ps1'
 	,'ConfigFunctions\Invoke-GetModulePathConfigFunction.ps1'
 	,'Tasks\Invoke-DownloadSitecoreFile.ps1'
+	,'ConfigFunctions\Invoke-TestXmlValueConfigFunction.ps1'
+	,'ConfigFunctions\Invoke-TestXmlAttributeConfigFunction.ps1'
+	,'Tasks\Invoke-SetSitecoreConfigFileTask.ps1'
 	)
 
 # Functions to export from this module
@@ -140,7 +143,10 @@ FunctionsToExport = 'Invoke-EnsureJRETask',
 	'Invoke-WindowsOptionalFeatureTask',
 	'Invoke-GetModulePathConfigFunction',
 	'Invoke-SetSitecoreAdminPasswordTask',
-	'Invoke-DownloadSitecoreFile'
+	'Invoke-DownloadSitecoreFile',
+	'Invoke-TestXmlValueConfigFunction',
+	'Invoke-TestXmlAttributeConfigFunction',
+	'Invoke-SetSitecoreConfigFileTask'
 
 
 # Cmdlets to export from this module
@@ -177,6 +183,7 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = @'
+1.2.0.4 Added 'Invoke-TestXmlValueConfigFunction','Invoke-TestXmlAttributeConfigFunction','Invoke-SetSitecoreConfigFileTask'
 1.2.0.2 Added Invoke-DownloadSitecoreFile task
 1.2.0.2 Fix SOLR installation without SSL, Fix packages/updates installation over HTTPS, Generic SOLR installation
 1.2.0.1 Fix SQL login issues
