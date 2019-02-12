@@ -10,8 +10,14 @@ $modulePath = "$moduleName"
 
 
 #region Install module"
+$installedModulePath = (get-module SitecoreInstallExtensions -ListAvailable).Path
+if( $installedModulePath -eq $null)
+{
+	Write-Error "SitecoreInstallExtensions Module path null"
+}
 
-$userModules = Join-Path $env:USERPROFILE -ChildPath "Documents\WindowsPowerShell\Modules\$moduleName"
+$userModules = Split-Path -Parent $installedModulePath
+#$userModules = Join-Path $env:USERPROFILE -ChildPath "Documents\WindowsPowerShell\Modules\$moduleName"
 
 if( -not (Test-Path -Path $userModules))
 {
@@ -61,7 +67,7 @@ Copy-Item -Recurse -Path $modulePath\configfunctions\* -Destination "$userModule
 Import-Module SitecoreInstallExtensions -Force 
 
 $commands = Get-Command -Module SitecoreInstallExtensions
-$generateHelp = " $solutionFolder\GenerateHelp.ps1"
+$generateHelp = " $solutionFolder\Tools\GenerateHelp.ps1"
 $documentationRoot = "https://github.com/SoftServeInc/SitecoreInstallExtensions/blob/master/Documentation"
 
 $readme = Join-Path -Path "$solutionFolder\Documentation" -ChildPath "readme.md"
