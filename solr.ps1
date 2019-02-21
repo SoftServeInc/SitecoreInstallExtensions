@@ -86,7 +86,7 @@ $installSolr =@{
 	# if you want to download JRE and Solr check JREDownloadUrl and SolrDownloadUrl in solr.json
 	# and switch to $false
     UseLocalFiles = $false
-    UnInstall = $UnInstall
+    UnInstallSolr = $UnInstall
 }
 
 Install-SitecoreConfiguration @installSolr -Verbose
