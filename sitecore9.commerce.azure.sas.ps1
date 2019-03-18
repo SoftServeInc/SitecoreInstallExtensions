@@ -4,9 +4,12 @@
 #requires -module AzureRm.Profile
 #requires -module AzureRm.Storage
 #requires -module AzureRm.KeyVault
-#requires -modules @{ ModuleName="SitecoreInstallFramework"; ModuleVersion="1.2.1" } 
 #requires -module SitecoreInstallExtensions 
 #requires -module SitecoreInstallAzure
+
+# To be sure that proper version of SIF is used
+Remove-Module SitecoreInstallFramework
+Import-Module SitecoreInstallFramework -RequiredVersion 1.2.1
 
 #region Steps implementation
 class Steps
