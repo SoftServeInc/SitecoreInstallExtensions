@@ -74,11 +74,8 @@ function Invoke-AddPatchTask
 		[ValidateNotNullOrEmpty()]
 		[string]$XPath = "//configuration/sitecore/settings",
 	
-		[ValidateNotNullOrEmpty()]
 		[string]$Element = "setting",
 
-		[Parameter(Mandatory=$true)]
-		[ValidateNotNullOrEmpty()]
 		[string]$Name,
 
 		[string]$Value,
@@ -102,17 +99,34 @@ function Invoke-AddPatchTask
 		return
 	}
 
-	[System.Xml.XmlElement]$item = $XmlDocument.CreateElement($Element)
-    if( $item -eq $null )
-    {
-        Write-Verbose "Cannot create an element $Element"
-        return
+	$Elements = $Element -split "/"
+	if( $Elements.Length -gt 1)
+	{
+		foreach($newElement in $Elements )
+		{
+			Write-Verbose "Create elements hierarchy $newElement"
+		    [System.Xml.XmlElement]$item = $XmlDocument.CreateElement($newElement)
+			$appSettingsNode.AppendChild($item);
+			$appSettingsNode = $item
+		}
+	}
+	else
+	{
+		Write-Verbose "Create an element $Element"
+		[System.Xml.XmlElement]$item = $XmlDocument.CreateElement($Element)
+		if( $item -eq $null )
+		{
+			Write-Verbose "Cannot create an element $Element"
+			return
+		}
+	}
+
+	if( $Name -ne $null -or $Name -ne '')
+	{
+		$item.SetAttribute("name",  $Name)
     }
 
-
-	$item.SetAttribute("name",  $Name)
-    
-    Write-Information -Message "Create patch for elemeny $Element, name $Name = $Value" -Tag "Patch"
+    Write-Information -Message "Create patch for element $Element, name $Name = $Value" -Tag "Patch"
 	if( $Value -eq $null -or $Value -eq '')
 	{
 		$patch = $XmlDocument.CreateElement("patch","delete","http://www.sitecore.net/xmlconfig/")
