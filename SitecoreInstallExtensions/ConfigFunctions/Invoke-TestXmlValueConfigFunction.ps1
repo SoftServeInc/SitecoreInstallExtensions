@@ -29,13 +29,13 @@ function Invoke-TestXmlValueConfigFunction
 
     $node = $XmlDocument.SelectSingleNode($XPath)
 
-    if( $node -eq $null )
+    if( $null -eq $node  )
     {
         Write-Error "Node $XPath not exists in file $XmlPath"
     }
     else
     {
-        return $node.Value -eq $ExpectedValue 
+        return $node.Value -match $ExpectedValue 
     }
 }
 
