@@ -128,7 +128,7 @@
       "Params": {
         "Path": "[parameter('CertPath')]",
         "Name": "[parameter('RootCertFileName')]",
-        "StoreLocation": "CurrentUser",
+        "StoreLocation": "LocalMachine",
         "DnsName": "[variable('Root.Cert.DnsName')]"
       }
     },
