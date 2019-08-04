@@ -15,6 +15,7 @@ param (
     [string]$SolrPort = "8983",
     [string]$SolrMemory = "1024m",
     [string]$SolrService = "SolrService-$SolrHost-$SolrPort",
+    [string]$SolrInstallFolder = "C:\solr", # internally in 'solr.json', installation path is build like $SolrInstallFolder\solr-parameter('SolrVersion')
     [boolean]$SSL = $true,
     [boolean]$UnInstall = $false
 )
@@ -47,11 +48,6 @@ $LocalStorage = "$PSScriptRoot\Storage"
 
 # Comment out this if you have own solr.json
 $GitHubRoot = "https://raw.githubusercontent.com/SoftServeInc/SitecoreInstallExtensions/master/Configuration/"
-
-
-# internally in 'solr.json', installation path is build like $SolrInstallFolder\solr-parameter('SolrVersion')
-$SolrInstallFolder = "C:\solr"
-
 
 if( -not (Test-Path "$PSScriptRoot\Solr.json" ) )
 {
