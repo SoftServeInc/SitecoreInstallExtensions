@@ -1,0 +1,136 @@
+{
+  "Parameters": {
+    "SqlServerName": {
+      "Type": "string",
+      "Description": "The name of the SQL server."
+
+    },
+    "SiteName": {
+      "Type": "string",
+      "Description": "The name of the site to be removed."
+    },
+    "AppPoolName": {
+      "Type": "string",
+      "Description": "The name of the app pool to be removed."
+    },
+    "SqlUser": {
+      "Type": "string",
+      "Description": "The user to remove."
+    },
+    "Sql.Database.Core": {
+      "Type": "string",
+      "Description": "Sql Database name"
+    },
+    "Sql.Database.Master": {
+      "Type": "string",
+      "Description": "Sql Database name"
+    },
+    "Sql.Database.Web": {
+      "Type": "string",
+      "Description": "Sql Database name"
+    },
+    "Sql.Database.Analytics": {
+      "Type": "string",
+      "Description": "Sql Database name"
+    },
+	"Sql.Database.Sessions": {
+      "Type": "string",
+      "Description": "Sql Database name"
+    },
+    "Sitecore.Root": {
+      "Type": "string",
+      "Description": "The sites full path on disk"
+    },
+    "Mongo.Analytics": {
+      "Type": "string",
+      "Description": "Mongo Database connection string"
+    },
+    "Mongo.Tracking.Live": {
+      "Type": "string",
+      "Description": "Mongo Database connection string"
+    },
+    "Mongo.Tracking.History": {
+      "Type": "string",
+      "Description": "Mongo Database connection string"
+    },
+    "Mongo.Tracking.Contact": {
+      "Type": "string",
+      "Description": "Mongo Database connection string"
+    }
+
+  },
+  "Modules": [
+    "SitecoreInstallExtensions"
+  ],
+  "Variables": {
+  },
+  "Tasks": {
+    "RemoveWebsite": {
+      // Stops the website if it is running.
+      "Type": "ManageWebsite",
+      "Params": {
+        "Name": "[parameter('SiteName')]",
+        "Action": "Remove"
+      }
+    },
+    "RemoveAppPool": {
+      // Stops the app pool if it is running.
+      "Type": "ManageAppPool",
+      "Params": {
+        "Name": "[parameter('SiteName')]",
+        "Action": "Remove"
+      }
+    },
+    "DeleteDatabases": {
+      "Type": "DeleteSqlDatabase",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServerName')]",
+        "Databases": [
+          "[parameter('Sql.Database.Analytics')]",
+          "[parameter('Sql.Database.Master')]",
+          "[parameter('Sql.Database.Web')]",
+          "[parameter('Sql.Database.Core')]",
+		  "[parameter('Sql.Database.Sessions')]"
+        ]
+      }
+    },
+    "DeleteDatabaseUser": {
+      "Type": "DeleteSqlUser",
+      "Params": {
+        "SQLServerName": "[parameter('SqlServerName')]",
+        "UserName": "[parameter('SqlUser')]"
+      }
+    },
+    "DeleteMongoAnalyticsDb": {
+      "Type": "DropMongoDatabase",
+      "Params": {
+        "DatabaseConnectionString": "[parameter('Mongo.Analytics')]"
+      }
+    },
+    "DeleteMongoLiveDb": {
+      "Type": "DropMongoDatabase",
+      "Params": {
+        "DatabaseConnectionString": "[parameter('Mongo.Tracking.Live')]"
+      }
+    },
+    "DeleteMongoHistoryDb": {
+      "Type": "DropMongoDatabase",
+      "Params": {
+        "DatabaseConnectionString": "[parameter('Mongo.Tracking.History')]"
+      }
+    },
+    "DeleteMongoContactDb": {
+      "Type": "DropMongoDatabase",
+      "Params": {
+        "DatabaseConnectionString": "[parameter('Mongo.Tracking.Contact')]"
+      }
+    },
+    "RemoveSite": {
+      "Type": "Remove",
+      "Params": {
+        "Source": [ "[parameter('Sitecore.Root')]" ]
+      }
+    }
+
+  }
+}
