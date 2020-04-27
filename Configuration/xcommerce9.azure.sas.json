@@ -3,7 +3,7 @@
     "SitecoreVersion": {
       "Type": "string"
     },
-	"StorageSas": {
+    "StorageSas": {
       "Type": "string"
     },
     "StorageUrl": {
@@ -106,7 +106,7 @@
     },
     "CommerceSXAModules901": {
       "Type": "DownloadBlobContent",
-	  "Skip": "[not(equal(parameter('SitecoreVersion'),'9.0.1')))]",
+      "Skip": "[not(equal(parameter('SitecoreVersion'),'9.0.1')))]",
       "Params": {
         "Url": "[parameter('StorageUrl')]",
         "Token": "[parameter('StorageSas')]",
@@ -118,9 +118,9 @@
         ]
       }
     },
-	"CommerceSXAModules902": {
+    "CommerceSXAModules902": {
       "Type": "DownloadBlobContent",
-	  "Skip": "[not(equal(parameter('SitecoreVersion'),'9.0.2')))]",
+      "Skip": "[not(equal(parameter('SitecoreVersion'),'9.0.2')))]",
       "Params": {
         "Url": "[parameter('StorageUrl')]",
         "Token": "[parameter('StorageSas')]",
@@ -129,6 +129,20 @@
         "Blobs": [
           "Sitecore PowerShell Extensions-4.7.2 for Sitecore 8.zip",
           "Sitecore Experience Accelerator 1.7.1 rev. 180604 for 9.0.zip"
+        ]
+      }
+    },
+    "CommerceSXAModules903": {
+      "Type": "DownloadBlobContent",
+      "Skip": "[not(equal(parameter('SitecoreVersion'),'9.0.3')))]",
+      "Params": {
+        "Url": "[parameter('StorageUrl')]",
+        "Token": "[parameter('StorageSas')]",
+        "Container": "[parameter('Sitecore9Container')]",
+        "Destination": "[parameter('DeployFolder')]",
+        "Blobs": [
+          "Sitecore PowerShell Extensions-4.7.2 for Sitecore 8.zip",
+          "Sitecore Experience Accelerator 1.8 rev. 181112 for 9.0.zip"
         ]
       }
     },
@@ -152,7 +166,7 @@
     },
     "SitecoreCommerce901-Download": {
       "Type": "DownloadBlobContent",
-	  "Skip": "[not(equal(parameter('SitecoreVersion'),'9.0.1')))]",
+      "Skip": "[not(equal(parameter('SitecoreVersion'),'9.0.1')))]",
       "Params": {
         "Url": "[parameter('StorageUrl')]",
         "Token": "[parameter('StorageSas')]",
@@ -179,9 +193,9 @@
         ]
       }
     },
-	"SitecoreCommerce902-Download": {
+    "SitecoreCommerce902-Download": {
       "Type": "GetBlobContent",
-	  "Skip": "[not(equal(parameter('SitecoreVersion'),'9.0.2')))]",
+      "Skip": "[not(equal(parameter('SitecoreVersion'),'9.0.2')))]",
       "Params": {
         "ResourceGroupName": "[parameter('ResourceGroupName')]",
         "StorageName": "[parameter('StorageName')]",
@@ -205,10 +219,44 @@
           "9u2\\Sitecore.Commerce.Engine.Connect.2.2.86.update",
           "9u2\\Sitecore.Commerce.Engine.SDK.2.2.72.zip",
           "9u2\\Sitecore.Commerce.Habitat.Images-1.0.0.zip",
-		  "9u2\\Sitecore.IdentityServer.1.2.3.zip",
-		  "9u2\\Sitecore.IdentityServer.SDK.1.2.3.zip",
-		  "9u2\\speak-ng-bcl-0.8.0.tgz",
-		  "9u2\\speak-styling-0.9.0-r00078.tgz"
+          "9u2\\Sitecore.IdentityServer.1.2.3.zip",
+          "9u2\\Sitecore.IdentityServer.SDK.1.2.3.zip",
+          "9u2\\speak-ng-bcl-0.8.0.tgz",
+          "9u2\\speak-styling-0.9.0-r00078.tgz"
+        ]
+      }
+    },
+    "SitecoreCommerce903-Download": {
+      "Type": "GetBlobContent",
+      "Skip": "[not(equal(parameter('SitecoreVersion'),'9.0.3')))]",
+      "Params": {
+        "ResourceGroupName": "[parameter('ResourceGroupName')]",
+        "StorageName": "[parameter('StorageName')]",
+        "Container": "[parameter('SitecoreCommerce')]",
+        "Destination": "[parameter('DeployFolder')]",
+        "Blobs": [
+          "9u3\\Adventure Works Images.zip",
+          "9u3\\SIF.Sitecore.Commerce.1.4.7.zip",
+          "9u3\\Sitecore Commerce Connect Core 11.4.15.zip",
+          "9u3\\Sitecore Commerce Experience Accelerator 1.4.150.zip",
+          "9u3\\Sitecore Commerce Experience Accelerator Habitat Catalog 1.4.150.zip",
+          "9u3\\Sitecore Commerce Experience Accelerator Storefront 1.4.150.zip",
+          "9u3\\Sitecore Commerce Experience Accelerator Storefront Themes 1.4.150.zip",
+          "9u3\\Sitecore Commerce ExperienceAnalytics Core 1.4.15.zip",
+          "9u3\\Sitecore Commerce ExperienceProfile Core 1.4.15.zip",
+          "9u3\\Sitecore Commerce Marketing Automation Core 1.4.15.zip",
+          "9u3\\Sitecore Commerce Marketing Automation for AutomationEngine 1.4.15.zip",
+          "9u3\\Sitecore.BizFX.1.4.1.zip",
+          "9u3\\Sitecore.BizFX.SDK.1.4.1.zip",
+          "9u3\\Sitecore.Commerce.Engine.2.4.63.zip",
+          "9u3\\Sitecore.Commerce.Engine.Connect.2.4.32.update",
+          "9u3\\Sitecore.Commerce.Engine.SDK.2.4.43.zip",
+          "9u3\\Sitecore.Commerce.Habitat.Images-1.0.0.zip",
+          "9u3\\Sitecore.IdentityServer.1.4.2.zip",
+          "9u3\\Sitecore.IdentityServer.SDK.1.4.2.zip",
+          "9u3\\SolrSchemas.Sitecore.Commerce.1.4.7",
+          "9u3\\speak-ng-bcl-0.8.0.tgz",
+          "9u3\\speak-styling-0.9.0-r00078.tgz"
         ]
       }
     }
