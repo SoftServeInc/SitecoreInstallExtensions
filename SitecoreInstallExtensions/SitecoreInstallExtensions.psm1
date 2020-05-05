@@ -18,7 +18,7 @@ $private = Get-ChildItem -Path (Join-Path $PSScriptRoot Private) -Include *.ps1 
     }
 }
 
-if(  (Get-Command Register-SitecoreInstallExtension -ErrorAction SilentlyContinue) -eq $null )
+if(  $null -eq (Get-Command Register-SitecoreInstallExtension -ErrorAction SilentlyContinue) )
 {
     Write-Warning "Sitecore Install Framework register command not exists" 
 }
@@ -29,6 +29,7 @@ else
 	Register-SitecoreInstallExtension -Command Invoke-MoveTask -As Move -Type Task
 	Register-SitecoreInstallExtension -Command Invoke-RemoveTask -As Remove -Type Task
 	Register-SitecoreInstallExtension -Command Invoke-BackupFileTask -As BackupFile -Type Task
+	Register-SitecoreInstallExtension -Command Invoke-ExtractTask -As Exe -Type Task
 
 	Register-SitecoreInstallExtension -Command Invoke-EnsureJRETask -As EnsureJRE -Type Task
 	Register-SitecoreInstallExtension -Command Invoke-EnsureMogoDbTask -As EnsureMongoDb -Type Task

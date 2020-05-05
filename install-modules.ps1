@@ -27,6 +27,8 @@ if( (Get-Module -Name WebAdministration -ListAvailable) -eq $null )
 }
 #endregion
 
+
+
 #Temporary change default installation policy
 $defaultPolicy = (Get-PSRepository -Name PSGallery).InstallationPolicy
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
@@ -110,6 +112,15 @@ if( $Azure -eq $true)
 	}
 }
 #endregion
+
+#region "SqlServer module"
+if( (Get-Module -Name SqlServer -ListAvailable) -eq $null )
+{
+	Install-Module SqlServer
+}
+#endregion
+
+
 
 Set-PSRepository PSGallery -InstallationPolicy $defaultPolicy
 

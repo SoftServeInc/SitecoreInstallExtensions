@@ -22,9 +22,11 @@ function Install-FromWeb {
 }
 
 Disable-ieESC
+
+#https://cloud.google.com/chrome-enterprise/browser/download/thankyou?platform=WIN64_MSI&channel=stable
 Install-FromWeb -Url "http://dl.google.com/chrome/install/375.126/chrome_installer.exe" -Args "/silent /install"
 
-Install-FromWeb -Url "https://notepad-plus-plus.org/repository/7.x/7.5.6/npp.7.5.6.Installer.x64.exe" -Args "/S"
+Install-FromWeb -Url "https://notepad-plus-plus.org/repository/7.x/7.7.1/npp.7.7.1.Installer.x64.exe" -Args "/S"
 
 #https://github.com/git-for-windows/git/releases/download/v2.17.0.windows.1/Git-2.17.0-64-bit.exe
 
