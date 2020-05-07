@@ -129,6 +129,45 @@
         ]
       }
     },
+    "Sitecore902X1-Download": {
+      "Type": "DownloadBlobContent",
+      "Skip": "[not(equal(parameter('SitecoreVersion'),'9.0.2')))]",
+      "Params": {
+        "Url": "[parameter('StorageUrl')]",
+        "Token": "[parameter('StorageSas')]",
+        "Container": "[parameter('Sitecore9Container')]",
+        "Destination": "[parameter('Destination')]",
+        "Blobs": [
+          "Sitecore 9.0.2-180604-XP1\\Sitecore 9.0.2 rev. 180604 (OnPrem)_cd.scwdp.zip",
+          "Sitecore 9.0.2-180604-XP1\\Sitecore 9.0.2 rev. 180604 (OnPrem)_cm.scwdp.zip",
+          "Sitecore 9.0.2-180604-XP1\\Sitecore 9.0.2 rev. 180604 (OnPrem)_dds.scwdp.zip",
+          "Sitecore 9.0.2-180604-XP1\\Sitecore 9.0.2 rev. 180604 (OnPrem)_prc.scwdp.zip",
+          "Sitecore 9.0.2-180604-XP1\\Sitecore 9.0.2 rev. 180604 (OnPrem)_rep.scwdp.zip",
+          "Sitecore 9.0.2-180604-XP1\\Sitecore 9.0.2 rev. 180604 (OnPrem)_xp1collection.scwdp.zip",
+          "Sitecore 9.0.2-180604-XP1\\Sitecore 9.0.2 rev. 180604 (OnPrem)_xp1collectionsearch.scwdp.zip",
+          "Sitecore 9.0.2-180604-XP1\\Sitecore 9.0.2 rev. 180604 (OnPrem)_xp1marketingautomation.scwdp.zip",
+          "Sitecore 9.0.2-180604-XP1\\Sitecore 9.0.2 rev. 180604 (OnPrem)_xp1marketingautomationreporting.scwdp.zip",
+          "Sitecore 9.0.2-180604-XP1\\Sitecore 9.0.2 rev. 180604 (OnPrem)_xp1referencedata.scwdp.zip",
+          "Sitecore 9.0.2-180604-XP1\\sitecore-solr.json",
+          "Sitecore 9.0.2-180604-XP1\\sitecore-XP1-cd.json",
+          "Sitecore 9.0.2-180604-XP1\\sitecore-XP1-cm-dds-patch.json",
+          "Sitecore 9.0.2-180604-XP1\\sitecore-XP1-cm-dds-patch.ps1",
+          "Sitecore 9.0.2-180604-XP1\\sitecore-xp1-cm-secondary.json",
+          "Sitecore 9.0.2-180604-XP1\\sitecore-XP1-cm.json",
+          "Sitecore 9.0.2-180604-XP1\\sitecore-xp1-dds.json",
+          "Sitecore 9.0.2-180604-XP1\\sitecore-XP1-prc.json",
+          "Sitecore 9.0.2-180604-XP1\\sitecore-XP1-rep.json",
+          "Sitecore 9.0.2-180604-XP1\\Sitecore.Patch.EXM (OnPrem)_CM.zip",
+          "Sitecore 9.0.2-180604-XP1\\xconnect-createcert.json",
+          "Sitecore 9.0.2-180604-XP1\\xconnect-solr.json",
+          "Sitecore 9.0.2-180604-XP1\\xconnect-xp1-collection.json",
+          "Sitecore 9.0.2-180604-XP1\\xconnect-xp1-collectionsearch.json",
+          "Sitecore 9.0.2-180604-XP1\\xconnect-xp1-ReferenceData.json",
+          "Sitecore 9.0.2-180604-XP1\\xconnect-xp1-MarketingAutomation.json",
+          "Sitecore 9.0.2-180604-XP1\\xconnect-xp1-MarketingAutomationReporting.json"
+        ]
+      }
+    },
     "Sitecore91-Download": {
       "Type": "DownloadBlobContent",
       "Skip": "[not(equal(parameter('SitecoreVersion'),'9.1')))]",
