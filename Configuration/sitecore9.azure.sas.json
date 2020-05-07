@@ -58,7 +58,8 @@
           "msodbcsql.msi",
           "MsSqlCmdLnUtils.msi",
           "WebPlatformInstaller_amd64_en-US.msi",
-          "jre-8u171-windows-x64.exe"
+          "jre-8u171-windows-x64.exe",
+          "SharedManagementObjects.msi"
         ]
       }
     },
@@ -72,7 +73,8 @@
         "Destination": "[parameter('Destination')]",
         "Blobs": [
           "solr-6.6.2.zip",
-          "NDP462-KB3151800-x86-x64-AllOS-ENU.exe"
+          "NDP462-KB3151800-x86-x64-AllOS-ENU.exe",
+          "NDP472-KB4054530-x86-x64-AllOS-ENU.exe"
         ]
       }
     },
