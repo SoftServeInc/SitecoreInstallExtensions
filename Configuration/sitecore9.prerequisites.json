@@ -83,6 +83,14 @@
         "Arguments": "/Install /Products:'UrlRewrite2' /AcceptEULA"
       }
     },
+    "Install-SQLSysClrTypes-x64": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft System CLR Types for SQL Server 2016'))]",
+      "Params": {
+        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
+        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'SQLSysClrTypes(x64).msi') ,' /quiet')]"
+      }
+    },
     "Install-SQLSysClrTypes-x86": {
       "Type": "Exe",
       "Skip": "[not(testpackage('Microsoft System CLR Types for SQL Server 2016 (x86)'))]",
@@ -97,14 +105,6 @@
       "Params": {
         "ExePath": "C:\\Windows\\System32\\msiexec.exe",
         "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'DacFramework.msi') ,' /quiet')]"
-      }
-    },
-    "Install-SQLSysClrTypes-x64": {
-      "Type": "Exe",
-      "Skip": "[not(testpackage('Microsoft System CLR Types for SQL Server 2016'))]",
-      "Params": {
-        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
-        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'SQLSysClrTypes(x64).msi') ,' /quiet')]"
       }
     },
     "Install-DAC-x64": {
