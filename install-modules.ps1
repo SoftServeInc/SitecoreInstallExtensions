@@ -8,6 +8,7 @@ param(
 # Do not display progress (performance improvement)
 $global:ProgressPreference = 'silentlyContinue'
 
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 Get-PackageProvider -Name Nuget -ForceBootstrap
 
