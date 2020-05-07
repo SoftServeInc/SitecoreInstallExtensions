@@ -131,6 +131,14 @@
         "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'MsSqlCmdLnUtils.msi') ,' /passive /norestart IACCEPTMSSQLCMDLNUTILSLICENSETERMS=YES')]"
       }
     },
+	"Install-SharedManagementObjects": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('Microsoft SQL Server 2016 Management Objects  (x64)'))]",
+      "Params": {
+        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
+        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'SharedManagementObjects.msi') ,' /passive /norestart IACCEPTMSODBCSQLLICENSETERMS=YES')]"
+      }
+    },
     "SetDbMixedMode": {
       "Type": "SetSqlMixedMode",
       "Params": {
