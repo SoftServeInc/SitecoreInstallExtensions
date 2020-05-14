@@ -139,6 +139,14 @@
         "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'SharedManagementObjects.msi') ,' /passive /norestart IACCEPTMSODBCSQLLICENSETERMS=YES')]"
       }
     },
+	"Install-PowerShellTools": {
+      "Type": "Exe",
+      "Skip": "[not(testpackage('PowerShell Extensions for SQL Server 2016'))]",
+      "Params": {
+        "ExePath": "C:\\Windows\\System32\\msiexec.exe",
+        "Arguments": "[concat('/i ', joinpath(parameter('LocalStorage'),'PowerShellTools.msi') ,' /passive /norestart IACCEPTMSODBCSQLLICENSETERMS=YES')]"
+      }
+    },
     "SetDbMixedMode": {
       "Type": "SetSqlMixedMode",
       "Params": {

@@ -59,7 +59,8 @@
           "MsSqlCmdLnUtils.msi",
           "WebPlatformInstaller_amd64_en-US.msi",
           "jre-8u171-windows-x64.exe",
-          "SharedManagementObjects.msi"
+          "SharedManagementObjects.msi",
+          "PowerShellTools.msi"
         ]
       }
     },
